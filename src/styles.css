@@ -716,6 +716,14 @@ h3 {
   font-size: clamp(2.6rem, 7vw, 4.8rem);
 }
 
+.legal-highlight {
+  border: 1px solid rgba(216, 166, 87, 0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: #f4eadc;
+  background: rgba(255, 255, 255, 0.055);
+}
+
 @media (max-width: 900px) {
   .site-header {
     align-items: flex-start;
