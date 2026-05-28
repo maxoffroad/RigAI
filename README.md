@@ -39,5 +39,6 @@ The `_redirects` file keeps clean URLs working on Cloudflare Pages, so `/privacy
 
 - `/`
 - `/privacy`
+- `/terms`
 - `/affiliate-disclosure`
 - `/contact`

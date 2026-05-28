@@ -9,6 +9,7 @@ const entries = [
   "privacy.html",
   "affiliate-disclosure.html",
   "contact.html",
+  "terms.html",
   "_redirects",
   "src"
 ];
