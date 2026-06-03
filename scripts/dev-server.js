@@ -20,16 +20,21 @@ const mimeTypes = {
 
 const routeFiles = new Map([
   ["/", "index.html"],
-  ["/privacy", "privacy.html"],
-  ["/affiliate-disclosure", "affiliate-disclosure.html"],
-  ["/contact", "contact.html"]
+  ["/privacy", "public/privacy.html"],
+  ["/terms", "public/terms.html"],
+  ["/affiliate-disclosure", "public/affiliate-disclosure.html"],
+  ["/contact", "public/contact.html"]
 ]);
 
 function resolvePath(url) {
   const pathname = decodeURIComponent(new URL(url, "http://localhost").pathname);
   const routeFile = routeFiles.get(pathname);
   const relativePath = routeFile || pathname.replace(/^\/+/, "");
-  const filePath = normalize(join(baseDir, relativePath));
+  let filePath = normalize(join(baseDir, relativePath));
+
+  if (!existsSync(filePath) && routeFile?.startsWith("public/")) {
+    filePath = normalize(join(baseDir, routeFile.replace(/^public\//, "")));
+  }
 
   if (!filePath.startsWith(normalize(baseDir))) {
     return null;

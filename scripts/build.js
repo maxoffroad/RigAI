@@ -9,6 +9,12 @@ const entries = [
   "src"
 ];
 const publicDir = join(root, "public");
+const staticRoutes = [
+  ["privacy.html", "privacy"],
+  ["affiliate-disclosure.html", "affiliate-disclosure"],
+  ["contact.html", "contact"],
+  ["terms.html", "terms"]
+];
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
@@ -23,6 +29,16 @@ for (const entry of entries) {
 
   if (existsSync(from)) {
     await cp(from, to, { recursive: true });
+  }
+}
+
+for (const [fileName, routeName] of staticRoutes) {
+  const from = join(dist, fileName);
+  const routeDir = join(dist, routeName);
+
+  if (existsSync(from)) {
+    await mkdir(routeDir, { recursive: true });
+    await cp(from, join(routeDir, "index.html"));
   }
 }
 
