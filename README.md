@@ -20,6 +20,8 @@ npm run build
 ```
 
 The production files will be generated in `dist`.
+Static public pages and Cloudflare Pages redirects live in `public` and are copied
+to the root of `dist` during the build.
 
 ## Deploy to Cloudflare Pages
 
@@ -32,8 +34,9 @@ The production files will be generated in `dist`.
    - Output folder: `dist`
 6. Deploy.
 
-The `_redirects` file keeps clean URLs working on Cloudflare Pages, so `/privacy`,
-`/affiliate-disclosure` and `/contact` resolve to their matching HTML pages.
+The `public/_redirects` file keeps clean URLs working on Cloudflare Pages, so
+`/privacy`, `/terms`, `/affiliate-disclosure` and `/contact` resolve to their
+matching HTML pages before the catch-all SPA fallback runs.
 
 ## Pages
 

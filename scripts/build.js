@@ -6,16 +6,16 @@ const root = process.cwd();
 const dist = join(root, "dist");
 const entries = [
   "index.html",
-  "privacy.html",
-  "affiliate-disclosure.html",
-  "contact.html",
-  "terms.html",
-  "_redirects",
   "src"
 ];
+const publicDir = join(root, "public");
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
+
+if (existsSync(publicDir)) {
+  await cp(publicDir, dist, { recursive: true });
+}
 
 for (const entry of entries) {
   const from = join(root, entry);
