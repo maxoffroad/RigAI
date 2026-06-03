@@ -35,8 +35,8 @@ to the root of `dist` during the build.
 6. Deploy.
 
 The `public/_redirects` file keeps clean URLs working on Cloudflare Pages, so
-`/privacy`, `/terms`, `/affiliate-disclosure` and `/contact` resolve to their
-matching HTML pages before the catch-all SPA fallback runs.
+`/privacy`, `/terms`, `/affiliate-disclosure`, `/contact`, `/support`, and
+`/about` resolve to their matching HTML pages before the catch-all fallback runs.
 
 ## Pages
 
@@ -45,3 +45,5 @@ matching HTML pages before the catch-all SPA fallback runs.
 - `/terms`
 - `/affiliate-disclosure`
 - `/contact`
+- `/support`
+- `/about`

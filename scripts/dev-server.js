@@ -27,7 +27,11 @@ const routeFiles = new Map([
   ["/affiliate-disclosure", "public/affiliate-disclosure.html"],
   ["/affiliate-disclosure/", "public/affiliate-disclosure.html"],
   ["/contact", "public/contact.html"],
-  ["/contact/", "public/contact.html"]
+  ["/contact/", "public/contact.html"],
+  ["/support", "public/support.html"],
+  ["/support/", "public/support.html"],
+  ["/about", "public/about.html"],
+  ["/about/", "public/about.html"]
 ]);
 
 function resolvePath(url) {

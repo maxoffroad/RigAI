@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="RigAI is an AI offroad upgrade planner for SUV beginners. Build a simple vehicle plan, learn what to buy first, what to skip for now, and what to search for on Amazon."
+      content="RigAI helps SUV and offroad beginners get a simple vehicle upgrade plan: what to buy first, what to skip for now, and what to search for on Amazon."
     />
     <meta name="impact-site-verification" value="829d8d13-665f-4a80-8ec4-797315534c1a" />
-    <title>RigAI - AI Offroad Upgrade Planner for SUVs</title>
+    <meta property="og:title" content="RigAI - AI Offroad Upgrade Planner" />
+    <meta
+      property="og:description"
+      content="Get a beginner-friendly SUV upgrade plan with buy-first guidance, fitment reminders, and Amazon search ideas."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rigai-offroad.com/" />
+    <link rel="canonical" href="https://rigai-offroad.com/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>RigAI - AI Offroad Upgrade Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/src/styles.css?v=app-landing-1" />
+    <link rel="stylesheet" href="/src/styles.css?v=launch-1" />
   </head>
   <body>
     <header class="site-header" data-header>
@@ -25,9 +34,9 @@
       </a>
       <nav class="nav" aria-label="Main navigation">
         <a href="#how">How it works</a>
-        <a href="#beginners">For beginners</a>
+        <a href="#app-flow">App flow</a>
         <a href="#example">Example</a>
-        <a href="/affiliate-disclosure.html">Disclosure</a>
+        <a href="/support.html">Support</a>
         <a href="/contact.html">Contact</a>
       </nav>
     </header>
@@ -37,44 +46,47 @@
         <div class="hero-background" aria-hidden="true"></div>
         <div class="hero-inner">
           <div class="hero-content">
-            <p class="hero-badge">SUV upgrade planning without the guesswork</p>
+            <p class="hero-badge">For SUV owners starting offroad upgrades</p>
             <h1>AI offroad upgrade planner for your SUV</h1>
             <p class="hero-copy">
-              Tell RigAI how you use your vehicle, your budget, and your market. Get a
-              simple first upgrade plan, what to avoid, and what to search for.
+              Tell RigAI how you use your vehicle, your budget, and where you shop.
+              Get a simple first upgrade plan, what to avoid, and what to search for.
             </p>
             <div class="hero-actions">
               <a class="button primary" href="#download">Coming soon on Google Play</a>
               <a class="button secondary" href="#how">See how it works</a>
             </div>
-            <div class="hero-points" aria-label="RigAI planning steps">
-              <span>Vehicle plan</span>
-              <span>First upgrade</span>
-              <span>What to skip</span>
-              <span>Amazon search</span>
+            <div class="hero-points" aria-label="RigAI recommendation outputs">
+              <span>Get my recommendation</span>
+              <span>Buy first</span>
+              <span>Do not buy yet</span>
+              <span>Save vehicle plan</span>
             </div>
           </div>
 
-          <aside class="phone-preview" aria-label="RigAI app preview">
-            <div class="phone-shell">
-              <div class="phone-top">
-                <span>RigAI</span>
-                <strong>Toyota 4Runner</strong>
-              </div>
-              <div class="app-card accent-card">
-                <span>Buy first</span>
-                <strong>All-terrain tires</strong>
-                <p>Start with tires before suspension. They change grip, comfort, and trail confidence.</p>
-              </div>
-              <div class="app-card">
+          <aside class="app-preview" aria-label="RigAI app style recommendation preview">
+            <div class="preview-toolbar">
+              <span>RigAI recommendation</span>
+              <strong>Beginner SUV plan</strong>
+            </div>
+            <div class="preview-card accent-card">
+              <span>Buy first</span>
+              <strong>All-terrain tires in a sensible size</strong>
+              <p>Start with traction before bigger changes. It is easier to feel the benefit and keep daily comfort.</p>
+            </div>
+            <div class="preview-grid">
+              <div class="preview-card">
                 <span>Why this helps</span>
-                <p>Better traction on gravel, light mud, and weekend trails while staying daily-driver friendly.</p>
+                <p>Better grip on gravel, light mud, and weekend trails.</p>
               </div>
-              <div class="app-card warning-card">
+              <div class="preview-card warning-card">
                 <span>Do not buy yet</span>
-                <p>Skip a large lift until you verify tire size, wheel offset, and how you actually drive.</p>
+                <p>Skip a large lift until fitment is verified.</p>
               </div>
-              <a class="app-search" href="#example">Search for parts on Amazon</a>
+            </div>
+            <div class="preview-actions">
+              <span>Search for parts on Amazon</span>
+              <span>Save vehicle plan</span>
             </div>
           </aside>
         </div>
@@ -83,90 +95,123 @@
       <section class="section" id="how">
         <div class="section-heading">
           <p class="eyebrow">How it works</p>
-          <h2>A simple recommendation flow for your first vehicle plan.</h2>
+          <h2>A simple flow for your first vehicle upgrade plan.</h2>
         </div>
         <div class="feature-grid">
           <article class="feature-card">
             <span class="icon">01</span>
             <h3>Choose your vehicle</h3>
-            <p>Select your SUV so the plan starts with the vehicle you actually drive.</p>
+            <p>Start with the SUV you actually drive so the plan stays practical.</p>
           </article>
           <article class="feature-card">
             <span class="icon">02</span>
             <h3>Tell us how you drive</h3>
-            <p>Daily road use, weekend trails, camping trips, budget, and market all shape the plan.</p>
+            <p>Daily roads, weekend trails, camping trips, budget, and your country shape the result.</p>
           </article>
           <article class="feature-card">
             <span class="icon">03</span>
-            <h3>Get your first recommended upgrade</h3>
+            <h3>Get my recommendation</h3>
             <p>RigAI explains what to buy first, why it helps, and what to skip for now.</p>
           </article>
           <article class="feature-card">
             <span class="icon">04</span>
-            <h3>Save your vehicle plan</h3>
-            <p>Keep the plan for later so you can build your SUV step by step.</p>
+            <h3>Save vehicle plan</h3>
+            <p>Keep your plan and come back when you are ready for the next upgrade.</p>
           </article>
         </div>
       </section>
 
-      <section class="section beginner-section" id="beginners">
+      <section class="section" id="app-flow">
+        <div class="section-heading">
+          <p class="eyebrow">App concepts</p>
+          <h2>Built around decisions beginners actually need to make.</h2>
+        </div>
+        <div class="concept-grid">
+          <article class="mini-card">
+            <strong>Buy first</strong>
+            <p>The first upgrade that makes the most sense for your vehicle use.</p>
+          </article>
+          <article class="mini-card">
+            <strong>Why this helps</strong>
+            <p>Plain explanation before parts, sizes, or brand decisions.</p>
+          </article>
+          <article class="mini-card">
+            <strong>Do not buy yet</strong>
+            <p>Warnings about expensive parts that may not fit your current plan.</p>
+          </article>
+          <article class="mini-card">
+            <strong>Search for parts</strong>
+            <p>Amazon search ideas to help you research products yourself.</p>
+          </article>
+          <article class="mini-card">
+            <strong>Check trip readiness</strong>
+            <p>See what is missing before a trail day or weekend camping trip.</p>
+          </article>
+          <article class="mini-card">
+            <strong>Compare saved vehicle plans</strong>
+            <p>Keep plans organized when you are choosing between upgrade paths.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section beginner-section">
         <div class="section-heading">
           <p class="eyebrow">Made for beginners</p>
-          <h2>Plain language before parts lists.</h2>
+          <h2>Clear language before complicated parts lists.</h2>
         </div>
         <div class="beginner-grid">
           <article class="beginner-copy">
-            <h3>No confusing technical terms</h3>
+            <h3>No pressure to buy everything at once</h3>
             <p>
-              RigAI explains upgrades in normal language: what changes, why it matters,
-              and when it is worth waiting.
+              RigAI helps you understand the next sensible step, not a huge upgrade list.
+              It explains what changes, why it matters, and when waiting is smarter.
             </p>
           </article>
           <article class="mini-card">
-            <strong>Explains why each upgrade helps</strong>
+            <strong>Simple explanations</strong>
             <p>Understand the reason before spending money.</p>
           </article>
           <article class="mini-card">
-            <strong>Shows what not to buy yet</strong>
-            <p>Avoid expensive parts that do not fit your current plan.</p>
+            <strong>Fitment reminders</strong>
+            <p>Check tire size, wheel fitment, and vehicle details before buying.</p>
           </article>
           <article class="mini-card">
-            <strong>Keeps your SUV usable</strong>
-            <p>Balance trail confidence with daily comfort.</p>
+            <strong>Daily-driver friendly</strong>
+            <p>Balance trail confidence with comfort and real-world use.</p>
           </article>
         </div>
       </section>
 
       <section class="section example-section" id="example">
         <div class="section-heading">
-          <p class="eyebrow">Example recommendation</p>
-          <h2>A mock result card similar to the RigAI app.</h2>
+          <p class="eyebrow">Example result</p>
+          <h2>What a first recommendation can look like.</h2>
         </div>
         <article class="result-card">
           <div class="result-header">
             <span>Vehicle plan</span>
-            <strong>Beginner SUV owner - weekend trails</strong>
+            <strong>Beginner SUV owner - daily driving and weekend trails</strong>
           </div>
           <div class="result-grid">
             <section>
               <span>Buy first</span>
               <h3>All-terrain tires in a sensible size</h3>
-              <p>They are usually the first upgrade that helps grip, confidence, and road comfort.</p>
+              <p>They usually improve grip and confidence before heavier, more expensive upgrades.</p>
             </section>
             <section>
               <span>Why this helps</span>
               <h3>Better traction before bigger changes</h3>
-              <p>You can learn your vehicle before adding lift height or heavier accessories.</p>
+              <p>You can learn your vehicle before adding lift height or heavy accessories.</p>
             </section>
             <section>
               <span>Do not buy yet</span>
               <h3>Large lift kit or heavy bumper</h3>
-              <p>Skip these until you verify fitment, weight, and how much trail use you really need.</p>
+              <p>Skip these until you know your tire size, vehicle weight, and real trail needs.</p>
             </section>
             <section>
               <span>Search for parts</span>
-              <h3>Amazon search terms</h3>
-              <p>Search for all-terrain tires, tire repair kit, portable air compressor, and recovery boards.</p>
+              <h3>Amazon search ideas</h3>
+              <p>Try searches for all-terrain tires, tire repair kit, portable air compressor, and recovery boards.</p>
             </section>
           </div>
           <p class="fitment-note">Always verify fitment before purchasing.</p>
@@ -176,25 +221,27 @@
       <section class="section trust-section">
         <div class="trust-card">
           <p class="eyebrow">Trust and safety</p>
-          <h2>Useful planning, not guaranteed fitment.</h2>
+          <h2>Helpful planning, not a fitment guarantee.</h2>
           <ul class="trust-list">
             <li>Recommendations are informational.</li>
             <li>Always verify fitment before purchasing.</li>
-            <li>RigAI does not replace professional mechanic or engineering advice.</li>
+            <li>RigAI does not replace advice from a qualified mechanic, installer, or engineer.</li>
           </ul>
         </div>
       </section>
 
-      <section class="disclosure-section" id="download">
-        <div>
-          <p class="eyebrow">Amazon affiliate disclosure</p>
-          <h2>Amazon is the only supported affiliate/search destination for now.</h2>
+      <section class="section affiliate-section" id="download">
+        <div class="section-heading">
+          <p class="eyebrow">Amazon search links</p>
+          <h2>Product research stays transparent.</h2>
         </div>
-        <p>
-          RigAI may earn commission from qualifying Amazon purchases. This does not
-          change the price for users. Product suggestions are informational, and users
-          should verify fitment before purchasing.
-        </p>
+        <div class="affiliate-note-card">
+          <p>
+            RigAI may earn commission from qualifying Amazon purchases. This does not
+            change the price for users. Amazon is the only supported affiliate/search
+            destination for now, and every product should be checked for fitment before purchase.
+          </p>
+        </div>
       </section>
     </main>
 
@@ -206,10 +253,12 @@
         <a href="/privacy.html">Privacy Policy</a>
         <a href="/terms.html">Terms of Service</a>
         <a href="/affiliate-disclosure.html">Affiliate Disclosure</a>
-        <a href="mailto:maxoffroad.store@gmail.com">Contact: maxoffroad.store@gmail.com</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/support.html">Support</a>
+        <a href="/about.html">About</a>
       </div>
     </footer>
 
-    <script type="module" src="/src/main.js?v=app-landing-1"></script>
+    <script type="module" src="/src/main.js?v=launch-1"></script>
   </body>
 </html>

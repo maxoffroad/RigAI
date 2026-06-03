@@ -13,7 +13,9 @@ const staticRoutes = [
   ["privacy.html", "privacy"],
   ["affiliate-disclosure.html", "affiliate-disclosure"],
   ["contact.html", "contact"],
-  ["terms.html", "terms"]
+  ["terms.html", "terms"],
+  ["support.html", "support"],
+  ["about.html", "about"]
 ];
 
 await rm(dist, { recursive: true, force: true });
