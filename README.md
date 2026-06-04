@@ -34,9 +34,9 @@ to the root of `dist` during the build.
    - Output folder: `dist`
 6. Deploy.
 
-The `public/_redirects` file keeps clean URLs working on Cloudflare Pages, so
-`/privacy`, `/terms`, `/affiliate-disclosure`, `/contact`, `/support`, and
-`/about` resolve to their matching HTML pages before the catch-all fallback runs.
+Clean URLs work through real static route folders generated during the build, such
+as `dist/privacy/index.html`. The `public/_redirects` file is intentionally empty
+to avoid Cloudflare Pages rewrite loops.
 
 ## Pages
 
