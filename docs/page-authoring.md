@@ -107,6 +107,42 @@ Before deployment, check that the header menu opens and closes, Escape closes th
 
 Open `/design-system` after `npm run build` and `npm run preview` to inspect tokens and reusable components. This page is internal, noindex, and excluded from the sitemap.
 
+## Homepage Sections
+
+The production homepage is generated from `src/components/home/index.js` and content arrays in `src/content/home.js`.
+
+Required homepage section anchors:
+
+- `home-hero`
+- `home-trust-strip`
+- `home-problem`
+- `home-how-it-works`
+- `home-build-result`
+- `home-categories`
+- `home-recommendation`
+- `home-app-preview`
+- `home-vehicles`
+- `home-guides`
+- `home-trust-safety`
+- `home-faq`
+- `home-final-cta`
+
+Each section should also keep its matching `data-figma-section` value for Figma handoff.
+
+## Future States and CTAs
+
+Do not link to unpublished `/vehicles/...` or `/guides/...` routes. Use a static label, a real existing route, or an anchor to an existing homepage section.
+
+When Google Play or a web configurator URL is unavailable, use explanatory copy and point the primary CTA to `#home-final-cta`. Do not invent an external app store URL.
+
+## App Preview and Result Examples
+
+App preview cards should look intentional and product-like, but remain clearly maintainable placeholders until final screenshots arrive. Recommendation examples must include fitment verification language and must not claim guaranteed compatibility.
+
+## Safety Claims
+
+Vehicle upgrade guidance must stay informational. Include reminders to verify fitment before purchasing and avoid language that sounds like professional mechanic or engineering advice.
+
 ## SEO Page Rules
 
 Each new indexable SEO page must have:

@@ -174,6 +174,49 @@ for (const className of [".button", ".card", ".badge", ".form-field", ".table", 
 }
 
 const homeHtml = readBuildFile("index.html");
+const requiredHomeSections = [
+  "home-hero",
+  "home-trust-strip",
+  "home-problem",
+  "home-how-it-works",
+  "home-build-result",
+  "home-categories",
+  "home-recommendation",
+  "home-app-preview",
+  "home-vehicles",
+  "home-guides",
+  "home-trust-safety",
+  "home-faq",
+  "home-final-cta"
+];
+
+for (const id of requiredHomeSections) {
+  requireIncludes(homeHtml, `id="${id}"`, "dist/index.html");
+  requireIncludes(homeHtml, `data-figma-section="${id}"`, "dist/index.html");
+}
+
+for (const expected of [
+  "Build My Setup",
+  "Build the right upgrade plan for your SUV",
+  "Toyota 4Runner",
+  "Lexus GX",
+  "Jeep Wrangler",
+  "FAQ",
+  "Recommendations are informational.",
+  "Always verify fitment before purchasing.",
+  "Coming soon on Google Play"
+]) {
+  requireIncludes(homeHtml, expected, "dist/index.html");
+}
+
+for (const forbidden of ["/vehicles/", "/guides/", "href=\"#\"", "Google Play Store", "play.google.com"]) {
+  if (homeHtml.includes(forbidden)) {
+    errors.push(`Homepage contains forbidden or unavailable destination: ${forbidden}`);
+  }
+}
+
+requireIncludes(homeHtml, '<a class="button primary" href="#home-final-cta">Build My Setup</a>', "dist/index.html");
+
 const jsonLdMatches = [...homeHtml.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
 
 if (jsonLdMatches.length !== 1) {

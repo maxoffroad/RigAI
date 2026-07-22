@@ -4,7 +4,7 @@ export const site = {
   defaultLanguage: "en",
   email: "maxoffroad.store@gmail.com",
   description:
-    "RigAI helps SUV and offroad beginners get a simple vehicle upgrade plan: what to buy first, what to skip for now, and what to search for on Amazon.",
+    "RigAI helps SUV and offroad owners build a prioritized upgrade plan with buy-first guidance, skip-for-now warnings, and fitment reminders.",
   socialImage: {
     path: "/assets/rigai-og-image.png",
     width: 1200,
@@ -27,11 +27,11 @@ const footerLinks = [
 ];
 
 const homeNav = [
-  { label: "How it works", href: "#how" },
-  { label: "App flow", href: "#app-flow" },
-  { label: "Example", href: "#example" },
-  { label: "Support", href: "/support" },
-  { label: "Contact", href: "/contact" }
+  { label: "How It Works", href: "#home-how-it-works" },
+  { label: "Results", href: "#home-build-result" },
+  { label: "Vehicles", href: "#home-vehicles" },
+  { label: "Guides", href: "#home-guides" },
+  { label: "About", href: "/about" }
 ];
 
 const pageNav = [
@@ -49,14 +49,16 @@ export const pages = [
     route: "/",
     source: "index.html",
     output: "index.html",
-    title: "RigAI - AI Offroad Upgrade Planner",
-    description: site.description,
-    socialTitle: "RigAI - AI Offroad Upgrade Planner",
+    title: "RigAI - AI Off-Road Setup Assistant",
+    description:
+      "RigAI helps SUV and offroad owners build a prioritized upgrade plan with buy-first guidance, skip-for-now warnings, and fitment reminders.",
+    socialTitle: "RigAI - AI Off-Road Setup Assistant",
     socialDescription:
-      "Get a beginner-friendly SUV upgrade plan with buy-first guidance, fitment reminders, and Amazon search ideas.",
+      "Build the right upgrade plan for your SUV with buy-first guidance, connected upgrade order, and fitment reminders.",
     nav: homeNav,
     footerLinks,
     headerVariant: "home",
+    renderer: "home",
     includeInSitemap: true,
     scripts: ['<script type="module" src="/src/main.js?v=launch-1"></script>'],
     extraHead: ['<meta name="impact-site-verification" value="829d8d13-665f-4a80-8ec4-797315534c1a" />'],

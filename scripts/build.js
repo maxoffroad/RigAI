@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { pages } from "./site-config.js";
 import { extractMain, renderPage, renderRobots, renderSitemap } from "./page-template.js";
+import { renderHomePage } from "../src/components/home/index.js";
 
 const root = process.cwd();
 const dist = join(root, "dist");
@@ -26,9 +27,7 @@ for (const entry of entries) {
 }
 
 for (const page of pages) {
-  const sourcePath = join(root, page.source);
-  const sourceHtml = await readFile(sourcePath, "utf8");
-  const mainHtml = extractMain(sourceHtml, page.source);
+  const mainHtml = page.renderer === "home" ? renderHomePage() : extractMain(await readFile(join(root, page.source), "utf8"), page.source);
   const pageHtml = renderPage(page, mainHtml);
   const outputPath = join(dist, page.output);
 
