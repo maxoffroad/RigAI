@@ -3,36 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="RigAI helps SUV and offroad beginners get a simple vehicle upgrade plan: what to buy first, what to skip for now, and what to search for on Amazon."
-    />
+    <meta name="description" content="RigAI helps SUV and offroad beginners get a simple vehicle upgrade plan: what to buy first, what to skip for now, and what to search for on Amazon." />
     <meta name="impact-site-verification" value="829d8d13-665f-4a80-8ec4-797315534c1a" />
     <meta property="og:title" content="RigAI - AI Offroad Upgrade Planner" />
-    <meta
-      property="og:description"
-      content="Get a beginner-friendly SUV upgrade plan with buy-first guidance, fitment reminders, and Amazon search ideas."
-    />
+    <meta property="og:description" content="Get a beginner-friendly SUV upgrade plan with buy-first guidance, fitment reminders, and Amazon search ideas." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://rigai-offroad.com/" />
+    <meta property="og:image" content="https://rigai-offroad.com/assets/rigai-og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="RigAI AI off-road setup assistant for SUV upgrade planning" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RigAI - AI Offroad Upgrade Planner" />
+    <meta name="twitter:description" content="Get a beginner-friendly SUV upgrade plan with buy-first guidance, fitment reminders, and Amazon search ideas." />
+    <meta name="twitter:image" content="https://rigai-offroad.com/assets/rigai-og-image.png" />
+    <meta name="twitter:image:alt" content="RigAI AI off-road setup assistant for SUV upgrade planning" />
     <link rel="canonical" href="https://rigai-offroad.com/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>RigAI - AI Offroad Upgrade Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/styles.css?v=launch-1" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://rigai-offroad.com/#organization","name":"RigAI","url":"https://rigai-offroad.com/","logo":"https://rigai-offroad.com/favicon.svg","contactPoint":{"@type":"ContactPoint","email":"maxoffroad.store@gmail.com","contactType":"customer support"}},{"@type":"WebSite","@id":"https://rigai-offroad.com/#website","name":"RigAI","url":"https://rigai-offroad.com/","description":"RigAI helps SUV and offroad beginners get a simple vehicle upgrade plan: what to buy first, what to skip for now, and what to search for on Amazon.","publisher":{"@id":"https://rigai-offroad.com/#organization"},"inLanguage":"en"},{"@type":"SoftwareApplication","@id":"https://rigai-offroad.com/#app","name":"RigAI","applicationCategory":"LifestyleApplication","operatingSystem":"Android","url":"https://rigai-offroad.com/","description":"RigAI is an AI off-road setup assistant that helps SUV beginners plan first upgrades, understand what to skip for now, and verify fitment before purchasing.","publisher":{"@id":"https://rigai-offroad.com/#organization"}}]}</script>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="site-header" data-header>
       <a class="brand" href="/">
         <span class="brand-mark">R</span>
         <span>RigAI</span>
       </a>
-      <nav class="nav" aria-label="Main navigation">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-home" data-nav-toggle>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="sr-only">Menu</span>
+      </button>
+      <nav class="nav" id="nav-home" aria-label="Main navigation" data-nav>
         <a href="#how">How it works</a>
         <a href="#app-flow">App flow</a>
         <a href="#example">Example</a>
@@ -41,7 +49,7 @@
       </nav>
     </header>
 
-    <main>
+    <main id="main-content">
       <section class="hero">
         <div class="hero-background" aria-hidden="true"></div>
         <div class="hero-inner">
@@ -245,11 +253,8 @@
       </section>
     </main>
 
- 
     <footer class="footer">
-      <p class="footer-disclosure">
-        As an Amazon Associate, RigAI earns from qualifying purchases.
-      </p>
+      <p class="footer-disclosure">As an Amazon Associate, RigAI earns from qualifying purchases.</p>
       <div class="footer-links">
         <a href="/privacy">Privacy Policy</a>
         <a href="/terms">Terms of Service</a>

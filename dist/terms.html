@@ -8,33 +8,47 @@
     <meta property="og:description" content="Terms for using RigAI vehicle upgrade recommendations." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://rigai-offroad.com/terms" />
+    <meta property="og:image" content="https://rigai-offroad.com/assets/rigai-og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="RigAI AI off-road setup assistant for SUV upgrade planning" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Terms of Service - RigAI" />
+    <meta name="twitter:description" content="Terms for using RigAI vehicle upgrade recommendations." />
+    <meta name="twitter:image" content="https://rigai-offroad.com/assets/rigai-og-image.png" />
+    <meta name="twitter:image:alt" content="RigAI AI off-road setup assistant for SUV upgrade planning" />
     <link rel="canonical" href="https://rigai-offroad.com/terms" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Terms of Service - RigAI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/styles.css?v=launch-1" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="site-header compact">
       <a class="brand" href="/">
         <span class="brand-mark">R</span>
         <span>RigAI</span>
       </a>
-      <nav class="nav" aria-label="Main navigation">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-terms" data-nav-toggle>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="sr-only">Menu</span>
+      </button>
+      <nav class="nav" id="nav-terms" aria-label="Main navigation" data-nav>
         <a href="/">Home</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/affiliate-disclosure">Affiliate Disclosure</a>
+        <a href="/about">About</a>
         <a href="/support">Support</a>
         <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
       </nav>
     </header>
 
-    <main class="legal-page">
+    <main id="main-content" class="legal-page">
       <article class="legal-content">
         <p class="eyebrow">Terms of Service</p>
         <h1>Terms of Service</h1>
@@ -87,7 +101,7 @@
         <hr class="legal-divider" />
 
         <p class="eyebrow" lang="ru">Условия использования</p>
-        <h1 lang="ru">Условия использования</h1>
+        <h2 class="legal-translation-title" lang="ru">Условия использования</h2>
         <p class="legal-highlight" lang="ru">
           Используя RigAI, пользователи соглашаются, что рекомендации носят информационный
           характер и должны быть проверены перед покупкой или установкой деталей автомобиля.
@@ -147,5 +161,7 @@
         <a href="/about">About</a>
       </div>
     </footer>
+
+    <script type="module" src="/src/main.js?v=launch-1"></script>
   </body>
 </html>

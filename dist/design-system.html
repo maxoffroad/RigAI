@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Internal RigAI website design system reference." />
+    <meta name="robots" content="noindex, follow" />
+    <meta property="og:title" content="Design System - RigAI" />
+    <meta property="og:description" content="Internal RigAI website design system reference." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rigai-offroad.com/design-system" />
+    <meta property="og:image" content="https://rigai-offroad.com/assets/rigai-og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="RigAI AI off-road setup assistant for SUV upgrade planning" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Design System - RigAI" />
+    <meta name="twitter:description" content="Internal RigAI website design system reference." />
+    <meta name="twitter:image" content="https://rigai-offroad.com/assets/rigai-og-image.png" />
+    <meta name="twitter:image:alt" content="RigAI AI off-road setup assistant for SUV upgrade planning" />
+    <link rel="canonical" href="https://rigai-offroad.com/design-system" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Design System - RigAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/styles.css?v=launch-1" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header compact">
+      <a class="brand" href="/">
+        <span class="brand-mark">R</span>
+        <span>RigAI</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-design-system" data-nav-toggle>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="sr-only">Menu</span>
+      </button>
+      <nav class="nav" id="nav-design-system" aria-label="Main navigation" data-nav>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/support">Support</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="legal-page">
+        <article class="legal-content">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Design System</span>
+          </nav>
+          <p class="eyebrow">Internal reference</p>
+          <h1>RigAI Design System</h1>
+          <p class="legal-highlight">
+            A compact reference for tokens, components, and accessibility patterns used by the RigAI website.
+          </p>
+        </article>
+      </section>
+
+      <section class="ds-section">
+        <div class="section-heading">
+          <p class="eyebrow">Tokens</p>
+          <h2>Dark, practical, offroad-ready interface foundations.</h2>
+        </div>
+        <div class="ds-grid">
+          <article class="card compact">
+            <span class="badge">Color</span>
+            <h3>Graphite surfaces</h3>
+            <p>Primary background, elevated cards, soft borders, and orange brand actions.</p>
+          </article>
+          <article class="card compact">
+            <span class="badge">Type</span>
+            <h3>Compact clarity</h3>
+            <p>Inter with system fallbacks, readable body copy, and restrained display scale.</p>
+          </article>
+          <article class="card compact">
+            <span class="badge">Spacing</span>
+            <h3>4px rhythm</h3>
+            <p>Small, predictable spacing steps for dense but comfortable product pages.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <div class="section-heading">
+          <p class="eyebrow">Components</p>
+          <h2>Reusable pieces for landing, legal, support, and future SEO pages.</h2>
+        </div>
+        <div class="ds-stack">
+          <div class="ds-cluster">
+            <a class="button primary" href="/support">Primary action</a>
+            <a class="button secondary" href="/about">Secondary action</a>
+            <a class="button ghost" href="/privacy">Ghost link</a>
+          </div>
+          <div class="ds-grid">
+            <article class="card">
+              <span class="status-label success">Ready</span>
+              <h3>Recommendation card</h3>
+              <p>Use for product flow summaries, saved plan previews, and first-upgrade explanations.</p>
+            </article>
+            <article class="card">
+              <span class="status-label warning">Verify</span>
+              <h3>Fitment reminder</h3>
+              <p>Use when a page mentions parts, compatibility, installation, or Amazon search ideas.</p>
+            </article>
+            <article class="card">
+              <span class="status-label">Info</span>
+              <h3>Support card</h3>
+              <p>Use for contact, legal, disclosure, support, and app-status information.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <div class="section-heading">
+          <p class="eyebrow">Forms and data</p>
+          <h2>Foundations for future lightweight tools.</h2>
+        </div>
+        <div class="ds-grid">
+          <form class="card ds-stack">
+            <label class="form-field">
+              <span class="form-label">Vehicle</span>
+              <input class="input" type="text" value="SUV daily driver" />
+            </label>
+            <label class="form-field">
+              <span class="form-label">Upgrade goal</span>
+              <select class="select">
+                <option>First upgrade</option>
+                <option>Trip readiness</option>
+              </select>
+            </label>
+          </form>
+          <div class="card">
+            <h3>Callout</h3>
+            <p class="callout">Recommendations are informational. Always verify fitment before purchasing.</p>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Pattern</th>
+                  <th>Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Card</td>
+                  <td>Grouped product guidance</td>
+                </tr>
+                <tr>
+                  <td>Callout</td>
+                  <td>Safety, legal, or disclosure note</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer-disclosure">As an Amazon Associate, RigAI earns from qualifying purchases.</p>
+      <div class="footer-links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/affiliate-disclosure">Affiliate Disclosure</a>
+        <a href="/contact">Contact</a>
+        <a href="/support">Support</a>
+        <a href="/about">About</a>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js?v=launch-1"></script>
+  </body>
+</html>

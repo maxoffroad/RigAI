@@ -1,0 +1,176 @@
+export const site = {
+  name: "RigAI",
+  domain: "https://rigai-offroad.com",
+  defaultLanguage: "en",
+  email: "maxoffroad.store@gmail.com",
+  description:
+    "RigAI helps SUV and offroad beginners get a simple vehicle upgrade plan: what to buy first, what to skip for now, and what to search for on Amazon.",
+  socialImage: {
+    path: "/assets/rigai-og-image.png",
+    width: 1200,
+    height: 630,
+    alt: "RigAI AI off-road setup assistant for SUV upgrade planning"
+  },
+  languages: {
+    default: "en",
+    preparedAlternates: []
+  }
+};
+
+const footerLinks = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+  { label: "Contact", href: "/contact" },
+  { label: "Support", href: "/support" },
+  { label: "About", href: "/about" }
+];
+
+const homeNav = [
+  { label: "How it works", href: "#how" },
+  { label: "App flow", href: "#app-flow" },
+  { label: "Example", href: "#example" },
+  { label: "Support", href: "/support" },
+  { label: "Contact", href: "/contact" }
+];
+
+const pageNav = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Support", href: "/support" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" }
+];
+
+export const pages = [
+  {
+    key: "home",
+    route: "/",
+    source: "index.html",
+    output: "index.html",
+    title: "RigAI - AI Offroad Upgrade Planner",
+    description: site.description,
+    socialTitle: "RigAI - AI Offroad Upgrade Planner",
+    socialDescription:
+      "Get a beginner-friendly SUV upgrade plan with buy-first guidance, fitment reminders, and Amazon search ideas.",
+    nav: homeNav,
+    footerLinks,
+    headerVariant: "home",
+    includeInSitemap: true,
+    scripts: ['<script type="module" src="/src/main.js?v=launch-1"></script>'],
+    extraHead: ['<meta name="impact-site-verification" value="829d8d13-665f-4a80-8ec4-797315534c1a" />'],
+    structuredData: true
+  },
+  {
+    key: "privacy",
+    route: "/privacy",
+    source: "public/privacy.html",
+    output: "privacy.html",
+    title: "Privacy Policy - RigAI",
+    description: "RigAI Privacy Policy for the AI offroad upgrade planner.",
+    socialTitle: "Privacy Policy - RigAI",
+    socialDescription: "How RigAI handles information used for vehicle upgrade recommendations.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: true
+  },
+  {
+    key: "terms",
+    route: "/terms",
+    source: "public/terms.html",
+    output: "terms.html",
+    title: "Terms of Service - RigAI",
+    description: "RigAI Terms of Service for the AI offroad upgrade planner.",
+    socialTitle: "Terms of Service - RigAI",
+    socialDescription: "Terms for using RigAI vehicle upgrade recommendations.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: true
+  },
+  {
+    key: "affiliate-disclosure",
+    route: "/affiliate-disclosure",
+    source: "public/affiliate-disclosure.html",
+    output: "affiliate-disclosure.html",
+    title: "Affiliate Disclosure - RigAI",
+    description: "RigAI Amazon Affiliate Disclosure.",
+    socialTitle: "Affiliate Disclosure - RigAI",
+    socialDescription: "RigAI may earn commission from qualifying Amazon purchases.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: true
+  },
+  {
+    key: "contact",
+    route: "/contact",
+    source: "public/contact.html",
+    output: "contact.html",
+    title: "Contact - RigAI",
+    description: "Contact RigAI for support, partnerships, and Amazon affiliate questions.",
+    socialTitle: "Contact - RigAI",
+    socialDescription: "Contact RigAI at maxoffroad.store@gmail.com.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: true
+  },
+  {
+    key: "support",
+    route: "/support",
+    source: "public/support.html",
+    output: "support.html",
+    title: "Support - RigAI",
+    description: "RigAI support page for app help, fitment reminders, and contact information.",
+    socialTitle: "Support - RigAI",
+    socialDescription: "Get support for RigAI and learn how to use recommendations safely.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: true
+  },
+  {
+    key: "about",
+    route: "/about",
+    source: "public/about.html",
+    output: "about.html",
+    title: "About - RigAI",
+    description: "About RigAI, an AI offroad upgrade planner for SUV beginners.",
+    socialTitle: "About - RigAI",
+    socialDescription: "RigAI helps SUV beginners plan first offroad upgrades in plain language.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: true
+  },
+  {
+    key: "design-system",
+    route: "/design-system",
+    source: "public/design-system.html",
+    output: "design-system.html",
+    title: "Design System - RigAI",
+    description: "Internal RigAI website design system reference.",
+    socialTitle: "Design System - RigAI",
+    socialDescription: "Internal RigAI website design system reference.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: false,
+    robots: "noindex, follow",
+    scripts: ['<script type="module" src="/src/main.js?v=launch-1"></script>']
+  },
+  {
+    key: "not-found",
+    route: "/404",
+    source: "public/404.html",
+    output: "404.html",
+    title: "Page not found - RigAI",
+    description: "The requested RigAI page could not be found.",
+    socialTitle: "Page not found - RigAI",
+    socialDescription: "The requested RigAI page could not be found.",
+    nav: [
+      { label: "Home", href: "/" },
+      { label: "Support", href: "/support" }
+    ],
+    footerLinks,
+    includeInSitemap: false,
+    robots: "noindex, follow",
+    scripts: ['<script type="module" src="/src/main.js?v=launch-1"></script>']
+  }
+];
