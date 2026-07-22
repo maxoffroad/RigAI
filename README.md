@@ -17,11 +17,13 @@ Open the local URL shown in the terminal.
 
 ```bash
 npm run build
+npm run validate
 ```
 
 The production files will be generated in `dist`.
 Static public pages and Cloudflare Pages redirects live in `public` and are copied
-to the root of `dist` during the build.
+to the root of `dist` during the build. The build also publishes `robots.txt`,
+`sitemap.xml`, and `404.html`.
 
 ## Deploy to Cloudflare Pages
 
@@ -37,6 +39,8 @@ to the root of `dist` during the build.
 Clean URLs work through real static route folders generated during the build, such
 as `dist/privacy/index.html`. The `public/_redirects` file is intentionally empty
 to avoid Cloudflare Pages rewrite loops.
+
+See `docs/deploy.md` for the full Cloudflare Pages checklist and routing notes.
 
 ## Pages
 

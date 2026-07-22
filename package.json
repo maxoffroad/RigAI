@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node scripts/dev-server.js",
     "build": "node scripts/build.js",
-    "preview": "node scripts/dev-server.js dist"
+    "preview": "node scripts/dev-server.js dist",
+    "validate": "node scripts/validate-build.js"
   }
 }
