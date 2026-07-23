@@ -1,3 +1,5 @@
+import { phase4BPages } from "./toyota-4runner-phase-4b.js";
+
 export const phase4ADates = {
   published: "2026-07-23",
   modified: "2026-07-23",
@@ -149,7 +151,13 @@ export const toyota4RunnerPages = [
           ["Roof & Cargo", "Payload, center of mass, secure mounting, and the effect of constant load."],
           ["Lighting", "Actual night use, mounting, wiring, road legality, and glare control."],
           ["Overland Equipment", "Trip need, reliability, storage, payload, and removal when not required."]
-        ]
+        ],
+        contextualLink: {
+          before: "For travel-focused weight and cargo dependencies, use the ",
+          label: "Toyota 4Runner overland build guide",
+          href: "/vehicles/toyota-4runner/overland-build",
+          after: "."
+        }
       },
       {
         type: "sequence",
@@ -202,9 +210,32 @@ export const toyota4RunnerPages = [
             title: "What to Upgrade First on a 4Runner",
             text: "Prioritize baseline condition, tires, recovery, protection, and later suspension planning.",
             href: "/vehicles/toyota-4runner/first-upgrades"
+          },
+          {
+            eyebrow: "Published guide",
+            title: "Toyota 4Runner KDSS Guide",
+            text: "Confirm KDSS and plan compatible suspension, lift, load, and installation checks.",
+            href: "/vehicles/toyota-4runner/kdss"
+          },
+          {
+            eyebrow: "Published guide",
+            title: "Toyota 4Runner Lift Kit Guide",
+            text: "Choose a lift objective using load, geometry, clearance, and daily-use trade-offs.",
+            href: "/vehicles/toyota-4runner/lift-kit"
+          },
+          {
+            eyebrow: "Published guide",
+            title: "Toyota 4Runner Tire Size Guide",
+            text: "Evaluate placard data, real tire dimensions, wheels, clearance, and load.",
+            href: "/vehicles/toyota-4runner/tire-size"
+          },
+          {
+            eyebrow: "Published guide",
+            title: "Toyota 4Runner Overland Build Guide",
+            text: "Plan travel around operating load, reliability, recovery, cargo, and comfort.",
+            href: "/vehicles/toyota-4runner/overland-build"
           }
-        ],
-        planned: ["Lift Kit Guide", "Tire Size Guide", "KDSS Guide", "Overland Build Guide"]
+        ]
       },
       {
         type: "faq",
@@ -244,6 +275,16 @@ export const toyota4RunnerPages = [
         title: "First Upgrades for a 4Runner",
         href: "/vehicles/toyota-4runner/first-upgrades",
         text: "A practical order for early modification decisions."
+      },
+      {
+        title: "Toyota 4Runner Tire Size Guide",
+        href: "/vehicles/toyota-4runner/tire-size",
+        text: "Plan wheels, real tire dimensions, load, and clearance."
+      },
+      {
+        title: "Toyota 4Runner Overland Build Guide",
+        href: "/vehicles/toyota-4runner/overland-build",
+        text: "Turn payload, recovery, and cargo into a travel plan."
       }
     ],
     safety: commonSafety,
@@ -474,6 +515,16 @@ export const toyota4RunnerPages = [
         title: "First Upgrades for a 4Runner",
         href: "/vehicles/toyota-4runner/first-upgrades",
         text: "Decide when suspension should move earlier or wait."
+      },
+      {
+        title: "Toyota 4Runner Lift Kit Guide",
+        href: "/vehicles/toyota-4runner/lift-kit",
+        text: "Separate ride-height goals from geometry and tire clearance."
+      },
+      {
+        title: "Toyota 4Runner KDSS Guide",
+        href: "/vehicles/toyota-4runner/kdss",
+        text: "Confirm system-specific fitment and installation planning."
       }
     ],
     safety: commonSafety,
@@ -647,11 +698,22 @@ export const toyota4RunnerPages = [
         title: "Toyota 4Runner Suspension Guide",
         href: "/vehicles/toyota-4runner/suspension",
         text: "Choose suspension after load, use, and supporting components are known."
+      },
+      {
+        title: "Toyota 4Runner Tire Size Guide",
+        href: "/vehicles/toyota-4runner/tire-size",
+        text: "Check tire, wheel, load, and dynamic-clearance variables."
+      },
+      {
+        title: "Toyota 4Runner Overland Build Guide",
+        href: "/vehicles/toyota-4runner/overland-build",
+        text: "Build a travel plan around reliability and operating load."
       }
     ],
     safety: commonSafety,
     sources: [sources.generations, sources.manual, sources.brochure, sources.kdss, sources.springLoad]
-  }
+  },
+  ...phase4BPages
 ];
 
 function collectWords(value, key = "") {

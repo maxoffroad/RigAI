@@ -90,7 +90,6 @@ function howItWorks() {
         <p class="eyebrow">Process</p>
         <h2>From your SUV to a complete build plan</h2>
       </div>
-      <div class="process-track" aria-hidden="true">${steps.map((step) => `<span>${step.number}</span>`).join("")}</div>
       <div class="process-grid">
         ${steps.map((step, index) => `<article class="process-card${index === steps.length - 1 ? " is-active" : ""}">
           <span class="step-icon" aria-hidden="true">${step.number}</span>

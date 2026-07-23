@@ -1,4 +1,4 @@
-import { readingTimeMinutes } from "../../content/toyota-4runner.js";
+import { readingTimeMinutes, toyota4RunnerPages } from "../../content/toyota-4runner.js";
 
 function escapeHtml(value) {
   return String(value)
@@ -81,6 +81,7 @@ function renderSystems(section) {
           <p>${escapeHtml(text)}</p>
         </article>`).join("")}
       </div>
+      ${contextualLink(section.contextualLink)}
     </section>`;
 }
 
@@ -146,10 +147,10 @@ function renderFeatured(section) {
           <strong>Read guide</strong>
         </a>`).join("")}
       </div>
-      <div class="planned-guides" aria-label="Planned guides">
+      ${section.planned?.length ? `<div class="planned-guides" aria-label="Planned guides">
         <span>Planned</span>
         ${section.planned.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
-      </div>
+      </div>` : ""}
     </section>`;
 }
 
@@ -207,11 +208,15 @@ function renderRelated(items) {
       <p class="eyebrow">Continue planning</p>
       <h2 id="related-guides-title">Related 4Runner guides</h2>
       <div class="related-guide-grid">
-        ${items.map((item) => `<a class="related-guide-card is-published" href="${item.href}">
+        ${items.map((item) => {
+          const relatedPage = toyota4RunnerPages.find((page) => page.route === item.href);
+          const readingTime = relatedPage?.kind === "article" ? readingTimeMinutes(relatedPage) : null;
+          return `<a class="related-guide-card is-published" href="${item.href}">
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.text)}</p>
-          <strong>Read guide</strong>
-        </a>`).join("")}
+          <strong>Read guide${readingTime ? ` · ${readingTime} min` : ""}</strong>
+        </a>`;
+        }).join("")}
       </div>
     </section>`;
 }
