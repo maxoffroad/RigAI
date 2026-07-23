@@ -23,7 +23,7 @@
     <title>RigAI - AI Off-Road Setup Assistant</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/styles.css?v=launch-1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://rigai-offroad.com/#organization","name":"RigAI","url":"https://rigai-offroad.com/","logo":"https://rigai-offroad.com/favicon.svg","contactPoint":{"@type":"ContactPoint","email":"maxoffroad.store@gmail.com","contactType":"customer support"}},{"@type":"WebSite","@id":"https://rigai-offroad.com/#website","name":"RigAI","url":"https://rigai-offroad.com/","description":"RigAI helps SUV and offroad owners build a prioritized upgrade plan with buy-first guidance, skip-for-now warnings, and fitment reminders.","publisher":{"@id":"https://rigai-offroad.com/#organization"},"inLanguage":"en"},{"@type":"SoftwareApplication","@id":"https://rigai-offroad.com/#app","name":"RigAI","applicationCategory":"LifestyleApplication","operatingSystem":"Android","url":"https://rigai-offroad.com/","description":"RigAI is an AI off-road setup assistant that helps SUV beginners plan first upgrades, understand what to skip for now, and verify fitment before purchasing.","publisher":{"@id":"https://rigai-offroad.com/#organization"}}]}</script>
   </head>
@@ -31,8 +31,7 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="site-header" data-header>
       <a class="brand" href="/">
-        <span class="brand-mark">R</span>
-        <span>RigAI</span>
+        <span class="brand-word">Rig<span>AI</span></span>
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-home" data-nav-toggle>
         <span class="nav-toggle-line" aria-hidden="true"></span>
@@ -41,169 +40,420 @@
         <span class="sr-only">Menu</span>
       </button>
       <nav class="nav" id="nav-home" aria-label="Main navigation" data-nav>
-        <a href="#home-how-it-works">How It Works</a>
-        <a href="#home-build-result">Results</a>
-        <a href="#home-vehicles">Vehicles</a>
-        <a href="#home-guides">Guides</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#vehicles">Vehicles</a>
+        <a href="#guides">Guides</a>
         <a href="/about">About</a>
       </nav>
+      <a class="header-cta" href="#download">Build My Setup</a>
     </header>
 
     <main id="main-content">
       <section class="home-hero" id="home-hero" data-figma-section="home-hero">
-        <div class="home-hero-copy">
-          <p class="hero-badge">AI Off-Road Setup Assistant</p>
-          <h1>Build the right upgrade plan for your SUV</h1>
-          <p class="hero-copy">
-            RigAI turns your vehicle, driving style, budget, and experience level into a clear upgrade order:
-            what to buy first, what to skip for now, and what to verify before purchasing.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#home-final-cta">Build My Setup</a>
-            <a class="button secondary" href="#home-build-result">See example result</a>
-          </div>
-          <p class="home-cta-note">Coming soon on Google Play. Web configurator is not available yet.</p>
+      <div class="home-hero-copy">
+        <p class="hero-badge">Off-Road Build Planner</p>
+        <h1>Your SUV.<br>Your terrain.<br><span>The right build.</span></h1>
+        <p class="hero-copy">RigAI creates a personalized off-road upgrade plan based on your vehicle, driving goals, terrain and budget.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#download">Build My Setup</a>
+          <a class="button secondary" href="#example-build">See an Example Build</a>
         </div>
-        <aside class="home-hero-visual" aria-label="RigAI result preview">
-          <div class="vehicle-stage" aria-hidden="true">
-            <div class="vehicle-silhouette">
-              <span class="wheel wheel-front"></span>
-              <span class="wheel wheel-rear"></span>
+      </div>
+      <aside class="home-hero-visual" aria-label="Example RigAI plan preview">
+        <figure class="media-frame media-frame--hero media-position--center">
+          <img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800" alt="Modified off-road SUV on a forest trail" fetchpriority="high" />
+        </figure>
+        <article class="hero-plan-card">
+          <div class="result-header-row">
+            <div>
+              <h2>Toyota 4Runner</h2>
+              <p>Daily + Weekend Trails · ~$3,000</p>
             </div>
+            <span class="status-label">Example plan</span>
           </div>
-          <div class="result-panel">
-            <span class="status-label success">Prepared plan</span>
-            <h2>Weekend trail SUV</h2>
-            <div class="result-row"><span>Buy first</span><strong>All-terrain tires</strong></div>
-            <div class="result-row"><span>Skip for now</span><strong>Large lift kit</strong></div>
-            <div class="result-row"><span>Verify</span><strong>Fitment before purchase</strong></div>
+          <ol class="plan-list">
+            <li><span>01</span><strong>All-terrain tires</strong><em>~$700-900</em></li><li><span>02</span><strong>Recovery points</strong><em>~$150-250</em></li><li><span>03</span><strong>Skid plate system</strong><em>~$350-500</em></li><li><span>04</span><strong>Suspension lift</strong><em>~$800-1,200</em></li><li><span>05</span><strong>Recovery equipment</strong><em>~$250-400</em></li>
+          </ol>
+          <p class="example-note">Example only - prices and recommendations vary by vehicle, where you shop and selected products.</p>
+        </article>
+      </aside>
+    </section>
+      <section class="home-trust-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
+      <span>Prioritized upgrade order</span>
+      <span>Plain beginner explanations</span>
+      <span>Fitment reminders before purchase</span>
+      <span>Amazon search only for now</span>
+    </section>
+      <section class="home-section problem-section" id="home-problem" data-figma-section="home-problem">
+      <div class="section-heading section-heading--stacked">
+        <p class="eyebrow">The problem</p>
+        <h2>Off-road upgrades should work together</h2>
+        <p>Most advice starts with individual parts. RigAI starts with your vehicle, how you drive and what you actually need.</p>
+      </div>
+      <div class="problem-grid">
+        <article class="problem-card">
+          <div class="problem-card-top"><span class="problem-number">01</span><span class="mini-label">Sequence</span></div>
+          <h3>Buying in the wrong order</h3>
+          <p>Purchasing expensive parts before the basics can create a plan that costs more and solves less.</p>
+        </article><article class="problem-card">
+          <div class="problem-card-top"><span class="problem-number">02</span><span class="mini-label">Compatibility</span></div>
+          <h3>Choosing incompatible upgrades</h3>
+          <p>Suspension height, tire size, bumper weight, and daily comfort interact. Each decision should fit the rest of the vehicle.</p>
+        </article><article class="problem-card">
+          <div class="problem-card-top"><span class="problem-number">03</span><span class="mini-label">Purpose</span></div>
+          <h3>Building for appearance instead of use</h3>
+          <p>A vehicle can look ready while becoming worse for daily driving. Good planning starts with how you actually drive.</p>
+        </article>
+      </div>
+      <p class="section-callout"><strong>RigAI takes a different approach.</strong> Instead of listing products, it builds one connected plan that accounts for dependencies, budget constraints, and the upgrade sequence that actually makes sense for your vehicle and how you drive it.</p>
+    </section>
+      <section class="home-section process-section" id="how-it-works" data-figma-section="home-how-it-works">
+      <div class="section-heading section-heading--center">
+        <p class="eyebrow">Process</p>
+        <h2>From your SUV to a complete build plan</h2>
+      </div>
+      <div class="process-track" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+      <div class="process-grid">
+        <article class="process-card">
+          <span class="step-icon" aria-hidden="true">1</span>
+          <h3>Choose your vehicle</h3>
+          <p>Select make, model, generation, trim, and current configuration.</p>
+          
+        </article><article class="process-card">
+          <span class="step-icon" aria-hidden="true">2</span>
+          <h3>Describe how you drive</h3>
+          <p>Daily use, highways, trails, overlanding, terrain type, and experience level shape the recommendation.</p>
+          
+        </article><article class="process-card">
+          <span class="step-icon" aria-hidden="true">3</span>
+          <h3>Set your priorities</h3>
+          <p>Budget, comfort, capability, appearance, and future plans are weighed against your real needs.</p>
+          
+        </article><article class="process-card is-active">
+          <span class="step-icon" aria-hidden="true">4</span>
+          <h3>Get the right build order</h3>
+          <p>Receive a prioritized plan with clear reasoning, dependency notes, and items to postpone.</p>
+          <div class="mini-plan"><span>01 AT tires · Priority</span><span>02 Recovery pts.</span><span>03 Skid plates</span><small>+ additional categories</small></div>
+        </article>
+      </div>
+    </section>
+      <section class="home-section build-result-section" id="example-build" data-figma-section="home-build-result">
+      <div class="build-result-layout">
+        <div>
+          <p class="eyebrow">Build result</p>
+          <h2>See the build before you start buying</h2>
+          <p class="section-lede">Toyota 4Runner 5th Gen - daily driver, family travel and weekend mountain trails. Moderate budget. No heavy rock crawling.</p>
+          <div class="segmented-labels" aria-label="Example setup state">
+            <span>Current Setup</span>
+            <span>RigAI Plan</span>
+            <span class="is-active">Target Setup</span>
+          </div>
+          <figure class="media-frame media-frame--build media-position--bottom">
+            <img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800" alt="Modified off-road SUV on a forest trail" loading="lazy" />
+            <figcaption>Target Setup</figcaption>
+          </figure>
+        </div>
+        <aside class="outcome-card">
+          <h3>Toyota 4Runner 5th Gen</h3>
+          <p>Daily · Family · Weekend Trails</p>
+          <ul class="outcome-list"><li>Improved trail-focused tire selection</li><li>Better underbody protection planning</li><li>Daily comfort kept as a priority</li><li>Basic recovery preparation included</li><li>Unnecessary upgrades postponed</li></ul>
+          <div class="outcome-note">
+            <p class="eyebrow">Expected build outcome</p>
+            <p>Actual outcome depends on the exact vehicle, selected parts, installation and driving conditions.</p>
           </div>
         </aside>
-      </section>
-      <section class="home-trust-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
-        <span>Prioritized upgrade order</span><span>Beginner-friendly explanations</span><span>Fitment reminders before purchase</span><span>Amazon search only for now</span>
-      </section>
-      <section class="home-section" id="home-problem" data-figma-section="home-problem">
-        <div class="section-heading">
-          <p class="eyebrow">The problem</p>
-          <h2>Offroad upgrades are connected. Most advice treats them like separate parts.</h2>
+      </div>
+    </section>
+      <section class="home-section coverage-section" id="home-categories" data-figma-section="home-categories">
+      <div class="coverage-heading">
+        <div>
+          <p class="eyebrow">Coverage</p>
+          <h2>One plan across the complete vehicle</h2>
         </div>
-        <div class="ds-grid"><article class="card"><h3>Parts lists do not explain order</h3><p>A lift, tires, armor, lights, and recovery gear can all sound urgent. RigAI helps sort what matters first.</p></article><article class="card"><h3>One upgrade can affect the next</h3><p>Tire size, suspension height, weight, and daily use are connected. RigAI keeps the plan tied together.</p></article><article class="card"><h3>Beginners need plain language</h3><p>The app explains why each upgrade helps, what to skip for now, and what to verify before spending money.</p></article></div>
-      </section>
-      <section class="home-section" id="home-how-it-works" data-figma-section="home-how-it-works">
-        <div class="section-heading">
-          <p class="eyebrow">How RigAI works</p>
-          <h2>From scattered ideas to a prioritized vehicle plan.</h2>
-        </div>
-        <div class="ds-grid"><article class="card step-card"><span class="icon">01</span><h3>Describe your SUV</h3><p>Add the vehicle, current parts, budget, country, experience level, and how you actually drive.</p></article><article class="card step-card"><span class="icon">02</span><h3>Get a prioritized plan</h3><p>RigAI turns the inputs into a simple build order with what to buy first and what to delay.</p></article><article class="card step-card"><span class="icon">03</span><h3>Research parts carefully</h3><p>Use Amazon search ideas as a starting point, then verify fitment, seller details, and installation needs.</p></article></div>
-      </section>
-      <section class="home-section" id="home-build-result" data-figma-section="home-build-result">
-        <div class="section-heading">
-          <p class="eyebrow">Build transformation</p>
-          <h2>The main result is not a part. It is the right order.</h2>
-        </div>
-        <div class="transformation-grid"><article class="card"><h3>Before RigAI</h3><ul class="clean-list"><li>Random ideas</li><li>Unclear fitment</li><li>No upgrade order</li><li>Easy to overspend</li></ul></article><article class="card"><h3>RigAI plan</h3><ul class="clean-list"><li>Buy-first priority</li><li>Plain explanation</li><li>Skip-for-now warnings</li><li>Fitment reminder</li></ul></article><article class="card"><h3>Prepared build</h3><ul class="clean-list"><li>Connected upgrade path</li><li>Better trip readiness</li><li>Saved vehicle plan</li><li>Smarter parts research</li></ul></article></div>
-      </section>
-      <section class="home-section" id="home-categories" data-figma-section="home-categories">
-        <div class="section-heading">
-          <p class="eyebrow">Upgrade coverage</p>
-          <h2>RigAI can organize the full build, not just one part category.</h2>
-        </div>
-        <div class="category-grid"><span class="category-pill">Suspension</span><span class="category-pill">Tires and wheels</span><span class="category-pill">Skid plates</span><span class="category-pill">Rock sliders</span><span class="category-pill">Bumpers</span><span class="category-pill">Winches</span><span class="category-pill">Recovery gear</span><span class="category-pill">Lighting</span><span class="category-pill">Cargo systems</span><span class="category-pill">Roof racks</span><span class="category-pill">Overland equipment</span><span class="category-pill">Auxiliary upgrades</span></div>
-      </section>
-      <section class="home-section" id="home-recommendation" data-figma-section="home-recommendation">
-        <div class="section-heading">
-          <p class="eyebrow">Example recommendation</p>
-          <h2>Plain guidance that keeps the next purchase in context.</h2>
-        </div>
-        <article class="result-card result-card-large">
-          <div class="result-header">
-            <span>Vehicle plan</span>
-            <strong>Daily-driven SUV, beginner trail use</strong>
+        <aside class="relationship-card">
+          <p class="eyebrow">System relationship</p>
+          <p>Added bumper and cargo weight can change the suspension recommendation. RigAI maps these relationships before suggesting any single upgrade.</p>
+        </aside>
+      </div>
+      <div class="category-grid"><article class="category-card">
+        <span>SUSP</span>
+        <h3>Suspension</h3>
+        <p>Affects ride height, geometry, and tire fit</p>
+      </article><article class="category-card">
+        <span>TIRE</span>
+        <h3>Tires & Wheels</h3>
+        <p>Affects traction, suspension load, and handling</p>
+      </article><article class="category-card">
+        <span>SKID</span>
+        <h3>Skid Plates</h3>
+        <p>Depends on ride height, weight, and terrain</p>
+      </article><article class="category-card">
+        <span>SLDR</span>
+        <h3>Rock Sliders</h3>
+        <p>Adds vehicle weight and protects body panels</p>
+      </article><article class="category-card">
+        <span>RECV</span>
+        <h3>Recovery Gear</h3>
+        <p>Supports basic trail preparation</p>
+      </article><article class="category-card">
+        <span>WNCH</span>
+        <h3>Winches</h3>
+        <p>Requires compatible bumper, wiring, and use case</p>
+      </article><article class="category-card">
+        <span>BUMP</span>
+        <h3>Bumpers</h3>
+        <p>Can significantly change front suspension load</p>
+      </article><article class="category-card">
+        <span>LITE</span>
+        <h3>Lighting</h3>
+        <p>Depends on bumper, roof, and wiring choices</p>
+      </article><article class="category-card">
+        <span>ROOF</span>
+        <h3>Roof & Cargo</h3>
+        <p>Affects center of mass and payload planning</p>
+      </article><article class="category-card">
+        <span>OVRL</span>
+        <h3>Overland Equipment</h3>
+        <p>Total weight planning should come first</p>
+      </article></div>
+    </section>
+      <section class="home-section recommendation-section" id="home-recommendation" data-figma-section="home-recommendation">
+      <div class="section-heading section-heading--stacked">
+        <p class="eyebrow">Intelligence</p>
+        <h2>Recommendations with reasoning, not just product lists</h2>
+      </div>
+      <div class="recommendation-layout">
+        <article class="recommendation-card">
+          <header>
+            <div>
+              <h3>Toyota 4Runner — Upgrade #1</h3>
+              <p>Example profile · Highest priority for this profile</p>
+            </div>
+            <span class="status-label success">Buy First</span>
+          </header>
+          <div class="recommendation-main">
+            <section>
+              <p class="eyebrow">Upgrade</p>
+              <h4>All-terrain tires</h4>
+              <p>Matched to daily commute and weekend trail use. Size depends on trim and current configuration - verify before purchasing.</p>
+            </section>
+            <section>
+              <p class="eyebrow">Why this helps</p>
+              <p>Improves traction on dirt and wet roads without making daily driving unnecessarily harsh. Delivers the most capability per dollar for this example profile.</p>
+            </section>
           </div>
-          <div class="result-grid">
-            <section><span>Buy first</span><h3>All-terrain tires in a sensible size</h3><p>Traction improves confidence on gravel, dirt, and light mud before heavier upgrades add cost and complexity.</p></section>
-            <section><span>Do not buy yet</span><h3>Delay expensive changes</h3><p>Large lift kit, heavy bumper, and oversized tires until fitment, weight, and real trail needs are clear.</p></section>
-            <section><span>Search for parts</span><h3>Amazon research ideas</h3><p>all-terrain tires, portable air compressor, tire repair kit, recovery boards.</p></section>
-            <section><span>Always verify</span><h3>Fitment before purchasing</h3><p>Check size, compatibility, seller details, installation needs, and local requirements.</p></section>
+          <div class="recommendation-actions">
+            <section class="caution-panel"><strong>Do not buy yet</strong><p>Heavy suspension before finalizing bumper, cargo, and added weight. Alignment depends on final vehicle weight.</p></section>
+            <section class="verify-panel"><strong>Verify first</strong><p>Model year, trim, drivetrain, KDSS system, and any current lift. These change compatible tire sizes.</p></section>
+            <section class="search-panel"><strong>Search compatible parts</strong><p>RigAI can suggest Amazon search ideas, then you check fitment notes, seller details, and load ratings before ordering.</p></section>
           </div>
         </article>
-      </section>
-      <section class="home-section" id="home-app-preview" data-figma-section="home-app-preview">
-        <div class="section-heading">
-          <p class="eyebrow">App preview</p>
-          <h2>Designed around the decisions owners actually need to make.</h2>
-        </div>
-        <div class="app-screen-grid">
-          <article class="phone-preview" aria-label="Vehicle plan: GX 460 weekend trail plan">
-            <span>Vehicle plan</span>
-            <h3>GX 460 weekend trail plan</h3>
-            <p>Daily comfort: keep</p><p>First upgrade: tires</p><p>Next check: weight</p>
-          </article><article class="phone-preview" aria-label="Recommendation: Buy first: traction">
-            <span>Recommendation</span>
-            <h3>Buy first: traction</h3>
-            <p>Why this helps</p><p>Do not buy yet</p><p>Verify fitment</p>
-          </article><article class="phone-preview" aria-label="Trip readiness: Before the trail">
-            <span>Trip readiness</span>
-            <h3>Before the trail</h3>
-            <p>Recovery gear</p><p>Air down tools</p><p>Saved plan</p>
-          </article>
-        </div>
-      </section>
-      <section class="home-section" id="home-vehicles" data-figma-section="home-vehicles">
-        <div class="section-heading">
-          <p class="eyebrow">Supported vehicles</p>
-          <h2>Built for popular SUV and offroad platforms, with more depth planned.</h2>
-        </div>
-        <div class="vehicle-grid">
-          <article class="vehicle-card"><h3>Toyota 4Runner</h3><p>Guide pages are planned. Use the app flow for vehicle-specific planning.</p><span class="status-label">Coming soon</span></article><article class="vehicle-card"><h3>Lexus GX</h3><p>Guide pages are planned. Use the app flow for vehicle-specific planning.</p><span class="status-label">Coming soon</span></article><article class="vehicle-card"><h3>Jeep Wrangler</h3><p>Guide pages are planned. Use the app flow for vehicle-specific planning.</p><span class="status-label">Coming soon</span></article><article class="vehicle-card"><h3>Ford Bronco</h3><p>Guide pages are planned. Use the app flow for vehicle-specific planning.</p><span class="status-label">Coming soon</span></article><article class="vehicle-card"><h3>Nissan Xterra</h3><p>Guide pages are planned. Use the app flow for vehicle-specific planning.</p><span class="status-label">Coming soon</span></article><article class="vehicle-card"><h3>Mid-size and full-size SUVs</h3><p>Guide pages are planned. Use the app flow for vehicle-specific planning.</p><span class="status-label">Coming soon</span></article>
-        </div>
-      </section>
-      <section class="home-section" id="home-guides" data-figma-section="home-guides">
-        <div class="section-heading">
-          <p class="eyebrow">Future guides</p>
-          <h2>Homepage sections are ready to connect with future vehicle and upgrade guides.</h2>
-        </div>
-        <div class="ds-grid"><article class="card"><span class="status-label">Planned guide</span><h3>First offroad upgrades</h3><p>A beginner guide to deciding what to buy first without building a random parts list.</p></article><article class="card"><span class="status-label">Planned guide</span><h3>Tires before lift?</h3><p>A plain-language explanation of why traction often comes before height.</p></article><article class="card"><span class="status-label">Planned guide</span><h3>Trip readiness basics</h3><p>What to check before a weekend trail day or camping route.</p></article></div>
-      </section>
-      <section class="home-section" id="home-trust-safety" data-figma-section="home-trust-safety">
-        <div class="trust-card">
-          <p class="eyebrow">Trust and safety</p>
-          <h2>Helpful planning, not a fitment guarantee.</h2>
-          <ul class="trust-list"><li>Recommendations are informational.</li><li>Always verify fitment before purchasing.</li><li>RigAI does not replace a qualified mechanic, installer, or engineer.</li><li>Amazon is currently the only supported affiliate/search destination.</li></ul>
-        </div>
-      </section>
-      <section class="home-section" id="home-faq" data-figma-section="home-faq">
-        <div class="section-heading">
-          <p class="eyebrow">FAQ</p>
-          <h2>Clear answers before users download.</h2>
-        </div>
-        <div class="faq-list">
-          <details class="faq-item"><summary>Does RigAI guarantee that a part will fit?</summary><p>No. RigAI helps with planning and research, but you must verify fitment, compatibility, seller details, and installation requirements before purchasing.</p></details><details class="faq-item"><summary>Is RigAI only for suspension?</summary><p>No. RigAI can help organize suspension, tires, protection, recovery gear, lighting, cargo, roof racks, overland equipment, and auxiliary upgrades.</p></details><details class="faq-item"><summary>Where do product searches go?</summary><p>For now, RigAI supports Amazon search ideas only. Search links are for research and may be affiliate links.</p></details><details class="faq-item"><summary>Can I use RigAI as a beginner?</summary><p>Yes. The app is designed to explain the first sensible upgrade, why it helps, and what to skip for now in plain language.</p></details>
-        </div>
-      </section>
-      <section class="home-final-cta" id="home-final-cta" data-figma-section="home-final-cta">
-        <div class="card">
-          <p class="eyebrow">Coming soon</p>
-          <h2>Build My Setup starts in the RigAI mobile app.</h2>
-          <p>Google Play availability is not published yet. For now, use the support page for questions and check back for launch updates.</p>
-          <div class="hero-actions">
-            <span class="button primary is-static" aria-disabled="true">Coming soon on Google Play</span>
-            <a class="button secondary" href="/support">Contact support</a>
+        <aside class="side-stack">
+          <section class="context-card">
+            <p class="eyebrow">Vehicle context</p>
+            <span class="mini-label">Example profile</span>
+            <div><span>Make</span><strong>Toyota</strong></div><div><span>Model</span><strong>4Runner</strong></div><div><span>Generation</span><strong>5th Gen</strong></div><div><span>Trim</span><strong>TRD Off-Road</strong></div><div><span>Drivetrain</span><strong>4WD A-TRAC</strong></div><div><span>KDSS</span><strong>Installed</strong></div>
+          </section>
+          <section class="context-card">
+            <p class="eyebrow">Plan progress</p>
+            <div><span>01</span><strong>AT tires</strong><em>now</em></div><div><span>02</span><strong>Recovery points</strong></div><div><span>03</span><strong>Skid plates</strong></div><div><span>04</span><strong>Suspension lift</strong></div><div><span>05</span><strong>Recovery gear</strong></div>
+          </section>
+        </aside>
+      </div>
+    </section>
+      <section class="home-section app-section" id="home-app-preview" data-figma-section="home-app-preview">
+      <div class="section-heading section-heading--center">
+        <p class="eyebrow">Application</p>
+        <h2>Your complete build plan in one app</h2>
+      </div>
+      <div class="app-screen-grid" aria-label="Example app flow">
+        <figure class="phone-preview">
+          <div class="phone-shell">
+            <div class="phone-status"><span>9:41</span><span>RigAI</span></div>
+            <p class="eyebrow">Your vehicle</p>
+            <h3>Toyota 4Runner</h3>
+            <p class="is-selected">Toyota Land Cruiser</p><p class="">Lexus GX 460</p><p class="">Jeep Wrangler</p><p class="">5th Generation · 2010-present</p>
           </div>
+          <figcaption><span>01</span> Select vehicle</figcaption>
+        </figure><figure class="phone-preview">
+          <div class="phone-shell">
+            <div class="phone-status"><span>9:41</span><span>RigAI</span></div>
+            <p class="eyebrow">How you drive</p>
+            <h3>Daily commute</h3>
+            <p class="is-selected">Weekend trails</p><p class="">Overlanding</p><p class="">Heavy rock crawling</p><p class="">Beginner to intermediate</p>
+          </div>
+          <figcaption><span>02</span> Driving profile</figcaption>
+        </figure><figure class="phone-preview">
+          <div class="phone-shell">
+            <div class="phone-status"><span>9:41</span><span>RigAI</span></div>
+            <p class="eyebrow">Build plan</p>
+            <h3>5 items</h3>
+            <p class="is-selected">01 All-terrain tires</p><p class="">02 Recovery points</p><p class="">03 Skid plates</p><p class="">Estimated total: example range</p>
+          </div>
+          <figcaption><span>03</span> Build plan</figcaption>
+        </figure><figure class="phone-preview">
+          <div class="phone-shell">
+            <div class="phone-status"><span>9:41</span><span>RigAI</span></div>
+            <p class="eyebrow">Upgrade detail</p>
+            <h3>All-terrain tires</h3>
+            <p class="is-selected">Best first upgrade for this profile</p><p class="">Do not buy yet</p><p class="">Verify first</p>
+          </div>
+          <figcaption><span>04</span> Upgrade detail</figcaption>
+        </figure>
+      </div>
+    </section>
+      <section class="home-section vehicles-section" id="vehicles" data-figma-section="home-vehicles">
+      <div class="vehicle-section-heading">
+        <div>
+          <p class="eyebrow">Platforms</p>
+          <h2>Built for real off-road platforms</h2>
         </div>
-      </section>
+        <span class="status-label">More vehicles coming</span>
+      </div>
+      <div class="vehicle-grid">
+        <article class="vehicle-card vehicle-card--visual">
+          <div class="vehicle-media" aria-hidden="true" data-variant="1"></div>
+          <h3>Toyota 4Runner</h3>
+          <span class="status-label success">Initial coverage</span>
+        </article><article class="vehicle-card vehicle-card--visual">
+          <div class="vehicle-media" aria-hidden="true" data-variant="2"></div>
+          <h3>Land Cruiser Prado</h3>
+          <span class="status-label">Guide planned</span>
+        </article><article class="vehicle-card vehicle-card--visual">
+          <div class="vehicle-media" aria-hidden="true" data-variant="3"></div>
+          <h3>Land Cruiser 200</h3>
+          <span class="status-label">Guide planned</span>
+        </article><article class="vehicle-card vehicle-card--visual">
+          <div class="vehicle-media" aria-hidden="true" data-variant="4"></div>
+          <h3>Lexus GX</h3>
+          <span class="status-label">Guide planned</span>
+        </article><article class="vehicle-card vehicle-card--visual">
+          <div class="vehicle-media" aria-hidden="true" data-variant="5"></div>
+          <h3>Jeep Wrangler</h3>
+          <span class="status-label">Guide planned</span>
+        </article><article class="vehicle-card vehicle-card--visual">
+          <div class="vehicle-media" aria-hidden="true" data-variant="6"></div>
+          <h3>Ford Bronco</h3>
+          <span class="status-label">Guide planned</span>
+        </article>
+      </div>
+    </section>
+      <section class="home-section guides-section" id="guides" data-figma-section="home-guides">
+      <div class="section-heading section-heading--stacked">
+        <p class="eyebrow">Knowledge</p>
+        <h2>Research before you upgrade</h2>
+        <p>Guides written for SUV owners who want to understand the decisions, not just the products.</p>
+      </div>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <div><span class="status-label">Suspension</span><span class="mini-label">Coming soon</span></div>
+          <h3>Toyota 4Runner Suspension Guide</h3>
+          <p>Factory suspension specs, common upgrade paths, and what to consider before lifting your 5th Gen.</p>
+          <small>Guide in development</small>
+        </article><article class="guide-card">
+          <div><span class="status-label">First upgrades</span><span class="mini-label">Coming soon</span></div>
+          <h3>Best First Upgrades for a 4Runner</h3>
+          <p>The modifications that deliver the most capability per dollar for daily drivers and weekend trail users.</p>
+          <small>Guide in development</small>
+        </article><article class="guide-card">
+          <div><span class="status-label">Lift kits</span><span class="mini-label">Coming soon</span></div>
+          <h3>Lift Kit vs Leveling Kit</h3>
+          <p>Understand the difference and which option matches your use case, budget, and long-term plans.</p>
+          <small>Guide in development</small>
+        </article><article class="guide-card">
+          <div><span class="status-label">Tires</span><span class="mini-label">Coming soon</span></div>
+          <h3>All-Terrain vs Mud-Terrain Tires</h3>
+          <p>A practical comparison for SUV owners who mix highway driving with occasional trail or overland trips.</p>
+          <small>Guide in development</small>
+        </article><article class="guide-card">
+          <div><span class="status-label">Recovery</span><span class="mini-label">Coming soon</span></div>
+          <h3>Recovery Gear for Beginners</h3>
+          <p>What to buy first, what can wait, and why the purchase order of recovery equipment matters.</p>
+          <small>Guide in development</small>
+        </article><article class="guide-card">
+          <div><span class="status-label">KDSS</span><span class="mini-label">Coming soon</span></div>
+          <h3>Understanding KDSS Before a Suspension Upgrade</h3>
+          <p>Toyota's Kinetic Dynamic Suspension System changes what lift kits are compatible with your vehicle.</p>
+          <small>Guide in development</small>
+        </article>
+      </div>
+      <p class="guides-note">Guides become available as RigAI vehicle coverage expands.</p>
+    </section>
+      <section class="home-section trust-section" id="home-trust-safety" data-figma-section="home-trust-safety">
+      <div class="transparency-panel">
+        <div>
+          <p class="eyebrow">Transparency</p>
+          <h2>Better planning starts with honest limitations</h2>
+        </div>
+        <div class="transparency-grid">
+          <section><h3>Informational only</h3><p>Recommendations are informational. They are based on common vehicle configurations and are not professional mechanical advice.</p></section><section><h3>Verify fitment</h3><p>Always verify fitment before purchasing. Trim level, model year, drivetrain, and installed equipment all affect compatibility.</p></section><section><h3>Professional review</h3><p>Safety-related modifications should be reviewed or installed by a qualified mechanic or off-road specialist.</p></section><section><h3>No fitment guarantees</h3><p>RigAI does not guarantee that any specific part will fit your exact vehicle. Use manufacturer fitment data as the final source.</p></section>
+        </div>
+      </div>
+    </section>
+      <section class="home-section faq-section" id="faq" data-figma-section="home-faq">
+      <div class="section-heading section-heading--center">
+        <p class="eyebrow">FAQ</p>
+        <h2>Common questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item"><summary>What does RigAI recommend?</summary><p>RigAI recommends a first upgrade path, what to skip for now, and what to verify before purchasing.</p></details><details class="faq-item"><summary>Is RigAI only for suspension upgrades?</summary><p>No. RigAI can organize suspension, tires, protection, recovery gear, winches, bumpers, lighting, roof cargo, and overland equipment.</p></details><details class="faq-item"><summary>Does RigAI guarantee that a part will fit my vehicle?</summary><p>No. You must verify fitment, compatibility, seller details, and installation requirements before purchasing.</p></details><details class="faq-item"><summary>Can beginners use RigAI?</summary><p>Yes. RigAI uses plain language and explains why an upgrade helps, what to buy first, and what to skip for now.</p></details><details class="faq-item"><summary>Does RigAI consider my budget?</summary><p>Yes. Budget is part of the planning flow, but final prices and availability depend on sellers and selected products.</p></details><details class="faq-item"><summary>How are product links selected?</summary><p>For now, RigAI supports Amazon search ideas only. Some links may be affiliate links, and RigAI may earn from qualifying purchases.</p></details>
+      </div>
+    </section>
+      <section class="home-final-cta" id="download" data-figma-section="home-final-cta">
+      <div>
+        <p class="hero-badge">Ready to build</p>
+        <h2>Build the SUV<br><span>you actually need.</span></h2>
+        <p>Start with your vehicle, terrain and budget. RigAI will help you choose the right upgrades in the right order.</p>
+        <div class="hero-actions">
+          <span class="button primary is-static" aria-disabled="true">Build My Setup</span>
+          <span class="button secondary is-static" aria-disabled="true">Coming soon on Google Play</span>
+        </div>
+      </div>
+      <aside class="final-plan-card">
+        <p class="eyebrow">Your RigAI plan can include</p>
+        <div><strong>5</strong><span>Prioritized upgrade categories</span></div>
+        <div><strong>3</strong><span>Fitment verification checks</span></div>
+        <div><strong>2</strong><span>Items recommended to postpone</span></div>
+        <div><strong>1</strong><span>Connected build strategy</span></div>
+        <p class="example-note">Example output - actual content depends on your vehicle, driving profile and budget.</p>
+      </aside>
+    </section>
     </main>
 
     <footer class="footer">
-      <p class="footer-disclosure">As an Amazon Associate, RigAI earns from qualifying purchases.</p>
-      <div class="footer-links">
-        <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
-        <a href="/affiliate-disclosure">Affiliate Disclosure</a>
-        <a href="/contact">Contact</a>
-        <a href="/support">Support</a>
-        <a href="/about">About</a>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a class="brand" href="/">
+            <span class="brand-word">Rig<span>AI</span></span>
+          </a>
+          <p>Personalized off-road build planning for SUV owners. The right upgrades in the right order.</p>
+        </div>
+        <nav class="footer-column" aria-label="Product links">
+          <h2>Product</h2>
+          <a href="/#how-it-works">How It Works</a>
+          <a href="/#vehicles">Vehicles</a>
+          <a href="/#guides">Guides</a>
+          <a href="/about">About</a>
+        </nav>
+        <nav class="footer-column" aria-label="Support links">
+          <h2>Support</h2>
+          <a href="/support">Support</a>
+          <a href="/contact">Contact</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </nav>
+        <nav class="footer-column" aria-label="Legal links">
+          <h2>Legal</h2>
+          <a href="/affiliate-disclosure">Affiliate Disclosure</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 RigAI. For informational purposes only.</p>
+        <div class="footer-bottom-actions">
+          <p>Not professional mechanical advice.</p>
+          <span class="language-label" aria-label="English content">EN</span>
+          <span class="language-label is-muted" aria-label="Russian legal translations available on legal pages">RU</span>
+        </div>
       </div>
     </footer>
 

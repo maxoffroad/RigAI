@@ -1,197 +1,308 @@
 import {
   appScreens,
+  buildOutcome,
   categories,
   faqs,
   guides,
+  planProgress,
   problemCards,
   recommendation,
-  safetyItems,
   steps,
-  transformationStages,
-  trustItems,
+  transparencyItems,
+  vehicleContext,
   vehicles
 } from "../../content/home.js";
 
-function listItems(items) {
-  return items.map((item) => `<li>${item}</li>`).join("");
-}
-
-function cardGrid(items, className, renderItem) {
-  return `<div class="${className}">${items.map(renderItem).join("")}</div>`;
+function listItems(items, className = "clean-list") {
+  return `<ul class="${className}">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
 }
 
 function hero() {
+  const planRows = [
+    ["01", "All-terrain tires", "~$700-900"],
+    ["02", "Recovery points", "~$150-250"],
+    ["03", "Skid plate system", "~$350-500"],
+    ["04", "Suspension lift", "~$800-1,200"],
+    ["05", "Recovery equipment", "~$250-400"]
+  ];
+
   return `<section class="home-hero" id="home-hero" data-figma-section="home-hero">
-        <div class="home-hero-copy">
-          <p class="hero-badge">AI Off-Road Setup Assistant</p>
-          <h1>Build the right upgrade plan for your SUV</h1>
-          <p class="hero-copy">
-            RigAI turns your vehicle, driving style, budget, and experience level into a clear upgrade order:
-            what to buy first, what to skip for now, and what to verify before purchasing.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#home-final-cta">Build My Setup</a>
-            <a class="button secondary" href="#home-build-result">See example result</a>
-          </div>
-          <p class="home-cta-note">Coming soon on Google Play. Web configurator is not available yet.</p>
+      <div class="home-hero-copy">
+        <p class="hero-badge">Off-Road Build Planner</p>
+        <h1>Your SUV.<br>Your terrain.<br><span>The right build.</span></h1>
+        <p class="hero-copy">RigAI creates a personalized off-road upgrade plan based on your vehicle, driving goals, terrain and budget.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#download">Build My Setup</a>
+          <a class="button secondary" href="#example-build">See an Example Build</a>
         </div>
-        <aside class="home-hero-visual" aria-label="RigAI result preview">
-          <div class="vehicle-stage" aria-hidden="true">
-            <div class="vehicle-silhouette">
-              <span class="wheel wheel-front"></span>
-              <span class="wheel wheel-rear"></span>
+      </div>
+      <aside class="home-hero-visual" aria-label="Example RigAI plan preview">
+        <figure class="media-frame media-frame--hero media-position--center">
+          <img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800" alt="Modified off-road SUV on a forest trail" fetchpriority="high" />
+        </figure>
+        <article class="hero-plan-card">
+          <div class="result-header-row">
+            <div>
+              <h2>Toyota 4Runner</h2>
+              <p>Daily + Weekend Trails · ~$3,000</p>
             </div>
+            <span class="status-label">Example plan</span>
           </div>
-          <div class="result-panel">
-            <span class="status-label success">Prepared plan</span>
-            <h2>Weekend trail SUV</h2>
-            <div class="result-row"><span>Buy first</span><strong>All-terrain tires</strong></div>
-            <div class="result-row"><span>Skip for now</span><strong>Large lift kit</strong></div>
-            <div class="result-row"><span>Verify</span><strong>Fitment before purchase</strong></div>
-          </div>
-        </aside>
-      </section>`;
+          <ol class="plan-list">
+            ${planRows.map(([number, label, price]) => `<li><span>${number}</span><strong>${label}</strong><em>${price}</em></li>`).join("")}
+          </ol>
+          <p class="example-note">Example only - prices and recommendations vary by vehicle, where you shop and selected products.</p>
+        </article>
+      </aside>
+    </section>`;
 }
 
 function trustStrip() {
   return `<section class="home-trust-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
-        ${trustItems.map((item) => `<span>${item}</span>`).join("")}
-      </section>`;
+      <span>Prioritized upgrade order</span>
+      <span>Plain beginner explanations</span>
+      <span>Fitment reminders before purchase</span>
+      <span>Amazon search only for now</span>
+    </section>`;
 }
 
 function problem() {
-  return `<section class="home-section" id="home-problem" data-figma-section="home-problem">
-        <div class="section-heading">
-          <p class="eyebrow">The problem</p>
-          <h2>Offroad upgrades are connected. Most advice treats them like separate parts.</h2>
-        </div>
-        ${cardGrid(problemCards, "ds-grid", (item) => `<article class="card"><h3>${item.title}</h3><p>${item.text}</p></article>`)}
-      </section>`;
+  return `<section class="home-section problem-section" id="home-problem" data-figma-section="home-problem">
+      <div class="section-heading section-heading--stacked">
+        <p class="eyebrow">The problem</p>
+        <h2>Off-road upgrades should work together</h2>
+        <p>Most advice starts with individual parts. RigAI starts with your vehicle, how you drive and what you actually need.</p>
+      </div>
+      <div class="problem-grid">
+        ${problemCards.map((item) => `<article class="problem-card">
+          <div class="problem-card-top"><span class="problem-number">${item.number}</span><span class="mini-label">${item.label}</span></div>
+          <h3>${item.title}</h3>
+          <p>${item.text}</p>
+        </article>`).join("")}
+      </div>
+      <p class="section-callout"><strong>RigAI takes a different approach.</strong> Instead of listing products, it builds one connected plan that accounts for dependencies, budget constraints, and the upgrade sequence that actually makes sense for your vehicle and how you drive it.</p>
+    </section>`;
 }
 
 function howItWorks() {
-  return `<section class="home-section" id="home-how-it-works" data-figma-section="home-how-it-works">
-        <div class="section-heading">
-          <p class="eyebrow">How RigAI works</p>
-          <h2>From scattered ideas to a prioritized vehicle plan.</h2>
-        </div>
-        ${cardGrid(steps, "ds-grid", (step) => `<article class="card step-card"><span class="icon">${step.label}</span><h3>${step.title}</h3><p>${step.text}</p></article>`)}
-      </section>`;
+  return `<section class="home-section process-section" id="how-it-works" data-figma-section="home-how-it-works">
+      <div class="section-heading section-heading--center">
+        <p class="eyebrow">Process</p>
+        <h2>From your SUV to a complete build plan</h2>
+      </div>
+      <div class="process-track" aria-hidden="true">${steps.map((step) => `<span>${step.number}</span>`).join("")}</div>
+      <div class="process-grid">
+        ${steps.map((step, index) => `<article class="process-card${index === steps.length - 1 ? " is-active" : ""}">
+          <span class="step-icon" aria-hidden="true">${step.number}</span>
+          <h3>${step.title}</h3>
+          <p>${step.text}</p>
+          ${index === steps.length - 1 ? `<div class="mini-plan"><span>01 AT tires · Priority</span><span>02 Recovery pts.</span><span>03 Skid plates</span><small>+ additional categories</small></div>` : ""}
+        </article>`).join("")}
+      </div>
+    </section>`;
 }
 
 function buildResult() {
-  return `<section class="home-section" id="home-build-result" data-figma-section="home-build-result">
-        <div class="section-heading">
-          <p class="eyebrow">Build transformation</p>
-          <h2>The main result is not a part. It is the right order.</h2>
+  return `<section class="home-section build-result-section" id="example-build" data-figma-section="home-build-result">
+      <div class="build-result-layout">
+        <div>
+          <p class="eyebrow">Build result</p>
+          <h2>See the build before you start buying</h2>
+          <p class="section-lede">Toyota 4Runner 5th Gen - daily driver, family travel and weekend mountain trails. Moderate budget. No heavy rock crawling.</p>
+          <div class="segmented-labels" aria-label="Example setup state">
+            <span>Current Setup</span>
+            <span>RigAI Plan</span>
+            <span class="is-active">Target Setup</span>
+          </div>
+          <figure class="media-frame media-frame--build media-position--bottom">
+            <img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800" alt="Modified off-road SUV on a forest trail" loading="lazy" />
+            <figcaption>Target Setup</figcaption>
+          </figure>
         </div>
-        ${cardGrid(transformationStages, "transformation-grid", (stage) => `<article class="card"><h3>${stage.title}</h3><ul class="clean-list">${listItems(stage.items)}</ul></article>`)}
-      </section>`;
+        <aside class="outcome-card">
+          <h3>Toyota 4Runner 5th Gen</h3>
+          <p>Daily · Family · Weekend Trails</p>
+          ${listItems(buildOutcome, "outcome-list")}
+          <div class="outcome-note">
+            <p class="eyebrow">Expected build outcome</p>
+            <p>Actual outcome depends on the exact vehicle, selected parts, installation and driving conditions.</p>
+          </div>
+        </aside>
+      </div>
+    </section>`;
 }
 
 function categoriesSection() {
-  return `<section class="home-section" id="home-categories" data-figma-section="home-categories">
-        <div class="section-heading">
-          <p class="eyebrow">Upgrade coverage</p>
-          <h2>RigAI can organize the full build, not just one part category.</h2>
+  return `<section class="home-section coverage-section" id="home-categories" data-figma-section="home-categories">
+      <div class="coverage-heading">
+        <div>
+          <p class="eyebrow">Coverage</p>
+          <h2>One plan across the complete vehicle</h2>
         </div>
-        <div class="category-grid">${categories.map((category) => `<span class="category-pill">${category}</span>`).join("")}</div>
-      </section>`;
+        <aside class="relationship-card">
+          <p class="eyebrow">System relationship</p>
+          <p>Added bumper and cargo weight can change the suspension recommendation. RigAI maps these relationships before suggesting any single upgrade.</p>
+        </aside>
+      </div>
+      <div class="category-grid">${categories.map((category) => `<article class="category-card">
+        <span>${category.code}</span>
+        <h3>${category.title}</h3>
+        <p>${category.text}</p>
+      </article>`).join("")}</div>
+    </section>`;
 }
 
 function recommendationExample() {
-  return `<section class="home-section" id="home-recommendation" data-figma-section="home-recommendation">
-        <div class="section-heading">
-          <p class="eyebrow">Example recommendation</p>
-          <h2>Plain guidance that keeps the next purchase in context.</h2>
-        </div>
-        <article class="result-card result-card-large">
-          <div class="result-header">
-            <span>Vehicle plan</span>
-            <strong>${recommendation.vehicle}</strong>
+  return `<section class="home-section recommendation-section" id="home-recommendation" data-figma-section="home-recommendation">
+      <div class="section-heading section-heading--stacked">
+        <p class="eyebrow">Intelligence</p>
+        <h2>Recommendations with reasoning, not just product lists</h2>
+      </div>
+      <div class="recommendation-layout">
+        <article class="recommendation-card">
+          <header>
+            <div>
+              <h3>${recommendation.vehicle}</h3>
+              <p>${recommendation.profile} · ${recommendation.priority}</p>
+            </div>
+            <span class="status-label success">Buy First</span>
+          </header>
+          <div class="recommendation-main">
+            <section>
+              <p class="eyebrow">Upgrade</p>
+              <h4>${recommendation.buyFirst}</h4>
+              <p>Matched to daily commute and weekend trail use. Size depends on trim and current configuration - verify before purchasing.</p>
+            </section>
+            <section>
+              <p class="eyebrow">Why this helps</p>
+              <p>${recommendation.why}</p>
+            </section>
           </div>
-          <div class="result-grid">
-            <section><span>Buy first</span><h3>${recommendation.buyFirst}</h3><p>${recommendation.why}</p></section>
-            <section><span>Do not buy yet</span><h3>Delay expensive changes</h3><p>${recommendation.skip}</p></section>
-            <section><span>Search for parts</span><h3>Amazon research ideas</h3><p>${recommendation.search.join(", ")}.</p></section>
-            <section><span>Always verify</span><h3>Fitment before purchasing</h3><p>Check size, compatibility, seller details, installation needs, and local requirements.</p></section>
+          <div class="recommendation-actions">
+            <section class="caution-panel"><strong>Do not buy yet</strong><p>${recommendation.skip}</p></section>
+            <section class="verify-panel"><strong>Verify first</strong><p>${recommendation.verify}</p></section>
+            <section class="search-panel"><strong>Search compatible parts</strong><p>${recommendation.search}</p></section>
           </div>
         </article>
-      </section>`;
+        <aside class="side-stack">
+          <section class="context-card">
+            <p class="eyebrow">Vehicle context</p>
+            <span class="mini-label">Example profile</span>
+            ${vehicleContext.map(([key, value]) => `<div><span>${key}</span><strong>${value}</strong></div>`).join("")}
+          </section>
+          <section class="context-card">
+            <p class="eyebrow">Plan progress</p>
+            ${planProgress.map(([number, label, status]) => `<div><span>${number}</span><strong>${label}</strong>${status ? `<em>${status}</em>` : ""}</div>`).join("")}
+          </section>
+        </aside>
+      </div>
+    </section>`;
 }
 
 function appPreview() {
-  return `<section class="home-section" id="home-app-preview" data-figma-section="home-app-preview">
-        <div class="section-heading">
-          <p class="eyebrow">App preview</p>
-          <h2>Designed around the decisions owners actually need to make.</h2>
-        </div>
-        <div class="app-screen-grid">
-          ${appScreens.map((screen) => `<article class="phone-preview" aria-label="${screen.eyebrow}: ${screen.title}">
-            <span>${screen.eyebrow}</span>
+  return `<section class="home-section app-section" id="home-app-preview" data-figma-section="home-app-preview">
+      <div class="section-heading section-heading--center">
+        <p class="eyebrow">Application</p>
+        <h2>Your complete build plan in one app</h2>
+      </div>
+      <div class="app-screen-grid" aria-label="Example app flow">
+        ${appScreens.map((screen) => `<figure class="phone-preview">
+          <div class="phone-shell">
+            <div class="phone-status"><span>9:41</span><span>RigAI</span></div>
+            <p class="eyebrow">${screen.eyebrow}</p>
             <h3>${screen.title}</h3>
-            ${screen.lines.map((line) => `<p>${line}</p>`).join("")}
-          </article>`).join("")}
-        </div>
-      </section>`;
+            ${screen.lines.map((line, index) => `<p class="${index === 0 ? "is-selected" : ""}">${line}</p>`).join("")}
+          </div>
+          <figcaption><span>${screen.number}</span> ${screen.label}</figcaption>
+        </figure>`).join("")}
+      </div>
+    </section>`;
 }
 
 function supportedVehicles() {
-  return `<section class="home-section" id="home-vehicles" data-figma-section="home-vehicles">
-        <div class="section-heading">
-          <p class="eyebrow">Supported vehicles</p>
-          <h2>Built for popular SUV and offroad platforms, with more depth planned.</h2>
+  return `<section class="home-section vehicles-section" id="vehicles" data-figma-section="home-vehicles">
+      <div class="vehicle-section-heading">
+        <div>
+          <p class="eyebrow">Platforms</p>
+          <h2>Built for real off-road platforms</h2>
         </div>
-        <div class="vehicle-grid">
-          ${vehicles.map((vehicle) => `<article class="vehicle-card"><h3>${vehicle}</h3><p>Guide pages are planned. Use the app flow for vehicle-specific planning.</p><span class="status-label">Coming soon</span></article>`).join("")}
-        </div>
-      </section>`;
+        <span class="status-label">More vehicles coming</span>
+      </div>
+      <div class="vehicle-grid">
+        ${vehicles.map(([name, status], index) => `<article class="vehicle-card vehicle-card--visual">
+          <div class="vehicle-media" aria-hidden="true" data-variant="${index + 1}"></div>
+          <h3>${name}</h3>
+          <span class="status-label${index === 0 ? " success" : ""}">${status}</span>
+        </article>`).join("")}
+      </div>
+    </section>`;
 }
 
 function guidesPreview() {
-  return `<section class="home-section" id="home-guides" data-figma-section="home-guides">
-        <div class="section-heading">
-          <p class="eyebrow">Future guides</p>
-          <h2>Homepage sections are ready to connect with future vehicle and upgrade guides.</h2>
-        </div>
-        ${cardGrid(guides, "ds-grid", (guide) => `<article class="card"><span class="status-label">Planned guide</span><h3>${guide.title}</h3><p>${guide.text}</p></article>`)}
-      </section>`;
+  return `<section class="home-section guides-section" id="guides" data-figma-section="home-guides">
+      <div class="section-heading section-heading--stacked">
+        <p class="eyebrow">Knowledge</p>
+        <h2>Research before you upgrade</h2>
+        <p>Guides written for SUV owners who want to understand the decisions, not just the products.</p>
+      </div>
+      <div class="guide-grid">
+        ${guides.map(([category, title, text]) => `<article class="guide-card">
+          <div><span class="status-label">${category}</span><span class="mini-label">Coming soon</span></div>
+          <h3>${title}</h3>
+          <p>${text}</p>
+          <small>Guide in development</small>
+        </article>`).join("")}
+      </div>
+      <p class="guides-note">Guides become available as RigAI vehicle coverage expands.</p>
+    </section>`;
 }
 
 function trustSafety() {
-  return `<section class="home-section" id="home-trust-safety" data-figma-section="home-trust-safety">
-        <div class="trust-card">
-          <p class="eyebrow">Trust and safety</p>
-          <h2>Helpful planning, not a fitment guarantee.</h2>
-          <ul class="trust-list">${listItems(safetyItems)}</ul>
+  return `<section class="home-section trust-section" id="home-trust-safety" data-figma-section="home-trust-safety">
+      <div class="transparency-panel">
+        <div>
+          <p class="eyebrow">Transparency</p>
+          <h2>Better planning starts with honest limitations</h2>
         </div>
-      </section>`;
+        <div class="transparency-grid">
+          ${transparencyItems.map(([title, text]) => `<section><h3>${title}</h3><p>${text}</p></section>`).join("")}
+        </div>
+      </div>
+    </section>`;
 }
 
 function faq() {
-  return `<section class="home-section" id="home-faq" data-figma-section="home-faq">
-        <div class="section-heading">
-          <p class="eyebrow">FAQ</p>
-          <h2>Clear answers before users download.</h2>
-        </div>
-        <div class="faq-list">
-          ${faqs.map((item) => `<details class="faq-item"><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}
-        </div>
-      </section>`;
+  return `<section class="home-section faq-section" id="faq" data-figma-section="home-faq">
+      <div class="section-heading section-heading--center">
+        <p class="eyebrow">FAQ</p>
+        <h2>Common questions</h2>
+      </div>
+      <div class="faq-list">
+        ${faqs.map((item) => `<details class="faq-item"><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}
+      </div>
+    </section>`;
 }
 
 function finalCta() {
-  return `<section class="home-final-cta" id="home-final-cta" data-figma-section="home-final-cta">
-        <div class="card">
-          <p class="eyebrow">Coming soon</p>
-          <h2>Build My Setup starts in the RigAI mobile app.</h2>
-          <p>Google Play availability is not published yet. For now, use the support page for questions and check back for launch updates.</p>
-          <div class="hero-actions">
-            <span class="button primary is-static" aria-disabled="true">Coming soon on Google Play</span>
-            <a class="button secondary" href="/support">Contact support</a>
-          </div>
+  return `<section class="home-final-cta" id="download" data-figma-section="home-final-cta">
+      <div>
+        <p class="hero-badge">Ready to build</p>
+        <h2>Build the SUV<br><span>you actually need.</span></h2>
+        <p>Start with your vehicle, terrain and budget. RigAI will help you choose the right upgrades in the right order.</p>
+        <div class="hero-actions">
+          <span class="button primary is-static" aria-disabled="true">Build My Setup</span>
+          <span class="button secondary is-static" aria-disabled="true">Coming soon on Google Play</span>
         </div>
-      </section>`;
+      </div>
+      <aside class="final-plan-card">
+        <p class="eyebrow">Your RigAI plan can include</p>
+        <div><strong>5</strong><span>Prioritized upgrade categories</span></div>
+        <div><strong>3</strong><span>Fitment verification checks</span></div>
+        <div><strong>2</strong><span>Items recommended to postpone</span></div>
+        <div><strong>1</strong><span>Connected build strategy</span></div>
+        <p class="example-note">Example output - actual content depends on your vehicle, driving profile and budget.</p>
+      </aside>
+    </section>`;
 }
 
 export function renderHomePage() {

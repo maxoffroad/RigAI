@@ -21,11 +21,12 @@ function renderHeader(page) {
   const classes = isHome ? "site-header" : "site-header compact";
   const dataHeader = isHome ? " data-header" : "";
   const navId = `nav-${page.key}`;
+  const ctaHref = isHome ? "#download" : "/";
+  const ctaLabel = isHome ? "Build My Setup" : "Home";
 
   return `<header class="${classes}"${dataHeader}>
       <a class="brand" href="/">
-        <span class="brand-mark">R</span>
-        <span>RigAI</span>
+        <span class="brand-word">Rig<span>AI</span></span>
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="${navId}" data-nav-toggle>
         <span class="nav-toggle-line" aria-hidden="true"></span>
@@ -36,14 +37,46 @@ function renderHeader(page) {
       <nav class="nav" id="${navId}" aria-label="Main navigation" data-nav>
         ${renderLinks(page.nav)}
       </nav>
+      <a class="header-cta" href="${ctaHref}">${ctaLabel}</a>
     </header>`;
 }
 
 function renderFooter(page) {
+  const currentYear = new Date().getFullYear();
   return `<footer class="footer">
-      <p class="footer-disclosure">As an Amazon Associate, RigAI earns from qualifying purchases.</p>
-      <div class="footer-links">
-        ${renderLinks(page.footerLinks)}
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a class="brand" href="/">
+            <span class="brand-word">Rig<span>AI</span></span>
+          </a>
+          <p>Personalized off-road build planning for SUV owners. The right upgrades in the right order.</p>
+        </div>
+        <nav class="footer-column" aria-label="Product links">
+          <h2>Product</h2>
+          <a href="/#how-it-works">How It Works</a>
+          <a href="/#vehicles">Vehicles</a>
+          <a href="/#guides">Guides</a>
+          <a href="/about">About</a>
+        </nav>
+        <nav class="footer-column" aria-label="Support links">
+          <h2>Support</h2>
+          <a href="/support">Support</a>
+          <a href="/contact">Contact</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </nav>
+        <nav class="footer-column" aria-label="Legal links">
+          <h2>Legal</h2>
+          <a href="/affiliate-disclosure">Affiliate Disclosure</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>© ${currentYear} RigAI. For informational purposes only.</p>
+        <div class="footer-bottom-actions">
+          <p>Not professional mechanical advice.</p>
+          <span class="language-label" aria-label="English content">EN</span>
+          <span class="language-label is-muted" aria-label="Russian legal translations available on legal pages">RU</span>
+        </div>
       </div>
     </footer>`;
 }
@@ -121,7 +154,7 @@ function renderHead(page) {
     `<title>${escapeHtml(page.title)}</title>`,
     '<link rel="preconnect" href="https://fonts.googleapis.com" />',
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />',
-    '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />',
+    '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />',
     '<link rel="stylesheet" href="/src/styles.css?v=launch-1" />',
     page.structuredData ? renderStructuredData() : ""
   ].filter(Boolean);

@@ -27,10 +27,9 @@ const footerLinks = [
 ];
 
 const homeNav = [
-  { label: "How It Works", href: "#home-how-it-works" },
-  { label: "Results", href: "#home-build-result" },
-  { label: "Vehicles", href: "#home-vehicles" },
-  { label: "Guides", href: "#home-guides" },
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Vehicles", href: "#vehicles" },
+  { label: "Guides", href: "#guides" },
   { label: "About", href: "/about" }
 ];
 

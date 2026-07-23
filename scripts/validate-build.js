@@ -178,26 +178,43 @@ const requiredHomeSections = [
   "home-hero",
   "home-trust-strip",
   "home-problem",
-  "home-how-it-works",
-  "home-build-result",
+  "how-it-works",
+  "example-build",
   "home-categories",
   "home-recommendation",
   "home-app-preview",
-  "home-vehicles",
-  "home-guides",
+  "vehicles",
+  "guides",
   "home-trust-safety",
-  "home-faq",
-  "home-final-cta"
+  "faq",
+  "download"
 ];
+
+const figmaSectionById = {
+  "home-hero": "home-hero",
+  "home-trust-strip": "home-trust-strip",
+  "home-problem": "home-problem",
+  "how-it-works": "home-how-it-works",
+  "example-build": "home-build-result",
+  "home-categories": "home-categories",
+  "home-recommendation": "home-recommendation",
+  "home-app-preview": "home-app-preview",
+  vehicles: "home-vehicles",
+  guides: "home-guides",
+  "home-trust-safety": "home-trust-safety",
+  faq: "home-faq",
+  download: "home-final-cta"
+};
 
 for (const id of requiredHomeSections) {
   requireIncludes(homeHtml, `id="${id}"`, "dist/index.html");
-  requireIncludes(homeHtml, `data-figma-section="${id}"`, "dist/index.html");
+  requireIncludes(homeHtml, `data-figma-section="${figmaSectionById[id]}"`, "dist/index.html");
 }
 
 for (const expected of [
   "Build My Setup",
-  "Build the right upgrade plan for your SUV",
+  "Your SUV.",
+  "The right build.",
   "Toyota 4Runner",
   "Lexus GX",
   "Jeep Wrangler",
@@ -209,13 +226,35 @@ for (const expected of [
   requireIncludes(homeHtml, expected, "dist/index.html");
 }
 
-for (const forbidden of ["/vehicles/", "/guides/", "href=\"#\"", "Google Play Store", "play.google.com"]) {
+for (const forbidden of ["/vehicles/", "/guides/", "href=\"#\"", "Google Play Store", "play.google.com", "© 2024", "localhost", "example.com"]) {
   if (homeHtml.includes(forbidden)) {
     errors.push(`Homepage contains forbidden or unavailable destination: ${forbidden}`);
   }
 }
 
-requireIncludes(homeHtml, '<a class="button primary" href="#home-final-cta">Build My Setup</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a class="button primary" href="#download">Build My Setup</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a href="#how-it-works">How It Works</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a href="#vehicles">Vehicles</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a href="#guides">Guides</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a href="/about">About</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a class="button secondary" href="#example-build">See an Example Build</a>', "dist/index.html");
+requireIncludes(homeHtml, '<img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800"', "dist/index.html");
+requireIncludes(homeHtml, 'loading="lazy"', "dist/index.html");
+requireIncludes(homeHtml, "Example only - prices and recommendations vary", "dist/index.html");
+requireIncludes(homeHtml, "Example output - actual content depends", "dist/index.html");
+requireIncludes(homeHtml, "Guide in development", "dist/index.html");
+requireIncludes(homeHtml, "Guide planned", "dist/index.html");
+
+for (const asset of [...homeHtml.matchAll(/<(?:img|source)[^>]+(?:src|srcset)="([^"]+)"/g)]) {
+  const assetPath = asset[1].split(" ")[0];
+  if (assetPath.startsWith("/") && !assetPath.startsWith("//")) {
+    requireFile(assetPath.slice(1));
+  }
+}
+
+if (homeHtml.includes("Can I save more than one vehicle plan?")) {
+  errors.push("Homepage includes the multiple saved plans FAQ without a confirmed feature flag.");
+}
 
 const jsonLdMatches = [...homeHtml.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
 
