@@ -342,7 +342,7 @@ requireIncludes(homeHtml, '<a href="/about">About</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a class="button secondary" href="#example-build">See an Example Build</a>', "dist/index.html");
 requireIncludes(homeHtml, '<img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800"', "dist/index.html");
 requireIncludes(homeHtml, 'loading="lazy"', "dist/index.html");
-requireIncludes(homeHtml, "Example only - prices and recommendations vary", "dist/index.html");
+requireIncludes(homeHtml, "Example only &mdash; recommendations and estimated costs vary", "dist/index.html");
 requireIncludes(homeHtml, "Example output - actual content depends", "dist/index.html");
 requireIncludes(homeHtml, "Read guide", "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner"', "dist/index.html");

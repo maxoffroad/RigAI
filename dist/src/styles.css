@@ -1384,6 +1384,8 @@ h3 {
 .result-header-row {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 11px;
 }
@@ -1399,6 +1401,23 @@ h3 {
   color: var(--muted);
   font-size: 0.72rem;
   line-height: 1.45;
+}
+
+.result-header-row .hero-plan-budget {
+  margin-top: 2px;
+  color: #c9c4d4;
+}
+
+.hero-example-label {
+  flex: 0 0 auto;
+  border: 1px solid rgba(249, 115, 22, 0.45);
+  border-radius: 3px;
+  padding: 4px 7px;
+  color: #f5a05f;
+  background: rgba(12, 12, 12, 0.5);
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .plan-list {
@@ -1451,21 +1470,38 @@ h3 {
   box-shadow: none;
 }
 
-.home-trust-strip span {
+.trust-point {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   min-height: 58px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-left-width: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 0;
   padding: 13px 16px;
   color: var(--color-text-secondary);
-  background: rgba(255, 255, 255, 0.018);
   font-size: 0.82rem;
   line-height: 1.35;
   text-align: left;
 }
 
-.home-trust-strip span:first-child {
-  border-left-width: 1px;
+.trust-point + .trust-point {
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.home-trust-strip .trust-point > span {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.trust-check {
+  flex: 0 0 auto;
+  color: var(--orange);
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .home-section {
@@ -1588,7 +1624,7 @@ h3 {
 
 .process-grid::before {
   position: absolute;
-  top: 42px;
+  top: 41px;
   right: 8%;
   left: 8%;
   height: 1px;
@@ -1607,20 +1643,20 @@ h3 {
 }
 
 .step-icon {
-  display: inline-grid;
-  width: 36px;
-  height: 36px;
+  position: relative;
+  display: inline-block;
   z-index: 1;
-  margin-bottom: 20px;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  color: var(--muted-strong);
+  margin-bottom: 18px;
+  padding-right: 10px;
+  color: var(--orange);
   background: #1c1d21;
+  font-family: var(--font-family-mono);
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .process-card.is-active .step-icon {
-  border-color: var(--orange);
   color: var(--orange);
 }
 
@@ -1634,8 +1670,29 @@ h3 {
   font-size: 0.78rem;
 }
 
-.mini-plan span::before {
+.mini-plan strong {
+  color: var(--text);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.mini-plan span {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 5px;
+}
+
+.mini-plan b {
   color: var(--orange);
+  font-family: var(--font-family-mono);
+  font-size: 0.7rem;
+}
+
+.mini-plan small {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  color: var(--muted);
+  line-height: 1.4;
 }
 
 .build-result-layout,
@@ -1854,8 +1911,15 @@ h3 {
 }
 
 .vehicle-section-heading {
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 760px);
   margin-bottom: 28px;
+}
+
+.vehicle-section-heading p:not(.eyebrow) {
+  max-width: 680px;
+  margin: 12px 0 0;
+  color: #c9c4d4;
+  line-height: 1.6;
 }
 
 .vehicle-grid {
@@ -1917,7 +1981,12 @@ h3 {
 
 .vehicle-card--visual:not(.is-published) {
   color: var(--color-text-secondary);
-  opacity: 0.82;
+  opacity: 0.76;
+}
+
+.vehicle-card--visual.is-published {
+  border-color: rgba(124, 204, 132, 0.38);
+  background-color: rgba(31, 44, 34, 0.34);
 }
 
 .vehicle-card--visual h3,
@@ -2142,6 +2211,20 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .home-trust-strip,
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .process-grid::before {
+    display: none;
+  }
+
+  .process-card + .process-card {
+    border-left-width: 1px;
+  }
+
   .category-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2193,10 +2276,14 @@ h3 {
     gap: 8px;
   }
 
-  .home-trust-strip span,
-  .home-trust-strip span:first-child {
+  .trust-point {
     min-height: 48px;
-    border-left-width: 1px;
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .trust-point + .trust-point {
+    border-left: 0;
   }
 
   .process-grid {
@@ -2205,6 +2292,7 @@ h3 {
   }
 
   .process-grid::before {
+    display: block;
     top: 20px;
     right: auto;
     bottom: 20px;

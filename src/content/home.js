@@ -24,22 +24,22 @@ export const problemCards = [
 
 export const steps = [
   {
-    number: "1",
+    number: "01",
     title: "Choose your vehicle",
     text: "Select make, model, generation, trim, and current configuration."
   },
   {
-    number: "2",
+    number: "02",
     title: "Describe how you drive",
     text: "Daily use, highways, trails, overlanding, terrain type, and experience level shape the recommendation."
   },
   {
-    number: "3",
+    number: "03",
     title: "Set your priorities",
     text: "Budget, comfort, capability, appearance, and future plans are weighed against your real needs."
   },
   {
-    number: "4",
+    number: "04",
     title: "Get the right build order",
     text: "Receive a prioritized plan with clear reasoning, dependency notes, and items to postpone."
   }
@@ -130,12 +130,12 @@ export const appScreens = [
 ];
 
 export const vehicles = [
-  { name: "Toyota 4Runner", status: "Initial coverage", href: "/vehicles/toyota-4runner" },
-  { name: "Land Cruiser Prado", status: "Guide planned" },
-  { name: "Land Cruiser 200", status: "Guide planned" },
-  { name: "Lexus GX", status: "Guide planned" },
-  { name: "Jeep Wrangler", status: "Guide planned" },
-  { name: "Ford Bronco", status: "Guide planned" }
+  { name: "Toyota 4Runner", status: "Available now", href: "/vehicles/toyota-4runner" },
+  { name: "Land Cruiser Prado", status: "Future coverage" },
+  { name: "Land Cruiser 200", status: "Future coverage" },
+  { name: "Lexus GX", status: "Future coverage" },
+  { name: "Jeep Wrangler", status: "Future coverage" },
+  { name: "Ford Bronco", status: "Future coverage" }
 ];
 
 const suspensionPage = getToyota4RunnerPage("toyota-4runner-suspension");

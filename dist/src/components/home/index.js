@@ -44,14 +44,15 @@ function hero() {
           <div class="result-header-row">
             <div>
               <h2>Toyota 4Runner</h2>
-              <p>Daily + Weekend Trails · ~$3,000</p>
+              <p>Daily + Weekend Trails</p>
+              <p class="hero-plan-budget">Approx. budget: $3,000</p>
             </div>
-            <span class="status-label">Example plan</span>
+            <span class="hero-example-label">EXAMPLE PLAN</span>
           </div>
           <ol class="plan-list">
             ${planRows.map(([number, label, price]) => `<li><span>${number}</span><strong>${label}</strong><em>${price}</em></li>`).join("")}
           </ol>
-          <p class="example-note">Example only - prices and recommendations vary by vehicle, where you shop and selected products.</p>
+          <p class="example-note">Example only &mdash; recommendations and estimated costs vary by vehicle, market and selected products.</p>
         </article>
       </aside>
     </section>`;
@@ -59,10 +60,12 @@ function hero() {
 
 function trustStrip() {
   return `<section class="home-trust-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
-      <span>Prioritized upgrade order</span>
-      <span>Plain beginner explanations</span>
-      <span>Fitment reminders before purchase</span>
-      <span>Amazon search only for now</span>
+      ${[
+        "Prioritized upgrade plan",
+        "Beginner-friendly explanations",
+        "Compatibility reminders",
+        "Budget-aware recommendations"
+      ].map((item) => `<div class="trust-point"><span class="trust-check" aria-hidden="true">&#10003;</span><span>${item}</span></div>`).join("")}
     </section>`;
 }
 
@@ -95,7 +98,14 @@ function howItWorks() {
           <span class="step-icon" aria-hidden="true">${step.number}</span>
           <h3>${step.title}</h3>
           <p>${step.text}</p>
-          ${index === steps.length - 1 ? `<div class="mini-plan"><span>01 AT tires · Priority</span><span>02 Recovery pts.</span><span>03 Skid plates</span><small>+ additional categories</small></div>` : ""}
+          ${index === steps.length - 1 ? `<div class="mini-plan">
+            <strong>Example result</strong>
+            <span><b>01</b> All-terrain tires</span>
+            <span><b>02</b> Recovery points</span>
+            <span><b>03</b> Skid plates</span>
+            <span><b>04</b> Suspension planning</span>
+            <small>Prioritized according to your vehicle and use case.</small>
+          </div>` : ""}
         </article>`).join("")}
       </div>
     </section>`;
@@ -224,8 +234,8 @@ function supportedVehicles() {
         <div>
           <p class="eyebrow">Platforms</p>
           <h2>Built for real off-road platforms</h2>
+          <p>RigAI currently starts with Toyota 4Runner. Support for additional off-road vehicles will be added gradually.</p>
         </div>
-        <span class="status-label">More vehicles coming</span>
       </div>
       <div class="vehicle-grid">
         ${vehicles.map((vehicle, index) => {
