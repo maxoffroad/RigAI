@@ -11,6 +11,8 @@ const mimeTypes = {
   ".css": "text/css; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -55,7 +57,14 @@ const server = createServer(async (request, response) => {
   const filePath = resolvePath(request.url || "/");
 
   if (!filePath || !existsSync(filePath)) {
-    response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+    const notFoundPath = join(baseDir, "404.html");
+    if (existsSync(notFoundPath)) {
+      response.writeHead(404, { "Content-Type": mimeTypes[".html"] });
+      createReadStream(notFoundPath).pipe(response);
+      return;
+    }
+
+    response.writeHead(404, { "Content-Type": mimeTypes[".txt"] });
     response.end("Not found");
     return;
   }
@@ -67,7 +76,14 @@ const server = createServer(async (request, response) => {
     const indexPath = normalize(join(filePath, "index.html"));
 
     if (!indexPath.startsWith(normalize(baseDir)) || !existsSync(indexPath)) {
-      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      const notFoundPath = join(baseDir, "404.html");
+      if (existsSync(notFoundPath)) {
+        response.writeHead(404, { "Content-Type": mimeTypes[".html"] });
+        createReadStream(notFoundPath).pipe(response);
+        return;
+      }
+
+      response.writeHead(404, { "Content-Type": mimeTypes[".txt"] });
       response.end("Not found");
       return;
     }

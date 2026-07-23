@@ -140,6 +140,10 @@ export const vehicles = [
 
 const suspensionPage = getToyota4RunnerPage("toyota-4runner-suspension");
 const firstUpgradesPage = getToyota4RunnerPage("toyota-4runner-first-upgrades");
+const liftKitPage = getToyota4RunnerPage("toyota-4runner-lift-kit");
+const tireSizePage = getToyota4RunnerPage("toyota-4runner-tire-size");
+const kdssPage = getToyota4RunnerPage("toyota-4runner-kdss");
+const overlandBuildPage = getToyota4RunnerPage("toyota-4runner-overland-build");
 
 export const guides = [
   {
@@ -158,23 +162,31 @@ export const guides = [
   },
   {
     category: "Lift kits",
-    title: "Lift Kit vs Leveling Kit",
-    text: "Understand the difference and which option matches your use case, budget, and long-term plans."
+    title: "Toyota 4Runner Lift Kit Guide",
+    text: "Choose a lift objective using load, geometry, clearance, and daily-driving trade-offs.",
+    href: liftKitPage.route,
+    readingTime: readingTimeMinutes(liftKitPage)
   },
   {
     category: "Tires",
-    title: "All-Terrain vs Mud-Terrain Tires",
-    text: "A practical comparison for SUV owners who mix highway driving with occasional trail or overland trips."
-  },
-  {
-    category: "Recovery",
-    title: "Recovery Gear for Beginners",
-    text: "What to buy first, what can wait, and why the purchase order of recovery equipment matters."
+    title: "Toyota 4Runner Tire Size Guide",
+    text: "Evaluate the placard baseline, real dimensions, wheels, clearance, and load.",
+    href: tireSizePage.route,
+    readingTime: readingTimeMinutes(tireSizePage)
   },
   {
     category: "KDSS",
-    title: "Understanding KDSS Before a Suspension Upgrade",
-    text: "What to confirm before selecting suspension for a KDSS-equipped vehicle."
+    title: "Toyota 4Runner KDSS Guide",
+    text: "Confirm KDSS and plan compatible suspension, lift, load, and installation checks.",
+    href: kdssPage.route,
+    readingTime: readingTimeMinutes(kdssPage)
+  },
+  {
+    category: "Overland travel",
+    title: "Toyota 4Runner Overland Build Guide",
+    text: "Plan travel around operating load, reliability, recovery, cargo, and comfort.",
+    href: overlandBuildPage.route,
+    readingTime: readingTimeMinutes(overlandBuildPage)
   }
 ];
 

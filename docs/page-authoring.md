@@ -281,3 +281,56 @@ Keep the complete source inventory in the research document. Do not place affili
 4. Build the site so sitemap generation includes the route.
 5. Confirm the route appears exactly once and the output file exists.
 6. Confirm planned routes remain absent.
+## Phase 4B cluster publishing rules
+
+### Prevent keyword cannibalization
+
+- Give each closely related guide one primary query family and one unique answer.
+- Keep a page inside its declared intent boundary; link to the adjacent guide instead of restating it.
+- Use unique titles, descriptions, H1s, direct answers, tables, and CTA context.
+
+### Separate related intents
+
+- Suspension covers springs, damping, condition, load, and system selection.
+- Lift kit covers height objectives, geometry, leveling, and lift trade-offs.
+- Tire size covers placard data, exact tire and wheel specifications, and dynamic clearance.
+- KDSS covers system identification and KDSS-specific planning.
+- Overland build covers trip profile, operating load, recovery, cargo, and comfort.
+
+### Fitment tables
+
+- A table may organize verification factors, but it must not promise a part, tire, or height combination.
+- Do not publish “fits all,” clearance guarantees, or an inches-to-tire-size matrix.
+- Identify the exact vehicle and manufacturer documentation required for each decision.
+
+### Tire-size safety
+
+- Start with the door placard and exact owner documentation.
+- Distinguish nominal size from model-specific measured dimensions.
+- Require wheel width, offset, load rating, tire load index, approved rim-width range, alignment, spare storage, and dynamic-clearance checks.
+
+### Lift-height safety
+
+- Treat advertised lift as product- and vehicle-specific.
+- Do not assign one best height or imply that lift settles tire clearance.
+- Include load, alignment, operating angles, travel, line routing, KDSS, access, and daily-use trade-offs.
+
+### KDSS verification
+
+- Verify KDSS from a build sheet, VIN-based specification, option list, owner documentation, or qualified physical inspection.
+- Do not infer equipment solely from trim name.
+- Require a current manufacturer statement for KDSS compatibility and procedure.
+
+### Overland payload language
+
+- Use “operating load” and direct readers to the exact vehicle label and official documentation.
+- Do not publish one payload or roof-load number across years and configurations.
+- Separate constant equipment, passengers, trip cargo, water, and roof load.
+
+### Publishing workflow
+
+- Update the vehicle hub from planned to published and add a real route.
+- Update the homepage guide card with its route and calculated reading time.
+- Add the new route to the sitemap and remove it from future-route validation.
+- Every article must link to the hub, include 2-4 contextual cluster links, and show a related-guides block.
+- Related cards must use the shared reading-time calculation for article destinations.

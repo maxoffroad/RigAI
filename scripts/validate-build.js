@@ -1,10 +1,14 @@
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { pages, site } from "./site-config.js";
+import { inspectBuildOutput } from "./build-contract.js";
 
 const root = process.cwd();
 const dist = join(root, "dist");
 const errors = [];
+
+const buildContract = inspectBuildOutput({ dist, pages });
+errors.push(...buildContract.errors);
 
 function readBuildFile(relativePath) {
   const filePath = join(dist, relativePath);
@@ -45,7 +49,11 @@ const requiredFiles = [
   join("about", "index.html"),
   join("vehicles", "toyota-4runner", "index.html"),
   join("vehicles", "toyota-4runner", "suspension", "index.html"),
-  join("vehicles", "toyota-4runner", "first-upgrades", "index.html")
+  join("vehicles", "toyota-4runner", "first-upgrades", "index.html"),
+  join("vehicles", "toyota-4runner", "kdss", "index.html"),
+  join("vehicles", "toyota-4runner", "lift-kit", "index.html"),
+  join("vehicles", "toyota-4runner", "tire-size", "index.html"),
+  join("vehicles", "toyota-4runner", "overland-build", "index.html")
 ];
 
 for (const file of requiredFiles) {
@@ -245,11 +253,14 @@ requireIncludes(homeHtml, '<img src="/src/assets/rigai-garage-bg.jpg" width="120
 requireIncludes(homeHtml, 'loading="lazy"', "dist/index.html");
 requireIncludes(homeHtml, "Example only - prices and recommendations vary", "dist/index.html");
 requireIncludes(homeHtml, "Example output - actual content depends", "dist/index.html");
-requireIncludes(homeHtml, "Guide in development", "dist/index.html");
 requireIncludes(homeHtml, "Read guide", "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/suspension"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/first-upgrades"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/kdss"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/lift-kit"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/tire-size"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/overland-build"', "dist/index.html");
 
 for (const asset of [...homeHtml.matchAll(/<(?:img|source)[^>]+(?:src|srcset)="([^"]+)"/g)]) {
   const assetPath = asset[1].split(" ")[0];
@@ -265,20 +276,23 @@ if (homeHtml.includes("Can I save more than one vehicle plan?")) {
 const vehicleRoutes = [
   "/vehicles/toyota-4runner",
   "/vehicles/toyota-4runner/suspension",
-  "/vehicles/toyota-4runner/first-upgrades"
-];
-
-const futureVehicleRoutes = [
+  "/vehicles/toyota-4runner/first-upgrades",
+  "/vehicles/toyota-4runner/kdss",
   "/vehicles/toyota-4runner/lift-kit",
   "/vehicles/toyota-4runner/tire-size",
-  "/vehicles/toyota-4runner/kdss",
   "/vehicles/toyota-4runner/overland-build"
 ];
+
+const futureVehicleRoutes = [];
 
 const expectedPageLinks = {
   "/vehicles/toyota-4runner": [
     "/vehicles/toyota-4runner/suspension",
-    "/vehicles/toyota-4runner/first-upgrades"
+    "/vehicles/toyota-4runner/first-upgrades",
+    "/vehicles/toyota-4runner/kdss",
+    "/vehicles/toyota-4runner/lift-kit",
+    "/vehicles/toyota-4runner/tire-size",
+    "/vehicles/toyota-4runner/overland-build"
   ],
   "/vehicles/toyota-4runner/suspension": [
     "/vehicles/toyota-4runner",
@@ -287,8 +301,43 @@ const expectedPageLinks = {
   "/vehicles/toyota-4runner/first-upgrades": [
     "/vehicles/toyota-4runner",
     "/vehicles/toyota-4runner/suspension"
+  ],
+  "/vehicles/toyota-4runner/kdss": [
+    "/vehicles/toyota-4runner",
+    "/vehicles/toyota-4runner/suspension",
+    "/vehicles/toyota-4runner/lift-kit",
+    "/vehicles/toyota-4runner/first-upgrades"
+  ],
+  "/vehicles/toyota-4runner/lift-kit": [
+    "/vehicles/toyota-4runner",
+    "/vehicles/toyota-4runner/suspension",
+    "/vehicles/toyota-4runner/kdss",
+    "/vehicles/toyota-4runner/tire-size",
+    "/vehicles/toyota-4runner/first-upgrades"
+  ],
+  "/vehicles/toyota-4runner/tire-size": [
+    "/vehicles/toyota-4runner",
+    "/vehicles/toyota-4runner/first-upgrades",
+    "/vehicles/toyota-4runner/lift-kit",
+    "/vehicles/toyota-4runner/suspension"
+  ],
+  "/vehicles/toyota-4runner/overland-build": [
+    "/vehicles/toyota-4runner",
+    "/vehicles/toyota-4runner/first-upgrades",
+    "/vehicles/toyota-4runner/suspension",
+    "/vehicles/toyota-4runner/tire-size"
   ]
 };
+
+const newVehicleRoutes = new Set([
+  "/vehicles/toyota-4runner/kdss",
+  "/vehicles/toyota-4runner/lift-kit",
+  "/vehicles/toyota-4runner/tire-size",
+  "/vehicles/toyota-4runner/overland-build"
+]);
+
+const titles = new Map();
+const descriptions = new Map();
 
 for (const route of vehicleRoutes) {
   const relativeOutput = join(route.replace(/^\//, ""), "index.html");
@@ -306,6 +355,7 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, "Editorial and fitment notes", label);
   requireIncludes(html, "RigAI Editorial Team", label);
   requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
+  requireIncludes(html, 'class="related-guides"', label);
 
   if (/noindex/i.test(html)) {
     errors.push(`${label} must be indexable but contains noindex.`);
@@ -321,9 +371,40 @@ for (const route of vehicleRoutes) {
     }
   }
 
-  for (const phrase of ["guaranteed fit", "fits all", "perfect suspension", "universally required"]) {
+  for (const phrase of [
+    "guaranteed fit",
+    "fits all",
+    "perfect suspension",
+    "universally required",
+    "safe for every vehicle",
+    "perfect lift",
+    "kdss always",
+    "kdss never",
+    "exact size always fits"
+  ]) {
     if (html.toLowerCase().includes(phrase)) {
       errors.push(`${label} contains prohibited absolute claim: ${phrase}`);
+    }
+  }
+
+  const titleOwner = titles.get(page.title);
+  if (titleOwner) {
+    errors.push(`${label} duplicates the title used by ${titleOwner}.`);
+  } else {
+    titles.set(page.title, label);
+  }
+
+  const descriptionOwner = descriptions.get(page.description);
+  if (descriptionOwner) {
+    errors.push(`${label} duplicates the description used by ${descriptionOwner}.`);
+  } else {
+    descriptions.set(page.description, label);
+  }
+
+  if (newVehicleRoutes.has(route)) {
+    const contextualLinkCount = (html.match(/class="contextual-link"/g) || []).length;
+    if (contextualLinkCount < 2 || contextualLinkCount > 4) {
+      errors.push(`${label} has ${contextualLinkCount} contextual cluster links, expected 2-4.`);
     }
   }
 

@@ -5,6 +5,7 @@ import { pages } from "./site-config.js";
 import { extractMain, renderPage, renderRobots, renderSitemap } from "./page-template.js";
 import { renderHomePage } from "../src/components/home/index.js";
 import { renderVehicleArticle } from "../src/components/articles/index.js";
+import { assertBuildOutput } from "./build-contract.js";
 
 const root = process.cwd();
 const dist = join(root, "dist");
@@ -58,4 +59,5 @@ for (const page of pages) {
 await writeFile(join(dist, "robots.txt"), renderRobots());
 await writeFile(join(dist, "sitemap.xml"), renderSitemap(pages));
 
-console.log("Build complete: dist");
+const buildResult = assertBuildOutput({ dist, pages });
+console.log(`Build complete: dist (${buildResult.fileCount} files, ${buildResult.totalBytes} bytes)`);
