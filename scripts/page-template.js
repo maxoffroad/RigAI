@@ -81,7 +81,78 @@ function renderFooter(page) {
     </footer>`;
 }
 
-function renderStructuredData() {
+function breadcrumbSchema(page) {
+  return {
+    "@type": "BreadcrumbList",
+    "@id": `${absoluteUrl(page.route)}#breadcrumb`,
+    itemListElement: page.content.breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      item: `${site.domain}${item.href || page.route}`
+    }))
+  };
+}
+
+function renderStructuredData(page) {
+  if (page.structuredData === "vehicleHub" || page.structuredData === "article") {
+    const canonical = absoluteUrl(page.route);
+    const graph = [
+      {
+        "@type": page.structuredData === "article" ? "Article" : "WebPage",
+        "@id": `${canonical}#primary`,
+        url: canonical,
+        headline: page.content.h1,
+        name: page.content.h1,
+        description: page.description,
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": canonical
+        },
+        inLanguage: "en",
+        isPartOf: {
+          "@id": `${site.domain}/#website`
+        },
+        author: {
+          "@type": "Organization",
+          name: "RigAI Editorial Team",
+          url: `${site.domain}/about`
+        },
+        publisher: {
+          "@id": `${site.domain}/#organization`
+        },
+        datePublished: page.content.dates.published,
+        dateModified: page.content.dates.modified,
+        image: `${site.domain}${site.socialImage.path}`,
+        breadcrumb: {
+          "@id": `${canonical}#breadcrumb`
+        }
+      },
+      breadcrumbSchema(page),
+      {
+        "@type": "Organization",
+        "@id": `${site.domain}/#organization`,
+        name: "RigAI",
+        url: `${site.domain}/`,
+        logo: `${site.domain}/favicon.svg`
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${site.domain}/#website`,
+        name: "RigAI",
+        url: `${site.domain}/`,
+        publisher: {
+          "@id": `${site.domain}/#organization`
+        }
+      }
+    ];
+
+    return `<script type="application/ld+json">${JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": graph
+    })}</script>`;
+  }
+
   const graph = {
     "@context": "https://schema.org",
     "@graph": [
@@ -138,7 +209,7 @@ function renderHead(page) {
     ...(page.extraHead || []),
     `<meta property="og:title" content="${escapeHtml(page.socialTitle || page.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(page.socialDescription || page.description)}" />`,
-    '<meta property="og:type" content="website" />',
+    `<meta property="og:type" content="${page.openGraphType || "website"}" />`,
     `<meta property="og:url" content="${canonical}" />`,
     `<meta property="og:image" content="${imageUrl}" />`,
     `<meta property="og:image:width" content="${site.socialImage.width}" />`,
@@ -149,6 +220,12 @@ function renderHead(page) {
     `<meta name="twitter:description" content="${escapeHtml(page.socialDescription || page.description)}" />`,
     `<meta name="twitter:image" content="${imageUrl}" />`,
     `<meta name="twitter:image:alt" content="${escapeHtml(site.socialImage.alt)}" />`,
+    ...(page.structuredData === "article"
+      ? [
+          `<meta property="article:published_time" content="${page.content.dates.published}" />`,
+          `<meta property="article:modified_time" content="${page.content.dates.modified}" />`
+        ]
+      : []),
     `<link rel="canonical" href="${canonical}" />`,
     '<link rel="icon" href="/favicon.svg" type="image/svg+xml" />',
     `<title>${escapeHtml(page.title)}</title>`,
@@ -156,7 +233,7 @@ function renderHead(page) {
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />',
     '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />',
     '<link rel="stylesheet" href="/src/styles.css?v=launch-1" />',
-    page.structuredData ? renderStructuredData() : ""
+    page.structuredData ? renderStructuredData(page) : ""
   ].filter(Boolean);
 
   return meta.map((item) => `    ${item}`).join("\n");

@@ -229,11 +229,14 @@ function supportedVehicles() {
         <span class="status-label">More vehicles coming</span>
       </div>
       <div class="vehicle-grid">
-        ${vehicles.map(([name, status], index) => `<article class="vehicle-card vehicle-card--visual">
-          <div class="vehicle-media" aria-hidden="true" data-variant="${index + 1}"></div>
-          <h3>${name}</h3>
-          <span class="status-label${index === 0 ? " success" : ""}">${status}</span>
-        </article>`).join("")}
+        ${vehicles.map((vehicle, index) => {
+          const content = `<div class="vehicle-media" aria-hidden="true" data-variant="${index + 1}"></div>
+          <h3>${vehicle.name}</h3>
+          <span class="status-label${vehicle.href ? " success" : ""}">${vehicle.status}</span>`;
+          return vehicle.href
+            ? `<a class="vehicle-card vehicle-card--visual is-published" href="${vehicle.href}" aria-label="${vehicle.name} upgrade guide">${content}<strong class="card-link-label">Open vehicle guide</strong></a>`
+            : `<article class="vehicle-card vehicle-card--visual">${content}</article>`;
+        }).join("")}
       </div>
     </section>`;
 }
@@ -246,12 +249,15 @@ function guidesPreview() {
         <p>Guides written for SUV owners who want to understand the decisions, not just the products.</p>
       </div>
       <div class="guide-grid">
-        ${guides.map(([category, title, text]) => `<article class="guide-card">
-          <div><span class="status-label">${category}</span><span class="mini-label">Coming soon</span></div>
-          <h3>${title}</h3>
-          <p>${text}</p>
-          <small>Guide in development</small>
-        </article>`).join("")}
+        ${guides.map((guide) => {
+          const content = `<div><span class="status-label">${guide.category}</span><span class="mini-label">${guide.href ? "Published" : "Coming soon"}</span></div>
+          <h3>${guide.title}</h3>
+          <p>${guide.text}</p>
+          ${guide.href ? `<small>${guide.readingTime} min read</small><strong class="card-link-label">Read guide</strong>` : "<small>Guide in development</small>"}`;
+          return guide.href
+            ? `<a class="guide-card is-published" href="${guide.href}">${content}</a>`
+            : `<article class="guide-card">${content}</article>`;
+        }).join("")}
       </div>
       <p class="guides-note">Guides become available as RigAI vehicle coverage expands.</p>
     </section>`;

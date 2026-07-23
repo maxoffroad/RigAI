@@ -1,3 +1,5 @@
+import { toyota4RunnerPages } from "../src/content/toyota-4runner.js";
+
 export const site = {
   name: "RigAI",
   domain: "https://rigai-offroad.com",
@@ -41,6 +43,24 @@ const pageNav = [
   { label: "Privacy", href: "/privacy" },
   { label: "Terms", href: "/terms" }
 ];
+
+const vehiclePages = toyota4RunnerPages.map((content) => ({
+  key: content.key,
+  route: content.route,
+  output: `${content.route.replace(/^\//, "")}/index.html`,
+  title: content.title,
+  description: content.description,
+  socialTitle: content.socialTitle,
+  socialDescription: content.socialDescription,
+  nav: pageNav,
+  footerLinks,
+  includeInSitemap: true,
+  language: "en",
+  renderer: "vehicleArticle",
+  content,
+  structuredData: content.kind,
+  openGraphType: content.kind === "article" ? "article" : "website"
+}));
 
 export const pages = [
   {
@@ -141,6 +161,7 @@ export const pages = [
     footerLinks,
     includeInSitemap: true
   },
+  ...vehiclePages,
   {
     key: "design-system",
     route: "/design-system",

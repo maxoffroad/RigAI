@@ -130,21 +130,52 @@ export const appScreens = [
 ];
 
 export const vehicles = [
-  ["Toyota 4Runner", "Initial coverage"],
-  ["Land Cruiser Prado", "Guide planned"],
-  ["Land Cruiser 200", "Guide planned"],
-  ["Lexus GX", "Guide planned"],
-  ["Jeep Wrangler", "Guide planned"],
-  ["Ford Bronco", "Guide planned"]
+  { name: "Toyota 4Runner", status: "Initial coverage", href: "/vehicles/toyota-4runner" },
+  { name: "Land Cruiser Prado", status: "Guide planned" },
+  { name: "Land Cruiser 200", status: "Guide planned" },
+  { name: "Lexus GX", status: "Guide planned" },
+  { name: "Jeep Wrangler", status: "Guide planned" },
+  { name: "Ford Bronco", status: "Guide planned" }
 ];
 
+const suspensionPage = getToyota4RunnerPage("toyota-4runner-suspension");
+const firstUpgradesPage = getToyota4RunnerPage("toyota-4runner-first-upgrades");
+
 export const guides = [
-  ["Suspension", "Toyota 4Runner Suspension Guide", "Factory suspension specs, common upgrade paths, and what to consider before lifting your 5th Gen."],
-  ["First upgrades", "Best First Upgrades for a 4Runner", "The modifications that deliver the most capability per dollar for daily drivers and weekend trail users."],
-  ["Lift kits", "Lift Kit vs Leveling Kit", "Understand the difference and which option matches your use case, budget, and long-term plans."],
-  ["Tires", "All-Terrain vs Mud-Terrain Tires", "A practical comparison for SUV owners who mix highway driving with occasional trail or overland trips."],
-  ["Recovery", "Recovery Gear for Beginners", "What to buy first, what can wait, and why the purchase order of recovery equipment matters."],
-  ["KDSS", "Understanding KDSS Before a Suspension Upgrade", "Toyota's Kinetic Dynamic Suspension System changes what lift kits are compatible with your vehicle."]
+  {
+    category: "Suspension",
+    title: "Toyota 4Runner Suspension Guide",
+    text: "Choose suspension by use, condition, added load, damping needs, geometry, and KDSS status.",
+    href: suspensionPage.route,
+    readingTime: readingTimeMinutes(suspensionPage)
+  },
+  {
+    category: "First upgrades",
+    title: "Best First Upgrades for a 4Runner",
+    text: "A practical framework for deciding what to buy first and what can wait.",
+    href: firstUpgradesPage.route,
+    readingTime: readingTimeMinutes(firstUpgradesPage)
+  },
+  {
+    category: "Lift kits",
+    title: "Lift Kit vs Leveling Kit",
+    text: "Understand the difference and which option matches your use case, budget, and long-term plans."
+  },
+  {
+    category: "Tires",
+    title: "All-Terrain vs Mud-Terrain Tires",
+    text: "A practical comparison for SUV owners who mix highway driving with occasional trail or overland trips."
+  },
+  {
+    category: "Recovery",
+    title: "Recovery Gear for Beginners",
+    text: "What to buy first, what can wait, and why the purchase order of recovery equipment matters."
+  },
+  {
+    category: "KDSS",
+    title: "Understanding KDSS Before a Suspension Upgrade",
+    text: "What to confirm before selecting suspension for a KDSS-equipped vehicle."
+  }
 ];
 
 export const transparencyItems = [
@@ -180,3 +211,4 @@ export const faqs = [
     answer: "For now, RigAI supports Amazon search ideas only. Some links may be affiliate links, and RigAI may earn from qualifying purchases."
   }
 ];
+import { getToyota4RunnerPage, readingTimeMinutes } from "./toyota-4runner.js";

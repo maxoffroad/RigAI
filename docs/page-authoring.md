@@ -185,3 +185,99 @@ npm run preview
 ```
 
 Before deployment, verify clean routes, metadata, JSON-LD, sitemap output, and unknown route handling.
+
+## Vehicle Hub Rules
+
+A vehicle hub should:
+
+- Serve one real vehicle family and clearly separate generations.
+- State the primary generation used by RigAI without claiming unsupported coverage.
+- Answer the broad planning intent without duplicating detailed guide content.
+- Link only to published guides.
+- Show future topics as non-interactive planned states.
+- Include a visible vehicle-scope callout, safety disclaimer, and editorial notes.
+- Use `WebPage` and visible `BreadcrumbList` structured data only.
+
+Do not treat related platforms, such as Prado or Lexus GX, as interchangeable with the vehicle in the page title.
+
+## Vehicle Guide Rules
+
+A vehicle guide should:
+
+- Have one narrow search intent and a unique H1, title, and description.
+- Define the generation and configuration boundary near the top.
+- Give a direct answer before background detail.
+- Explain decisions and tradeoffs rather than publish a universal shopping list.
+- Include a crawlable table of contents for long content.
+- Use accessible tables only when a comparison benefits from a table.
+- Include contextual links to the parent hub and sibling guide.
+- Use `Article` and visible `BreadcrumbList` structured data.
+
+## Research and Claim Verification
+
+Before drafting a vehicle page:
+
+1. Create a research file under `docs/research/`.
+2. Prefer official manufacturer manuals, product documents, technical-system pages, and primary component documentation.
+3. Record each important claim with its source, source type, verification status, where it is used, and notes.
+4. Use owner communities only as supporting context, never as the sole source for a safety or fitment claim.
+5. Exclude a claim when it cannot be verified reliably.
+
+Do not invent sources, specifications, compatibility, or historical dates.
+
+## Generation and Fitment Scope
+
+- Record the generation boundary from an official source.
+- Do not mix generations as though suspension, drivetrain, safety systems, and fitment are identical.
+- Treat model year, trim, drivetrain, factory systems, existing modifications, load, tires, and intended use as separate inputs.
+- Distinguish planning guidance from part-specific manufacturer fitment confirmation.
+- Never publish a universal lift limit or tire size without reliable, configuration-specific evidence.
+
+## Article Dates and Editorial Responsibility
+
+- Store `datePublished` and `dateModified` in centralized page content or configuration.
+- Use the actual creation date; do not invent an older date.
+- Change `dateModified` only for a substantive content update.
+- Use `RigAI Editorial Team` only when RigAI accepts and documents editorial responsibility.
+- Show a human-readable last-reviewed date on technical pages.
+
+## Reading Time
+
+Reading time is calculated from the article's actual content at 225 words per minute and rounded up to the next whole minute. Navigation, metadata, footer content, routes, IDs, and source URLs are excluded. Do not store an arbitrary reading-time label.
+
+## Sources and Safety
+
+Technical guides should include a compact visible `Editorial and fitment notes` section that states:
+
+- Guidance is informational.
+- Vehicle configurations vary.
+- Manufacturer fitment data is final.
+- The page was reviewed against available technical sources.
+- The last-reviewed date.
+
+Keep the complete source inventory in the research document. Do not place affiliate links in source lists.
+
+## Published and Planned States
+
+- Published vehicle and guide cards use a real clean-route `href` and a visible action label.
+- Planned cards are non-interactive and have no `href`.
+- Do not create empty future routes to satisfy navigation.
+- Update both homepage state and internal related-guide blocks when a page is published.
+
+## Vehicle Structured Data
+
+- Vehicle hubs may use `WebPage` and `BreadcrumbList`.
+- Technical guides may use `Article` and `BreadcrumbList`.
+- Structured breadcrumbs must match visible breadcrumbs.
+- Article dates must match centralized content dates.
+- Use the production canonical URL for `mainEntityOfPage`.
+- Do not add Product, Offer, Review, AggregateRating, HowTo, or FAQPage data without corresponding verified content and a separate schema review.
+
+## Adding Vehicle URLs to the Sitemap
+
+1. Add the real page to the build-time `pages` configuration.
+2. Set `includeInSitemap: true`.
+3. Use a clean route with no `.html` and no trailing slash.
+4. Build the site so sitemap generation includes the route.
+5. Confirm the route appears exactly once and the output file exists.
+6. Confirm planned routes remain absent.

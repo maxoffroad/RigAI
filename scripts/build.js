@@ -1,9 +1,10 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { pages } from "./site-config.js";
 import { extractMain, renderPage, renderRobots, renderSitemap } from "./page-template.js";
 import { renderHomePage } from "../src/components/home/index.js";
+import { renderVehicleArticle } from "../src/components/articles/index.js";
 
 const root = process.cwd();
 const dist = join(root, "dist");
@@ -27,17 +28,30 @@ for (const entry of entries) {
 }
 
 for (const page of pages) {
-  const mainHtml = page.renderer === "home" ? renderHomePage() : extractMain(await readFile(join(root, page.source), "utf8"), page.source);
+  let mainHtml;
+
+  if (page.renderer === "home") {
+    mainHtml = renderHomePage();
+  } else if (page.renderer === "vehicleArticle") {
+    mainHtml = renderVehicleArticle(page.content);
+  } else {
+    mainHtml = extractMain(await readFile(join(root, page.source), "utf8"), page.source);
+  }
+
   const pageHtml = renderPage(page, mainHtml);
   const outputPath = join(dist, page.output);
 
+  await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, pageHtml);
 
   if (page.route !== "/" && page.output !== "404.html") {
     const routeDir = join(dist, page.route.replace(/^\//, ""));
+    const cleanRouteOutput = join(routeDir, "index.html");
 
     await mkdir(routeDir, { recursive: true });
-    await writeFile(join(routeDir, "index.html"), pageHtml);
+    if (cleanRouteOutput !== outputPath) {
+      await writeFile(cleanRouteOutput, pageHtml);
+    }
   }
 }
 

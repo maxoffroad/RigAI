@@ -42,7 +42,10 @@ const requiredFiles = [
   join("affiliate-disclosure", "index.html"),
   join("contact", "index.html"),
   join("support", "index.html"),
-  join("about", "index.html")
+  join("about", "index.html"),
+  join("vehicles", "toyota-4runner", "index.html"),
+  join("vehicles", "toyota-4runner", "suspension", "index.html"),
+  join("vehicles", "toyota-4runner", "first-upgrades", "index.html")
 ];
 
 for (const file of requiredFiles) {
@@ -226,7 +229,7 @@ for (const expected of [
   requireIncludes(homeHtml, expected, "dist/index.html");
 }
 
-for (const forbidden of ["/vehicles/", "/guides/", "href=\"#\"", "Google Play Store", "play.google.com", "© 2024", "localhost", "example.com"]) {
+for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "play.google.com", "© 2024", "localhost", "example.com"]) {
   if (homeHtml.includes(forbidden)) {
     errors.push(`Homepage contains forbidden or unavailable destination: ${forbidden}`);
   }
@@ -243,7 +246,10 @@ requireIncludes(homeHtml, 'loading="lazy"', "dist/index.html");
 requireIncludes(homeHtml, "Example only - prices and recommendations vary", "dist/index.html");
 requireIncludes(homeHtml, "Example output - actual content depends", "dist/index.html");
 requireIncludes(homeHtml, "Guide in development", "dist/index.html");
-requireIncludes(homeHtml, "Guide planned", "dist/index.html");
+requireIncludes(homeHtml, "Read guide", "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/suspension"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/first-upgrades"', "dist/index.html");
 
 for (const asset of [...homeHtml.matchAll(/<(?:img|source)[^>]+(?:src|srcset)="([^"]+)"/g)]) {
   const assetPath = asset[1].split(" ")[0];
@@ -254,6 +260,169 @@ for (const asset of [...homeHtml.matchAll(/<(?:img|source)[^>]+(?:src|srcset)="(
 
 if (homeHtml.includes("Can I save more than one vehicle plan?")) {
   errors.push("Homepage includes the multiple saved plans FAQ without a confirmed feature flag.");
+}
+
+const vehicleRoutes = [
+  "/vehicles/toyota-4runner",
+  "/vehicles/toyota-4runner/suspension",
+  "/vehicles/toyota-4runner/first-upgrades"
+];
+
+const futureVehicleRoutes = [
+  "/vehicles/toyota-4runner/lift-kit",
+  "/vehicles/toyota-4runner/tire-size",
+  "/vehicles/toyota-4runner/kdss",
+  "/vehicles/toyota-4runner/overland-build"
+];
+
+const expectedPageLinks = {
+  "/vehicles/toyota-4runner": [
+    "/vehicles/toyota-4runner/suspension",
+    "/vehicles/toyota-4runner/first-upgrades"
+  ],
+  "/vehicles/toyota-4runner/suspension": [
+    "/vehicles/toyota-4runner",
+    "/vehicles/toyota-4runner/first-upgrades"
+  ],
+  "/vehicles/toyota-4runner/first-upgrades": [
+    "/vehicles/toyota-4runner",
+    "/vehicles/toyota-4runner/suspension"
+  ]
+};
+
+for (const route of vehicleRoutes) {
+  const relativeOutput = join(route.replace(/^\//, ""), "index.html");
+  const html = readBuildFile(relativeOutput);
+  const label = `dist/${relativeOutput.replaceAll("\\", "/")}`;
+  const page = pages.find((item) => item.route === route);
+
+  requireIncludes(html, '<html lang="en">', label);
+  requireIncludes(html, '<nav class="breadcrumb article-breadcrumb" aria-label="Breadcrumb">', label);
+  requireIncludes(html, '<nav class="article-toc" aria-label="Table of contents">', label);
+  requireIncludes(html, 'class="callout vehicle-scope-callout"', label);
+  requireIncludes(html, 'class="callout safety-disclaimer"', label);
+  requireIncludes(html, "Always verify model year, trim, drivetrain, KDSS status", label);
+  requireIncludes(html, 'href="/#download">Check app availability</a>', label);
+  requireIncludes(html, "Editorial and fitment notes", label);
+  requireIncludes(html, "RigAI Editorial Team", label);
+  requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
+
+  if (/noindex/i.test(html)) {
+    errors.push(`${label} must be indexable but contains noindex.`);
+  }
+
+  for (const target of expectedPageLinks[route]) {
+    requireIncludes(html, `href="${target}"`, label);
+  }
+
+  for (const target of futureVehicleRoutes) {
+    if (html.includes(`href="${target}"`)) {
+      errors.push(`${label} links to unpublished route: ${target}`);
+    }
+  }
+
+  for (const phrase of ["guaranteed fit", "fits all", "perfect suspension", "universally required"]) {
+    if (html.toLowerCase().includes(phrase)) {
+      errors.push(`${label} contains prohibited absolute claim: ${phrase}`);
+    }
+  }
+
+  for (const asset of [...html.matchAll(/<(?:img|source)[^>]+(?:src|srcset)="([^"]+)"/g)]) {
+    const assetPath = asset[1].split(" ")[0];
+    if (assetPath.startsWith("/") && !assetPath.startsWith("//")) {
+      requireFile(assetPath.slice(1));
+    }
+  }
+
+  const scripts = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  if (scripts.length !== 1) {
+    errors.push(`${label} must contain exactly one JSON-LD script.`);
+    continue;
+  }
+
+  try {
+    const data = JSON.parse(scripts[0][1]);
+    const graph = data["@graph"] || [];
+    const types = new Set(graph.map((item) => item["@type"]));
+    const expectedPrimaryType = page.structuredData === "article" ? "Article" : "WebPage";
+
+    for (const type of [expectedPrimaryType, "BreadcrumbList", "Organization", "WebSite"]) {
+      if (!types.has(type)) {
+        errors.push(`${label} JSON-LD is missing ${type}.`);
+      }
+    }
+
+    const primary = graph.find((item) => item["@type"] === expectedPrimaryType);
+    if (primary) {
+      if (primary.datePublished !== page.content.dates.published || primary.dateModified !== page.content.dates.modified) {
+        errors.push(`${label} JSON-LD dates do not match centralized page dates.`);
+      }
+    }
+
+    const jsonText = JSON.stringify(data);
+    for (const forbiddenType of ["aggregateRating", "\"review\"", "\"Product\"", "\"Offer\"", "\"HowTo\"", "\"FAQPage\""]) {
+      if (jsonText.includes(forbiddenType)) {
+        errors.push(`${label} JSON-LD contains unsupported data: ${forbiddenType}`);
+      }
+    }
+
+    if (jsonText.includes("localhost") || jsonText.includes("example.com")) {
+      errors.push(`${label} JSON-LD contains a non-production URL.`);
+    }
+
+    const breadcrumb = graph.find((item) => item["@type"] === "BreadcrumbList");
+    if (!breadcrumb || breadcrumb.itemListElement?.length !== page.content.breadcrumbs.length) {
+      errors.push(`${label} JSON-LD breadcrumb count does not match visible breadcrumbs.`);
+    }
+  } catch (error) {
+    errors.push(`${label} JSON-LD is invalid JSON: ${error.message}`);
+  }
+}
+
+for (const route of vehicleRoutes) {
+  const url = `${site.domain}${route}`;
+  const occurrences = (sitemap.match(new RegExp(`<loc>${url}</loc>`, "g")) || []).length;
+  if (occurrences !== 1) {
+    errors.push(`sitemap.xml contains ${occurrences} entries for ${url}, expected 1.`);
+  }
+}
+
+for (const route of futureVehicleRoutes) {
+  if (sitemap.includes(route)) {
+    errors.push(`sitemap.xml contains unpublished route: ${route}`);
+  }
+}
+
+const routeToOutput = new Map(pages.map((page) => [page.route, pageOutputPath(page)]));
+
+for (const page of pages) {
+  const html = readBuildFile(pageOutputPath(page));
+  for (const match of html.matchAll(/href="([^"]+)"/g)) {
+    const href = match[1];
+    if (
+      href.startsWith("#") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      /\.(?:css|js|svg|png|jpe?g|webp|xml|txt)(?:\?|$)/i.test(href)
+    ) {
+      continue;
+    }
+
+    const [path, fragment] = href.split("#");
+    const targetRoute = path || page.route;
+    if (!routeToOutput.has(targetRoute)) {
+      errors.push(`dist/${pageOutputPath(page).replaceAll("\\", "/")} links to unknown route: ${href}`);
+      continue;
+    }
+
+    if (fragment) {
+      const targetHtml = readBuildFile(routeToOutput.get(targetRoute));
+      if (!targetHtml.includes(`id="${fragment}"`)) {
+        errors.push(`Link target ${href} does not exist.`);
+      }
+    }
+  }
 }
 
 const jsonLdMatches = [...homeHtml.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
