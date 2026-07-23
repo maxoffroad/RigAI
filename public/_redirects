@@ -1,0 +1,33 @@
+/index.html / 301
+
+/about.html /about 301
+/contact.html /contact 301
+/support.html /support 301
+/privacy.html /privacy 301
+/terms.html /terms 301
+/affiliate-disclosure.html /affiliate-disclosure 301
+/design-system.html /design-system 301
+
+/about/ /about 301
+/contact/ /contact 301
+/support/ /support 301
+/privacy/ /privacy 301
+/terms/ /terms 301
+/affiliate-disclosure/ /affiliate-disclosure 301
+/design-system/ /design-system 301
+
+/vehicles/toyota-4runner.html /vehicles/toyota-4runner 301
+/vehicles/toyota-4runner/suspension.html /vehicles/toyota-4runner/suspension 301
+/vehicles/toyota-4runner/first-upgrades.html /vehicles/toyota-4runner/first-upgrades 301
+/vehicles/toyota-4runner/kdss.html /vehicles/toyota-4runner/kdss 301
+/vehicles/toyota-4runner/lift-kit.html /vehicles/toyota-4runner/lift-kit 301
+/vehicles/toyota-4runner/tire-size.html /vehicles/toyota-4runner/tire-size 301
+/vehicles/toyota-4runner/overland-build.html /vehicles/toyota-4runner/overland-build 301
+
+/vehicles/toyota-4runner/ /vehicles/toyota-4runner 301
+/vehicles/toyota-4runner/suspension/ /vehicles/toyota-4runner/suspension 301
+/vehicles/toyota-4runner/first-upgrades/ /vehicles/toyota-4runner/first-upgrades 301
+/vehicles/toyota-4runner/kdss/ /vehicles/toyota-4runner/kdss 301
+/vehicles/toyota-4runner/lift-kit/ /vehicles/toyota-4runner/lift-kit 301
+/vehicles/toyota-4runner/tire-size/ /vehicles/toyota-4runner/tire-size 301
+/vehicles/toyota-4runner/overland-build/ /vehicles/toyota-4runner/overland-build 301

@@ -47,7 +47,7 @@ const pageNav = [
 const vehiclePages = toyota4RunnerPages.map((content) => ({
   key: content.key,
   route: content.route,
-  output: `${content.route.replace(/^\//, "")}/index.html`,
+  output: `${content.route.replace(/^\//, "")}.html`,
   title: content.title,
   description: content.description,
   socialTitle: content.socialTitle,

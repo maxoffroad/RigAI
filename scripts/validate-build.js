@@ -1,5 +1,6 @@
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { XMLParser } from "fast-xml-parser";
 import { pages, site } from "./site-config.js";
 import { inspectBuildOutput } from "./build-contract.js";
 
@@ -39,6 +40,7 @@ const requiredFiles = [
   "sitemap.xml",
   "404.html",
   "_headers",
+  "_redirects",
   "assets/rigai-og-image.png",
   join("design-system", "index.html"),
   join("privacy", "index.html"),
@@ -64,6 +66,21 @@ const sitemap = readBuildFile("sitemap.xml");
 const robots = readBuildFile("robots.txt");
 const redirects = readBuildFile("_redirects");
 const headers = readBuildFile("_headers");
+let sitemapUrls = [];
+
+try {
+  const parsedSitemap = new XMLParser().parse(sitemap);
+  const sitemapEntries = parsedSitemap?.urlset?.url || [];
+  sitemapUrls = (Array.isArray(sitemapEntries) ? sitemapEntries : [sitemapEntries])
+    .map((entry) => entry.loc)
+    .filter(Boolean);
+} catch (error) {
+  errors.push(`sitemap.xml is invalid XML: ${error.message}`);
+}
+
+if (new Set(sitemapUrls).size !== sitemapUrls.length) {
+  errors.push("sitemap.xml contains duplicate URLs.");
+}
 
 for (const page of pages.filter((item) => item.includeInSitemap)) {
   const url = `${site.domain}${page.route === "/" ? "/" : page.route}`;
@@ -80,6 +97,45 @@ requireIncludes(robots, `Sitemap: ${site.domain}/sitemap.xml`, "robots.txt");
 
 if (redirects.includes("/* /index.html 200")) {
   errors.push("_redirects contains an SPA fallback rewrite.");
+}
+
+const redirectRules = new Map(
+  redirects
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"))
+    .map((line) => {
+      const [source, destination, status] = line.split(/\s+/);
+      return [source, { destination, status }];
+    })
+);
+
+for (const [source, rule] of redirectRules) {
+  if (source === rule.destination) {
+    errors.push(`_redirects contains a self-redirect: ${source}`);
+  }
+  if (!["301", "308"].includes(rule.status)) {
+    errors.push(`_redirects rule ${source} must use a permanent redirect.`);
+  }
+  if (source.includes("*")) {
+    errors.push(`_redirects contains an unexpected wildcard rule: ${source}`);
+  }
+}
+
+for (const page of pages.filter((item) => item.route !== "/" && item.output !== "404.html")) {
+  for (const [source, destination] of [
+    [`${page.route}/`, page.route],
+    [`${page.route}.html`, page.route]
+  ]) {
+    const rule = redirectRules.get(source);
+    if (!rule || rule.destination !== destination) {
+      errors.push(`_redirects is missing canonical redirect: ${source} -> ${destination}`);
+    }
+  }
+}
+
+if (redirectRules.get("/index.html")?.destination !== "/") {
+  errors.push("_redirects is missing canonical redirect: /index.html -> /");
 }
 
 for (const expectedHeader of [
@@ -108,6 +164,9 @@ if (existsSync(imagePath)) {
     errors.push(`OG image dimensions are ${width}x${height}, expected ${site.socialImage.width}x${site.socialImage.height}.`);
   }
 }
+
+const allTitles = new Map();
+const allDescriptions = new Map();
 
 for (const page of pages) {
   const outputPath = pageOutputPath(page);
@@ -153,6 +212,38 @@ for (const page of pages) {
 
   if (html.includes('href="#"')) {
     errors.push(`${label} contains placeholder href="#".`);
+  }
+
+  if (page.includeInSitemap && /\bnoindex\b/i.test(html)) {
+    errors.push(`${label} is indexable but contains noindex.`);
+  }
+
+  if (!page.includeInSitemap && !/\bnoindex\b/i.test(html)) {
+    errors.push(`${label} is excluded from sitemap but is missing noindex.`);
+  }
+
+  if (page.includeInSitemap) {
+    const titleOwner = allTitles.get(page.title);
+    if (titleOwner) {
+      errors.push(`${label} duplicates the title used by ${titleOwner}.`);
+    } else {
+      allTitles.set(page.title, label);
+    }
+
+    const descriptionOwner = allDescriptions.get(page.description);
+    if (descriptionOwner) {
+      errors.push(`${label} duplicates the description used by ${descriptionOwner}.`);
+    } else {
+      allDescriptions.set(page.description, label);
+    }
+  }
+}
+
+for (const url of sitemapUrls) {
+  const route = new URL(url).pathname;
+  const page = pages.find((item) => item.route === route && item.includeInSitemap);
+  if (!page || !existsSync(join(dist, pageOutputPath(page)))) {
+    errors.push(`sitemap.xml URL has no indexable build output: ${url}`);
   }
 }
 
@@ -454,6 +545,13 @@ for (const route of vehicleRoutes) {
     const breadcrumb = graph.find((item) => item["@type"] === "BreadcrumbList");
     if (!breadcrumb || breadcrumb.itemListElement?.length !== page.content.breadcrumbs.length) {
       errors.push(`${label} JSON-LD breadcrumb count does not match visible breadcrumbs.`);
+    } else {
+      for (const item of breadcrumb.itemListElement) {
+        const breadcrumbRoute = new URL(item.item).pathname;
+        if (!pages.some((candidate) => candidate.route === breadcrumbRoute)) {
+          errors.push(`${label} JSON-LD breadcrumb links to unknown route: ${item.item}`);
+        }
+      }
     }
   } catch (error) {
     errors.push(`${label} JSON-LD is invalid JSON: ${error.message}`);

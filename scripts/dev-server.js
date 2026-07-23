@@ -1,10 +1,11 @@
-import { createReadStream, existsSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import { extname, join, normalize } from "node:path";
 
 const baseDir = join(process.cwd(), process.argv[2] || ".");
 const port = Number(process.env.PORT || 5173);
+const redirectsPath = join(baseDir, "_redirects");
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -36,8 +37,20 @@ const routeFiles = new Map([
   ["/about/", "public/about.html"]
 ]);
 
-function resolvePath(url) {
-  const pathname = decodeURIComponent(new URL(url, "http://localhost").pathname);
+const redirects = existsSync(redirectsPath)
+  ? new Map(
+      readFileSync(redirectsPath, "utf8")
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter((line) => line && !line.startsWith("#"))
+        .map((line) => {
+          const [source, destination, status = "302"] = line.split(/\s+/);
+          return [source, { destination, status: Number(status) }];
+        })
+    )
+  : new Map();
+
+function resolvePath(pathname) {
   const routeFile = routeFiles.get(pathname);
   const relativePath = routeFile || pathname.replace(/^\/+/, "");
   let filePath = normalize(join(baseDir, relativePath));
@@ -54,7 +67,16 @@ function resolvePath(url) {
 }
 
 const server = createServer(async (request, response) => {
-  const filePath = resolvePath(request.url || "/");
+  const pathname = decodeURIComponent(new URL(request.url || "/", "http://localhost").pathname);
+  const redirect = redirects.get(pathname);
+
+  if (redirect) {
+    response.writeHead(redirect.status, { Location: redirect.destination });
+    response.end();
+    return;
+  }
+
+  const filePath = resolvePath(pathname);
 
   if (!filePath || !existsSync(filePath)) {
     const notFoundPath = join(baseDir, "404.html");
