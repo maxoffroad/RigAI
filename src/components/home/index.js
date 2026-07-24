@@ -41,8 +41,8 @@ function hero() {
           <img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800" alt="Modified off-road SUV on a forest trail" fetchpriority="high" />
         </figure>
         <article class="hero-plan-card">
-          <div class="result-header-row">
-            <div>
+          <div class="result-header-row example-plan-header">
+            <div class="example-plan-meta">
               <h2>Toyota 4Runner</h2>
               <p>Daily + Weekend Trails</p>
               <p class="hero-plan-budget">Approx. budget: $3,000</p>
@@ -50,7 +50,7 @@ function hero() {
             <span class="hero-example-label">EXAMPLE PLAN</span>
           </div>
           <ol class="plan-list">
-            ${planRows.map(([number, label, price]) => `<li><span>${number}</span><strong>${label}</strong><em>${price}</em></li>`).join("")}
+            ${planRows.map(([number, label, price]) => `<li class="example-plan-row"><span>${number}</span><strong>${label}</strong><em>${price}</em></li>`).join("")}
           </ol>
           <p class="example-note">Example only &mdash; recommendations and estimated costs vary by vehicle, market and selected products.</p>
         </article>
@@ -59,13 +59,13 @@ function hero() {
 }
 
 function trustStrip() {
-  return `<section class="home-trust-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
+  return `<section class="home-trust-strip hero-value-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
       ${[
         "Prioritized upgrade plan",
         "Beginner-friendly explanations",
         "Compatibility reminders",
         "Budget-aware recommendations"
-      ].map((item) => `<div class="trust-point"><span class="trust-check" aria-hidden="true">&#10003;</span><span>${item}</span></div>`).join("")}
+      ].map((item) => `<div class="trust-point hero-value-item"><span class="trust-check hero-value-icon" aria-hidden="true">&#10003;</span><span class="hero-value-text">${item}</span></div>`).join("")}
     </section>`;
 }
 
