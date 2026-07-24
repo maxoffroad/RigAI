@@ -1,8 +1,8 @@
 import { phase4BPages } from "./toyota-4runner-phase-4b.js";
 
 export const phase4ADates = {
-  published: "2026-07-23",
-  modified: "2026-07-23",
+  published: "2026-07-23T12:00:00+05:00",
+  modified: "2026-07-23T12:00:00+05:00",
   reviewedLabel: "July 23, 2026"
 };
 

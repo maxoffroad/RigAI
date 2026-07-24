@@ -7,9 +7,23 @@ import { inspectBuildOutput } from "./build-contract.js";
 const root = process.cwd();
 const dist = join(root, "dist");
 const errors = [];
+const articleDateTimePattern =
+  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/;
 
 const buildContract = inspectBuildOutput({ dist, pages });
 errors.push(...buildContract.errors);
+
+const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
+for (const centralizedDateField of [
+  "datePublished: page.content.dates.published",
+  "dateModified: page.content.dates.modified"
+]) {
+  if (!pageTemplateSource.includes(centralizedDateField)) {
+    errors.push(
+      `Article JSON-LD must use centralized content dates directly: ${centralizedDateField}.`
+    );
+  }
+}
 
 function readBuildFile(relativePath) {
   const filePath = join(dist, relativePath);
@@ -533,6 +547,25 @@ for (const route of vehicleRoutes) {
     if (primary) {
       if (primary.datePublished !== page.content.dates.published || primary.dateModified !== page.content.dates.modified) {
         errors.push(`${label} JSON-LD dates do not match centralized page dates.`);
+      }
+
+      if (page.structuredData === "article") {
+        for (const property of ["datePublished", "dateModified"]) {
+          const value = primary[property];
+          if (!articleDateTimePattern.test(value) || !Number.isFinite(Date.parse(value))) {
+            errors.push(
+              `${label} JSON-LD ${property} must be an ISO 8601 DateTime with a timezone.`
+            );
+          }
+        }
+
+        if (
+          Number.isFinite(Date.parse(primary.datePublished)) &&
+          Number.isFinite(Date.parse(primary.dateModified)) &&
+          Date.parse(primary.dateModified) < Date.parse(primary.datePublished)
+        ) {
+          errors.push(`${label} JSON-LD dateModified must not be earlier than datePublished.`);
+        }
       }
     }
 

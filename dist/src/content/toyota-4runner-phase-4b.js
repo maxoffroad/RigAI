@@ -1,6 +1,6 @@
 export const phase4BDates = {
-  published: "2026-07-23",
-  modified: "2026-07-23",
+  published: "2026-07-23T12:00:00+05:00",
+  modified: "2026-07-23T12:00:00+05:00",
   reviewedLabel: "July 23, 2026"
 };
 
