@@ -60,14 +60,14 @@ function hero() {
 }
 
 function trustStrip() {
-  return `<section class="home-trust-strip hero-value-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
+  return `<div class="hero-value-strip" id="home-trust-strip" data-figma-section="home-trust-strip" aria-label="RigAI product trust points">
       ${[
         "Prioritized upgrade plan",
         "Beginner-friendly explanations",
         "Compatibility reminders",
         "Budget-aware recommendations"
-      ].map((item) => `<div class="trust-point hero-value-item"><span class="trust-check hero-value-icon" aria-hidden="true">&#10003;</span><span class="hero-value-text">${item}</span></div>`).join("")}
-    </section>`;
+      ].map((item) => `<div class="hero-value-item"><span class="hero-value-icon" aria-hidden="true">&#10003;</span><span class="hero-value-text">${item}</span></div>`).join("")}
+    </div>`;
 }
 
 function problem() {
