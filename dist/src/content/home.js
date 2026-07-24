@@ -102,9 +102,9 @@ export const appScreens = [
   {
     number: "01",
     label: "Select vehicle",
-    eyebrow: "Your vehicle",
-    title: "Toyota 4Runner",
-    lines: ["Toyota Land Cruiser", "Lexus GX 460", "Jeep Wrangler", "5th Generation · 2010-present"]
+    eyebrow: "Example vehicle selection",
+    title: "Choose your SUV",
+    lines: ["Toyota 4Runner", "Land Cruiser Prado", "Lexus GX", "Jeep Wrangler", "Additional vehicles available"]
   },
   {
     number: "02",
@@ -130,12 +130,12 @@ export const appScreens = [
 ];
 
 export const vehicles = [
-  { name: "Toyota 4Runner", status: "Available now", href: "/vehicles/toyota-4runner" },
-  { name: "Land Cruiser Prado", status: "Future coverage" },
-  { name: "Land Cruiser 200", status: "Future coverage" },
-  { name: "Lexus GX", status: "Future coverage" },
-  { name: "Jeep Wrangler", status: "Future coverage" },
-  { name: "Ford Bronco", status: "Future coverage" }
+  { name: "Toyota 4Runner", status: "Detailed guide available", state: "guide", href: "/vehicles/toyota-4runner" },
+  { name: "Land Cruiser Prado", status: "Supported in app", state: "supported" },
+  { name: "Land Cruiser 200", status: "Limited support", state: "limited" },
+  { name: "Lexus GX", status: "Supported in app", state: "supported" },
+  { name: "Jeep Wrangler", status: "Supported in app", state: "supported" },
+  { name: "Ford Bronco", status: "Supported in app", state: "supported" }
 ];
 
 const suspensionPage = getToyota4RunnerPage("toyota-4runner-suspension");

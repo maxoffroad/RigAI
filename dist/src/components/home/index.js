@@ -30,7 +30,7 @@ function hero() {
       <div class="home-hero-copy">
         <p class="hero-badge">Off-Road Build Planner</p>
         <h1>Your SUV.<br>Your terrain.<br><span>The right build.</span></h1>
-        <p class="hero-copy">RigAI creates a personalized off-road upgrade plan based on your vehicle, driving goals, terrain and budget.</p>
+        <p class="hero-copy">RigAI creates personalized off-road upgrade plans for SUVs based on the vehicle, driving goals, terrain and budget.</p>
         <div class="hero-actions">
           <a class="button primary" href="#download">Build My Setup</a>
           <a class="button secondary" href="#example-build">See an Example Build</a>
@@ -49,10 +49,11 @@ function hero() {
             </div>
             <span class="hero-example-label">EXAMPLE PLAN</span>
           </div>
+          <p class="hero-example-context">One example of a personalized RigAI plan.</p>
           <ol class="plan-list">
             ${planRows.map(([number, label, price]) => `<li class="example-plan-row"><span>${number}</span><strong>${label}</strong><em>${price}</em></li>`).join("")}
           </ol>
-          <p class="example-note">Example only &mdash; recommendations and estimated costs vary by vehicle, market and selected products.</p>
+          <p class="example-note">Example only &mdash; recommendations and estimated costs vary by vehicle, configuration, market and selected products.</p>
         </article>
       </aside>
     </section>`;
@@ -166,6 +167,8 @@ function recommendationExample() {
       <div class="section-heading section-heading--stacked">
         <p class="eyebrow">Intelligence</p>
         <h2>Recommendations with reasoning, not just product lists</h2>
+        <p class="recommendation-context-label">EXAMPLE RECOMMENDATION</p>
+        <p class="recommendation-context">Shown for one Toyota 4Runner profile. RigAI uses the same planning logic for each supported vehicle configuration.</p>
       </div>
       <div class="recommendation-layout">
         <article class="recommendation-card">
@@ -234,19 +237,26 @@ function supportedVehicles() {
         <div>
           <p class="eyebrow">Platforms</p>
           <h2>Built for real off-road platforms</h2>
-          <p>RigAI currently starts with Toyota 4Runner. Support for additional off-road vehicles will be added gradually.</p>
+          <p>RigAI supports multiple off-road SUV platforms, with detailed website guides beginning with Toyota 4Runner.</p>
         </div>
       </div>
       <div class="vehicle-grid">
         ${vehicles.map((vehicle, index) => {
           const content = `<div class="vehicle-media" aria-hidden="true" data-variant="${index + 1}"></div>
           <h3>${vehicle.name}</h3>
-          <span class="status-label${vehicle.href ? " success" : ""}">${vehicle.status}</span>`;
+          <span class="status-label${vehicle.state === "guide" || vehicle.state === "supported" ? " success" : vehicle.state === "limited" ? " warning" : ""}">${vehicle.status}</span>`;
           return vehicle.href
             ? `<a class="vehicle-card vehicle-card--visual is-published" href="${vehicle.href}" aria-label="${vehicle.name} upgrade guide">${content}<strong class="card-link-label">Open vehicle guide</strong></a>`
-            : `<article class="vehicle-card vehicle-card--visual">${content}</article>`;
+            : `<article class="vehicle-card vehicle-card--visual vehicle-card--${vehicle.state}">${content}</article>`;
         }).join("")}
       </div>
+      <aside class="vehicle-reassurance" aria-labelledby="vehicle-reassurance-title">
+        <div>
+          <h3 id="vehicle-reassurance-title">Your SUV is not listed?</h3>
+          <p>RigAI is built around vehicle configuration, driving profile, terrain, budget and upgrade dependencies. Vehicle coverage is being expanded progressively.</p>
+        </div>
+        <a class="text-link" href="#how-it-works">See how RigAI works</a>
+      </aside>
     </section>`;
 }
 
@@ -268,7 +278,7 @@ function guidesPreview() {
             : `<article class="guide-card">${content}</article>`;
         }).join("")}
       </div>
-      <p class="guides-note">Guides become available as RigAI vehicle coverage expands.</p>
+      <p class="guides-note">Our first detailed guide collection focuses on Toyota 4Runner. Additional vehicle-specific guides will follow as coverage expands.</p>
     </section>`;
 }
 

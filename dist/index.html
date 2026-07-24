@@ -53,7 +53,7 @@
       <div class="home-hero-copy">
         <p class="hero-badge">Off-Road Build Planner</p>
         <h1>Your SUV.<br>Your terrain.<br><span>The right build.</span></h1>
-        <p class="hero-copy">RigAI creates a personalized off-road upgrade plan based on your vehicle, driving goals, terrain and budget.</p>
+        <p class="hero-copy">RigAI creates personalized off-road upgrade plans for SUVs based on the vehicle, driving goals, terrain and budget.</p>
         <div class="hero-actions">
           <a class="button primary" href="#download">Build My Setup</a>
           <a class="button secondary" href="#example-build">See an Example Build</a>
@@ -72,10 +72,11 @@
             </div>
             <span class="hero-example-label">EXAMPLE PLAN</span>
           </div>
+          <p class="hero-example-context">One example of a personalized RigAI plan.</p>
           <ol class="plan-list">
             <li class="example-plan-row"><span>01</span><strong>All-terrain tires</strong><em>~$700-900</em></li><li class="example-plan-row"><span>02</span><strong>Recovery points</strong><em>~$150-250</em></li><li class="example-plan-row"><span>03</span><strong>Skid plate system</strong><em>~$350-500</em></li><li class="example-plan-row"><span>04</span><strong>Suspension lift</strong><em>~$800-1,200</em></li><li class="example-plan-row"><span>05</span><strong>Recovery equipment</strong><em>~$250-400</em></li>
           </ol>
-          <p class="example-note">Example only &mdash; recommendations and estimated costs vary by vehicle, market and selected products.</p>
+          <p class="example-note">Example only &mdash; recommendations and estimated costs vary by vehicle, configuration, market and selected products.</p>
         </article>
       </aside>
     </section>
@@ -225,6 +226,8 @@
       <div class="section-heading section-heading--stacked">
         <p class="eyebrow">Intelligence</p>
         <h2>Recommendations with reasoning, not just product lists</h2>
+        <p class="recommendation-context-label">EXAMPLE RECOMMENDATION</p>
+        <p class="recommendation-context">Shown for one Toyota 4Runner profile. RigAI uses the same planning logic for each supported vehicle configuration.</p>
       </div>
       <div class="recommendation-layout">
         <article class="recommendation-card">
@@ -274,9 +277,9 @@
         <figure class="phone-preview">
           <div class="phone-shell">
             <div class="phone-status"><span>9:41</span><span>RigAI</span></div>
-            <p class="eyebrow">Your vehicle</p>
-            <h3>Toyota 4Runner</h3>
-            <p class="is-selected">Toyota Land Cruiser</p><p class="">Lexus GX 460</p><p class="">Jeep Wrangler</p><p class="">5th Generation · 2010-present</p>
+            <p class="eyebrow">Example vehicle selection</p>
+            <h3>Choose your SUV</h3>
+            <p class="is-selected">Toyota 4Runner</p><p class="">Land Cruiser Prado</p><p class="">Lexus GX</p><p class="">Jeep Wrangler</p><p class="">Additional vehicles available</p>
           </div>
           <figcaption><span>01</span> Select vehicle</figcaption>
         </figure><figure class="phone-preview">
@@ -311,24 +314,31 @@
         <div>
           <p class="eyebrow">Platforms</p>
           <h2>Built for real off-road platforms</h2>
-          <p>RigAI currently starts with Toyota 4Runner. Support for additional off-road vehicles will be added gradually.</p>
+          <p>RigAI supports multiple off-road SUV platforms, with detailed website guides beginning with Toyota 4Runner.</p>
         </div>
       </div>
       <div class="vehicle-grid">
         <a class="vehicle-card vehicle-card--visual is-published" href="/vehicles/toyota-4runner" aria-label="Toyota 4Runner upgrade guide"><div class="vehicle-media" aria-hidden="true" data-variant="1"></div>
           <h3>Toyota 4Runner</h3>
-          <span class="status-label success">Available now</span><strong class="card-link-label">Open vehicle guide</strong></a><article class="vehicle-card vehicle-card--visual"><div class="vehicle-media" aria-hidden="true" data-variant="2"></div>
+          <span class="status-label success">Detailed guide available</span><strong class="card-link-label">Open vehicle guide</strong></a><article class="vehicle-card vehicle-card--visual vehicle-card--supported"><div class="vehicle-media" aria-hidden="true" data-variant="2"></div>
           <h3>Land Cruiser Prado</h3>
-          <span class="status-label">Future coverage</span></article><article class="vehicle-card vehicle-card--visual"><div class="vehicle-media" aria-hidden="true" data-variant="3"></div>
+          <span class="status-label success">Supported in app</span></article><article class="vehicle-card vehicle-card--visual vehicle-card--limited"><div class="vehicle-media" aria-hidden="true" data-variant="3"></div>
           <h3>Land Cruiser 200</h3>
-          <span class="status-label">Future coverage</span></article><article class="vehicle-card vehicle-card--visual"><div class="vehicle-media" aria-hidden="true" data-variant="4"></div>
+          <span class="status-label warning">Limited support</span></article><article class="vehicle-card vehicle-card--visual vehicle-card--supported"><div class="vehicle-media" aria-hidden="true" data-variant="4"></div>
           <h3>Lexus GX</h3>
-          <span class="status-label">Future coverage</span></article><article class="vehicle-card vehicle-card--visual"><div class="vehicle-media" aria-hidden="true" data-variant="5"></div>
+          <span class="status-label success">Supported in app</span></article><article class="vehicle-card vehicle-card--visual vehicle-card--supported"><div class="vehicle-media" aria-hidden="true" data-variant="5"></div>
           <h3>Jeep Wrangler</h3>
-          <span class="status-label">Future coverage</span></article><article class="vehicle-card vehicle-card--visual"><div class="vehicle-media" aria-hidden="true" data-variant="6"></div>
+          <span class="status-label success">Supported in app</span></article><article class="vehicle-card vehicle-card--visual vehicle-card--supported"><div class="vehicle-media" aria-hidden="true" data-variant="6"></div>
           <h3>Ford Bronco</h3>
-          <span class="status-label">Future coverage</span></article>
+          <span class="status-label success">Supported in app</span></article>
       </div>
+      <aside class="vehicle-reassurance" aria-labelledby="vehicle-reassurance-title">
+        <div>
+          <h3 id="vehicle-reassurance-title">Your SUV is not listed?</h3>
+          <p>RigAI is built around vehicle configuration, driving profile, terrain, budget and upgrade dependencies. Vehicle coverage is being expanded progressively.</p>
+        </div>
+        <a class="text-link" href="#how-it-works">See how RigAI works</a>
+      </aside>
     </section>
       <section class="home-section guides-section" id="guides" data-figma-section="home-guides">
       <div class="section-heading section-heading--stacked">
@@ -357,7 +367,7 @@
           <p>Plan travel around operating load, reliability, recovery, cargo, and comfort.</p>
           <small>6 min read</small><strong class="card-link-label">Read guide</strong></a>
       </div>
-      <p class="guides-note">Guides become available as RigAI vehicle coverage expands.</p>
+      <p class="guides-note">Our first detailed guide collection focuses on Toyota 4Runner. Additional vehicle-specific guides will follow as coverage expands.</p>
     </section>
       <section class="home-section trust-section" id="home-trust-safety" data-figma-section="home-trust-safety">
       <div class="transparency-panel">
