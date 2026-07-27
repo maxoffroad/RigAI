@@ -35,6 +35,9 @@ const DATASET_KEYS = Object.freeze({
   destination_domain: "destinationDomain"
 });
 
+export const ANALYTICS_CONSENT_KEY = "rigai_analytics_consent";
+const CONSENT_VALUES = new Set(["granted", "denied"]);
+
 function cleanValue(value) {
   if (value === undefined || value === null) return undefined;
   const normalized = String(value).trim().slice(0, 100);
@@ -84,10 +87,75 @@ export function eventParameters(element, eventName, documentLike = document) {
   return params;
 }
 
+export function hasAnalyticsConsent(windowLike = globalThis.window) {
+  return windowLike?.__RIGAI_ANALYTICS__?.consent === "granted";
+}
+
+export function sendPageView(
+  documentLike = globalThis.document,
+  windowLike = globalThis.window
+) {
+  const runtime = windowLike?.__RIGAI_ANALYTICS__;
+  if (
+    !runtime?.enabled ||
+    !hasAnalyticsConsent(windowLike) ||
+    runtime.pageViewSent ||
+    typeof windowLike.gtag !== "function"
+  ) {
+    return false;
+  }
+
+  windowLike.gtag("event", "page_view", {
+    page_path: normalizedPagePath(documentLike?.location || windowLike.location)
+  });
+  runtime.pageViewSent = true;
+  return true;
+}
+
+export function updateAnalyticsConsent(
+  choice,
+  documentLike = globalThis.document,
+  windowLike = globalThis.window
+) {
+  const runtime = windowLike?.__RIGAI_ANALYTICS__;
+  if (
+    !runtime?.enabled ||
+    !CONSENT_VALUES.has(choice) ||
+    typeof windowLike.gtag !== "function"
+  ) {
+    return false;
+  }
+
+  try {
+    windowLike.localStorage?.setItem(
+      runtime.storageKey || ANALYTICS_CONSENT_KEY,
+      choice
+    );
+  } catch {
+    // Consent still applies for the current page when browser storage is unavailable.
+  }
+
+  runtime.consent = choice;
+  runtime.savedChoice = choice;
+  windowLike.gtag("consent", "update", {
+    analytics_storage: choice,
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied"
+  });
+
+  if (choice === "granted") {
+    sendPageView(documentLike, windowLike);
+  }
+
+  return true;
+}
+
 export function trackEvent(name, params = {}, windowLike = globalThis.window) {
   if (
     !EVENT_PARAMETERS[name] ||
     !windowLike?.__RIGAI_ANALYTICS__?.enabled ||
+    !hasAnalyticsConsent(windowLike) ||
     typeof windowLike.gtag !== "function"
   ) {
     return false;
@@ -104,6 +172,49 @@ export function trackEvent(name, params = {}, windowLike = globalThis.window) {
   return true;
 }
 
+function bindConsentControls(documentLike, windowLike) {
+  const runtime = windowLike.__RIGAI_ANALYTICS__;
+  const banner = documentLike.querySelector("[data-analytics-consent]");
+  const settingsButton = documentLike.querySelector("[data-analytics-settings]");
+  const choiceButtons = documentLike.querySelectorAll("[data-consent-choice]");
+
+  if (!banner || !settingsButton || choiceButtons.length !== 2) return;
+
+  const showBanner = ({ moveFocus = false } = {}) => {
+    banner.hidden = false;
+    if (moveFocus) {
+      banner.querySelector('[data-consent-choice="granted"]')?.focus();
+    }
+  };
+
+  const hideBanner = () => {
+    banner.hidden = true;
+  };
+
+  settingsButton.addEventListener("click", () => {
+    showBanner({ moveFocus: true });
+  });
+
+  for (const button of choiceButtons) {
+    button.addEventListener("click", () => {
+      if (
+        updateAnalyticsConsent(
+          button.dataset.consentChoice,
+          documentLike,
+          windowLike
+        )
+      ) {
+        hideBanner();
+        settingsButton.focus();
+      }
+    });
+  }
+
+  if (!runtime.savedChoice) {
+    showBanner();
+  }
+}
+
 export function bindAnalytics(documentLike = document, windowLike = window) {
   if (
     !windowLike?.__RIGAI_ANALYTICS__?.enabled ||
@@ -113,6 +224,7 @@ export function bindAnalytics(documentLike = document, windowLike = window) {
   }
 
   windowLike.__RIGAI_ANALYTICS__.listenersBound = true;
+  bindConsentControls(documentLike, windowLike);
 
   documentLike.addEventListener("click", (event) => {
     const element = event.target.closest?.("[data-analytics-event]");

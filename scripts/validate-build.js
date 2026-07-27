@@ -685,6 +685,30 @@ requireIncludes(
   "windowLike.__RIGAI_ANALYTICS__.listenersBound = true;",
   "dist/src/analytics.js"
 );
+requireIncludes(
+  analyticsSource,
+  '!hasAnalyticsConsent(windowLike)',
+  "dist/src/analytics.js"
+);
+requireIncludes(
+  analyticsSource,
+  'runtime.pageViewSent',
+  "dist/src/analytics.js"
+);
+requireIncludes(
+  analyticsSource,
+  'windowLike.gtag("consent", "update"',
+  "dist/src/analytics.js"
+);
+requireIncludes(
+  analyticsSource,
+  'analytics_storage: choice',
+  "dist/src/analytics.js"
+);
+
+if (/ad_(?:storage|user_data|personalization)\s*:\s*["']granted["']/.test(analyticsSource)) {
+  errors.push("Analytics helper must never grant advertising consent.");
+}
 
 if ((analyticsSource.match(/documentLike\.addEventListener\("click"/g) || []).length !== 1) {
   errors.push("Analytics helper must bind exactly one delegated click listener.");
@@ -749,15 +773,50 @@ for (const page of pages) {
     );
     requireIncludes(html, "allow_google_signals", label);
     requireIncludes(html, "allow_ad_personalization_signals", label);
-    requireIncludes(html, "send_page_view: true", label);
+    requireIncludes(html, "send_page_view: false", label);
     requireIncludes(html, "analytics_storage: 'denied'", label);
     requireIncludes(html, "ad_storage: 'denied'", label);
     requireIncludes(html, "ad_user_data: 'denied'", label);
     requireIncludes(html, "ad_personalization: 'denied'", label);
+    requireIncludes(html, "gtag('consent', 'update'", label);
+    requireIncludes(html, "analytics_storage: 'granted'", label);
+    requireIncludes(html, "rigai_analytics_consent", label);
+    requireIncludes(html, "data-analytics-consent", label);
+    requireIncludes(html, 'data-consent-choice="granted"', label);
+    requireIncludes(html, 'data-consent-choice="denied"', label);
+    requireIncludes(html, "data-analytics-settings", label);
+    requireIncludes(html, 'href="/privacy"', label);
+
+    const defaultConsentIndex = html.indexOf("gtag('consent', 'default'");
+    const configIndex = html.indexOf("gtag('config'");
+    if (defaultConsentIndex < 0 || configIndex < 0 || defaultConsentIndex > configIndex) {
+      errors.push(`${label} must set denied consent before the GA4 config call.`);
+    }
+
+    const consentUpdateCount = (
+      html.match(/\bgtag\(['"]consent['"],\s*['"]update['"]/g) || []
+    ).length;
+    const manualPageViewCount = (
+      html.match(/\bgtag\(['"]event['"],\s*['"]page_view['"]/g) || []
+    ).length;
+
+    if (consentUpdateCount !== 1) {
+      errors.push(`${label} must include exactly one saved-consent update path.`);
+    }
+
+    if (manualPageViewCount !== 1) {
+      errors.push(`${label} must include exactly one manual page_view path.`);
+    }
+
+    if (/ad_(?:storage|user_data|personalization)\s*:\s*['"]granted['"]/.test(html)) {
+      errors.push(`${label} grants advertising consent.`);
+    }
   } else if (
     googleTagCount !== 0 ||
     configCallCount !== 0 ||
-    html.includes("__RIGAI_ANALYTICS__")
+    html.includes("__RIGAI_ANALYTICS__") ||
+    html.includes("data-analytics-consent") ||
+    html.includes("data-analytics-settings")
   ) {
     errors.push(`${label} contains analytics initialization while analytics is disabled.`);
   }

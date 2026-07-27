@@ -64,24 +64,74 @@ function renderGoogleTag(analytics) {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
-      window.__RIGAI_ANALYTICS__ = { enabled: true, listenersBound: false };
+      var rigaiSavedConsent = null;
+      try {
+        var rigaiStoredConsent = window.localStorage.getItem('rigai_analytics_consent');
+        if (rigaiStoredConsent === 'granted' || rigaiStoredConsent === 'denied') {
+          rigaiSavedConsent = rigaiStoredConsent;
+        }
+      } catch (error) {
+        rigaiSavedConsent = null;
+      }
+      window.__RIGAI_ANALYTICS__ = {
+        enabled: true,
+        listenersBound: false,
+        consent: rigaiSavedConsent || 'denied',
+        savedChoice: rigaiSavedConsent,
+        pageViewSent: false,
+        storageKey: 'rigai_analytics_consent'
+      };
       gtag('consent', 'default', {
         analytics_storage: 'denied',
         ad_storage: 'denied',
         ad_user_data: 'denied',
         ad_personalization: 'denied'
       });
+      if (rigaiSavedConsent === 'granted') {
+        gtag('consent', 'update', {
+          analytics_storage: 'granted',
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied'
+        });
+      }
       gtag('js', new Date());
       gtag('config', '${measurementId}', {
         allow_google_signals: false,
         allow_ad_personalization_signals: false,
-        send_page_view: true,${debugConfig}
+        send_page_view: false,${debugConfig}
       });
+      if (rigaiSavedConsent === 'granted') {
+        gtag('event', 'page_view', {
+          page_path: window.location.pathname
+        });
+        window.__RIGAI_ANALYTICS__.pageViewSent = true;
+      }
     </script>`;
 }
 
-function renderFooter(page) {
+function renderConsentUi(analytics) {
+  if (!analytics?.enabled) return "";
+
+  return `<section class="analytics-consent" data-analytics-consent hidden role="dialog" aria-modal="false" aria-labelledby="analytics-consent-title" aria-describedby="analytics-consent-description">
+      <div class="analytics-consent-copy">
+        <h2 id="analytics-consent-title">Optional analytics</h2>
+        <p id="analytics-consent-description">RigAI uses privacy-focused analytics to understand site usage and improve the product. Analytics is optional. <a href="/privacy">Privacy Policy</a></p>
+      </div>
+      <div class="analytics-consent-actions">
+        <button class="consent-button consent-button-primary" type="button" data-consent-choice="granted">Accept analytics</button>
+        <button class="consent-button consent-button-secondary" type="button" data-consent-choice="denied">Reject</button>
+      </div>
+    </section>`;
+}
+
+function renderFooter(page, analytics) {
   const currentYear = new Date().getFullYear();
+  const analyticsSettings = analytics?.enabled
+    ? '\n          <button class="analytics-settings" type="button" data-analytics-settings>Analytics settings</button>'
+    : "";
+  const consentUi = renderConsentUi(analytics);
+
   return `<footer class="footer">
       <div class="footer-inner">
         <div class="footer-brand">
@@ -112,12 +162,12 @@ function renderFooter(page) {
       <div class="footer-bottom">
         <p>© ${currentYear} RigAI. For informational purposes only.</p>
         <div class="footer-bottom-actions">
-          <p>Not professional mechanical advice.</p>
+          <p>Not professional mechanical advice.</p>${analyticsSettings}
           <span class="language-label" aria-label="English content">EN</span>
           <span class="language-label is-muted" aria-label="Russian legal translations available on legal pages">RU</span>
         </div>
       </div>
-    </footer>`;
+    </footer>${consentUi ? `\n    ${consentUi}` : ""}`;
 }
 
 function breadcrumbSchema(page) {
@@ -320,7 +370,7 @@ ${renderHead(page, analytics)}
 
     ${mainHtml}
 
-    ${renderFooter(page)}
+    ${renderFooter(page, analytics)}
 ${uniqueScripts ? `\n${uniqueScripts}` : ""}
   </body>
 </html>

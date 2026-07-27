@@ -7,7 +7,7 @@ Phase 5B adds optional, privacy-limited GA4 page-view and conversion tracking to
 ## Initial State
 
 - Static multi-page Cloudflare Pages build
-- No GA4, GTM, pixel, session recording, consent banner, or analytics helper
+- No GA4, GTM, pixel, session recording, or analytics helper at the initial audit
 - Build My Setup linked to an internal Coming Soon section
 - No real Google Play URL
 - No published affiliate product/search links
@@ -45,7 +45,7 @@ When enabled, each generated page contains:
 - `allow_ad_personalization_signals: false`
 - Analytics storage, ad storage, ad user data, and ad personalization consent defaults set to denied
 
-No SPA page tracking or custom `page_view` event is added.
+The static site sends one manual `page_view` per page only after analytics consent is granted. Automatic `send_page_view` is disabled to prevent a duplicate when consent changes.
 
 ## Events Implemented
 
@@ -93,7 +93,7 @@ The privacy policy now names Google Analytics 4, describes technical and usage m
 
 ## Consent Limitation
 
-No consent UI exists in Phase 5B. The implementation does not claim or set granted consent. Analytics storage and advertising-related storage/personalization are denied by default. GA4 may send consent-aware cookieless pings. Phase 5C is still required for a real consent choice where applicable, especially for EEA/UK traffic.
+A compact consent banner records an explicit `granted` or `denied` choice in first-party browser storage. Analytics storage is denied by default and changes only after an explicit choice. Visitors can reopen the controls from the footer. Advertising storage, ad user data, ad personalization, Google Signals, and ad-personalization signals remain disabled.
 
 ## Performance
 
@@ -167,7 +167,7 @@ Production Realtime and DebugView remain manual and must not be reported as pass
 
 ## Known Limitations
 
-- No consent banner or preference center yet.
+- The consent UI provides one optional analytics category rather than a multi-category preference center.
 - No real Google Play destination.
 - No published affiliate links.
 - Build My Setup currently measures intent to view the internal Coming Soon section, not install conversion.
@@ -175,7 +175,7 @@ Production Realtime and DebugView remain manual and must not be reported as pass
 
 ## Phase 5C Readiness
 
-The tag initializes consent defaults before GA4 config and can accept a future consent update from a real preference UI. Phase 5C should define regions, consent categories, storage behavior, withdrawal, and policy/UI alignment.
+The tag initializes denied consent before GA4 config, applies a saved analytics choice immediately, and supports withdrawal through the footer. A future Phase 5C can add region-specific policy review or additional consent categories if RigAI introduces technologies beyond privacy-focused analytics.
 
 ## Recommended Commit Message
 

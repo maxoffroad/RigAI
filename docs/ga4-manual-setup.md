@@ -100,9 +100,9 @@ Leave unwanted-referral and cross-domain settings unchanged unless a real paymen
 
 ## Consent Limitation
 
-Phase 5B does not add a consent banner and does not set consent to granted. Analytics storage, ad storage, ad user data, and ad personalization defaults are denied; Google Signals and ad-personalization signals are disabled. GA4 can send consent-aware cookieless measurement pings, but the site does not claim that these replace a consent decision where one is required.
+RigAI defaults analytics storage, ad storage, ad user data, and ad personalization to denied. The site asks visitors to accept or reject optional analytics, stores only that choice under `rigai_analytics_consent`, and lets visitors change it from the footer. Analytics events and page views are sent only after analytics consent is granted.
 
-GA4 may still use analytics cookies or browser storage. Before actively targeting EEA/UK traffic, Phase 5C should add a consent-management solution that records a real user choice and updates Consent Mode accordingly. Do not imitate consent or preselect granted.
+Advertising consent remains denied, Google Signals and ad-personalization signals remain disabled, and no choice is preselected. Legal requirements can vary by region, so the consent flow and policy should still be reviewed when RigAI expands into new jurisdictions.
 
 ## Troubleshooting
 
