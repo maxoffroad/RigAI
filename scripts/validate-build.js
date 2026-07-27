@@ -18,6 +18,27 @@ const articleDateTimePattern =
 const buildContract = inspectBuildOutput({ dist, pages });
 errors.push(...buildContract.errors);
 
+for (const [label, values] of [
+  ["route", pages.map((page) => page.route)],
+  ["page key", pages.map((page) => page.key)]
+]) {
+  const duplicates = values.filter(
+    (value, index) => values.indexOf(value) !== index
+  );
+  if (duplicates.length > 0) {
+    errors.push(`Duplicate ${label} configuration: ${[...new Set(duplicates)].join(", ")}.`);
+  }
+}
+
+const configuredTacomaRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/toyota-tacoma")
+);
+if (configuredTacomaRoutes.length !== 5) {
+  errors.push(
+    `Expected exactly five configured Tacoma routes, found ${configuredTacomaRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -340,6 +361,59 @@ if (
   /position:\s*absolute/.test(articleBulletMarkerRule)
 ) {
   errors.push("Shared article bullet marker must remain a static 8px square.");
+}
+
+const vehicleCardRule =
+  stylesheet.match(/\.vehicle-card--visual\s*\{([\s\S]*?)\}/)?.[1] || "";
+const publishedVehicleCardRule =
+  stylesheet.match(
+    /\.vehicle-card--visual\.is-published\s*\{([\s\S]*?)\}/
+  )?.[1] || "";
+const vehicleDirectoryRule =
+  stylesheet.match(/\.vehicle-directory-grid\s*\{([\s\S]*?)\}/)?.[1] || "";
+const mobileVehicleRules =
+  stylesheet.match(/@media \(max-width:\s*620px\)\s*\{([\s\S]*)$/)?.[1] || "";
+
+if (!/min-width:\s*0/.test(vehicleCardRule)) {
+  errors.push("Shared vehicle cards must set min-width: 0 to prevent overflow.");
+}
+if (!/min-height:\s*330px/.test(publishedVehicleCardRule)) {
+  errors.push("Published homepage vehicle cards must share an aligned height.");
+}
+if (
+  !/grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/.test(
+    vehicleDirectoryRule
+  )
+) {
+  errors.push("Vehicle directory must use two equal desktop columns.");
+}
+if (
+  !/\.vehicle-directory-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/.test(
+    mobileVehicleRules
+  ) ||
+  !/\.vehicle-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/.test(
+    stylesheet.match(/@media \(max-width:\s*760px\)\s*\{([\s\S]*?)@media/)?.[1] ||
+      ""
+  )
+) {
+  errors.push("Vehicle cards must collapse to one column on mobile.");
+}
+
+const homeComponentSource = readFileSync(
+  join(root, "src", "components", "home", "index.js"),
+  "utf8"
+);
+const vehicleDirectorySource = readFileSync(
+  join(root, "src", "components", "vehicles", "index.js"),
+  "utf8"
+);
+for (const [label, source] of [
+  ["homepage", homeComponentSource],
+  ["vehicles directory", vehicleDirectorySource]
+]) {
+  if (!source.includes("renderVehicleCard")) {
+    errors.push(`${label} must use the shared vehicle-card component.`);
+  }
 }
 
 const homeHtml = readBuildFile("index.html");
@@ -792,6 +866,10 @@ for (const route of vehicleRoutes) {
       }
     }
 
+    if (route === "/vehicles" && types.has("Article")) {
+      errors.push(`${label} must not include Article schema.`);
+    }
+
     const primary = graph.find((item) => item["@type"] === expectedPrimaryType);
     if (primary) {
       if (primary.datePublished !== page.content.dates.published || primary.dateModified !== page.content.dates.modified) {
@@ -1022,6 +1100,7 @@ const vehicleGuideParameterBlock =
 for (const requiredParameter of [
   '"vehicle_slug"',
   '"cta_location"',
+  '"page_type"',
   '"page_path"'
 ]) {
   if (!vehicleGuideParameterBlock.includes(requiredParameter)) {

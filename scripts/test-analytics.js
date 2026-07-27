@@ -142,10 +142,38 @@ if (
   JSON.stringify({
     vehicle_slug: "toyota-tacoma",
     cta_location: "homepage_vehicle_card",
+    page_type: "home",
     page_path: "/"
   })
 ) {
   throw new Error("Tacoma homepage vehicle-card analytics payload is invalid.");
+}
+
+const directoryDocument = {
+  location: { pathname: "/vehicles" },
+  body: { dataset: { pageType: "vehicle_directory" } }
+};
+const directoryVehicleCard = {
+  dataset: {
+    analyticsLocation: "vehicles_directory_card",
+    vehicleSlug: "toyota-tacoma"
+  }
+};
+const directoryVehicleParams = eventParameters(
+  directoryVehicleCard,
+  "vehicle_guide_click",
+  directoryDocument
+);
+if (
+  JSON.stringify(directoryVehicleParams) !==
+  JSON.stringify({
+    vehicle_slug: "toyota-tacoma",
+    cta_location: "vehicles_directory_card",
+    page_type: "vehicle_directory",
+    page_path: "/vehicles"
+  })
+) {
+  throw new Error("Tacoma directory vehicle-card analytics payload is invalid.");
 }
 
 const vehicleGuideCallsBefore = calls.filter(
@@ -165,6 +193,22 @@ if (
     JSON.stringify(tacomaVehicleParams)
 ) {
   throw new Error("Tacoma homepage vehicle-card click must send exactly one event.");
+}
+
+const directoryVehicleCallsBefore = vehicleGuideCalls.length;
+if (!trackEvent("vehicle_guide_click", directoryVehicleParams, windowLike)) {
+  throw new Error("Tacoma directory vehicle-card event was not sent.");
+}
+const directoryVehicleCalls = calls.filter(
+  ([command, eventName]) =>
+    command === "event" && eventName === "vehicle_guide_click"
+);
+if (
+  directoryVehicleCalls.length !== directoryVehicleCallsBefore + 1 ||
+  JSON.stringify(directoryVehicleCalls.at(-1)[2]) !==
+    JSON.stringify(directoryVehicleParams)
+) {
+  throw new Error("Tacoma directory vehicle-card click must send exactly one event.");
 }
 
 updateAnalyticsConsent("denied", documentLike, windowLike);
