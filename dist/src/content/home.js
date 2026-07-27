@@ -130,7 +130,24 @@ export const appScreens = [
 ];
 
 export const vehicles = [
-  { name: "Toyota 4Runner", status: "Detailed guide available", state: "guide", href: "/vehicles/toyota-4runner" },
+  {
+    name: "Toyota 4Runner",
+    scope: "2010-2024 · 5th Gen",
+    description: "SUV-focused upgrade planning for daily driving, trails, and overland travel.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/toyota-4runner",
+    slug: "toyota-4runner"
+  },
+  {
+    name: "Toyota Tacoma",
+    scope: "2016–2023 · 3rd Gen",
+    description: "Pickup-specific planning for payload, bed load, tires, suspension, and trail use.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/toyota-tacoma",
+    slug: "toyota-tacoma"
+  },
   { name: "Land Cruiser Prado", status: "Supported in app", state: "supported" },
   { name: "Land Cruiser 200", status: "Limited support", state: "limited" },
   { name: "Lexus GX", status: "Supported in app", state: "supported" },

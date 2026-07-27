@@ -75,7 +75,7 @@ export const toyota4RunnerPages = [
     dates: phase4ADates,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Vehicles", href: "/#vehicles" },
+      { label: "Vehicles", href: "/vehicles" },
       { label: "Toyota 4Runner" }
     ],
     takeaways: [
@@ -101,7 +101,13 @@ export const toyota4RunnerPages = [
         paragraphs: [
           "Start by defining the roads and trails the vehicle actually sees, then inspect its current condition. For many mixed-use vehicles, suitable tires, safe recovery preparation, and basic protection decisions come before a major suspension change.",
           "Suspension selection is more useful after future bumper, winch, armor, cargo, and tire plans are clearer. That sequence is not universal: a worn suspension, a constant travel load, or more demanding terrain can move suspension work earlier."
-        ]
+        ],
+        contextualLink: {
+          before: "For a pickup-based plan with bed-load and rear leaf-spring considerations, compare the ",
+          label: "Toyota Tacoma 3rd Gen upgrade guide",
+          href: "/vehicles/toyota-tacoma",
+          after: "."
+        }
       },
       {
         type: "scenarios",
@@ -308,7 +314,7 @@ export const toyota4RunnerPages = [
     dates: phase4ADates,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Vehicles", href: "/#vehicles" },
+      { label: "Vehicles", href: "/vehicles" },
       { label: "Toyota 4Runner", href: "/vehicles/toyota-4runner" },
       { label: "Suspension" }
     ],
@@ -548,7 +554,7 @@ export const toyota4RunnerPages = [
     dates: phase4ADates,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Vehicles", href: "/#vehicles" },
+      { label: "Vehicles", href: "/vehicles" },
       { label: "Toyota 4Runner", href: "/vehicles/toyota-4runner" },
       { label: "First Upgrades" }
     ],

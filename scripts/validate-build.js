@@ -68,13 +68,19 @@ const requiredFiles = [
   join("contact", "index.html"),
   join("support", "index.html"),
   join("about", "index.html"),
+  join("vehicles", "index.html"),
   join("vehicles", "toyota-4runner", "index.html"),
   join("vehicles", "toyota-4runner", "suspension", "index.html"),
   join("vehicles", "toyota-4runner", "first-upgrades", "index.html"),
   join("vehicles", "toyota-4runner", "kdss", "index.html"),
   join("vehicles", "toyota-4runner", "lift-kit", "index.html"),
   join("vehicles", "toyota-4runner", "tire-size", "index.html"),
-  join("vehicles", "toyota-4runner", "overland-build", "index.html")
+  join("vehicles", "toyota-4runner", "overland-build", "index.html"),
+  join("vehicles", "toyota-tacoma", "index.html"),
+  join("vehicles", "toyota-tacoma", "first-upgrades", "index.html"),
+  join("vehicles", "toyota-tacoma", "suspension", "index.html"),
+  join("vehicles", "toyota-tacoma", "tire-size", "index.html"),
+  join("vehicles", "toyota-tacoma", "overland-build", "index.html")
 ];
 
 for (const file of requiredFiles) {
@@ -104,6 +110,13 @@ if (new Set(sitemapUrls).size !== sitemapUrls.length) {
 for (const page of pages.filter((item) => item.includeInSitemap)) {
   const url = `${site.domain}${page.route === "/" ? "/" : page.route}`;
   requireIncludes(sitemap, `<loc>${url}</loc>`, "sitemap.xml");
+  if (page.lastmod) {
+    requireIncludes(
+      sitemap,
+      `<loc>${url}</loc>\n    <lastmod>${page.lastmod}</lastmod>`,
+      "sitemap.xml"
+    );
+  }
 }
 
 for (const value of [".html", "dist/", "404", "localhost", "example.com"]) {
@@ -376,9 +389,9 @@ for (const expected of [
   "Jeep Wrangler",
   "Budget-aware recommendations",
   "EXAMPLE RECOMMENDATION",
-  "RigAI supports multiple off-road SUV platforms",
+  "RigAI supports multiple off-road platforms",
   "Your SUV is not listed?",
-  "Our first detailed guide collection focuses on Toyota 4Runner",
+  "Detailed guide collections now cover Toyota 4Runner and the 2016-2023 Toyota Tacoma",
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
@@ -417,7 +430,7 @@ if (
   errors.push("Homepage must expose exactly three uniquely located Build My Setup controls.");
 }
 requireIncludes(homeHtml, '<a href="#how-it-works">How It Works</a>', "dist/index.html");
-requireIncludes(homeHtml, '<a href="#vehicles">Vehicles</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a href="/vehicles">Vehicles</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="#guides">Guides</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="/about">About</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a class="button secondary" href="#example-build" data-analytics-event="example_build_click" data-analytics-location="hero">See an Example Build</a>', "dist/index.html");
@@ -433,6 +446,74 @@ requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/kdss"', "dist/index.ht
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/lift-kit"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/tire-size"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/overland-build"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-tacoma"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
+requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
+requireIncludes(
+  homeHtml,
+  "Pickup-specific planning for payload, bed load, tires, suspension, and trail use.",
+  "dist/index.html"
+);
+const homepageTacomaCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/toyota-tacoma"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="toyota-tacoma"',
+  "Toyota Tacoma",
+  "2016–2023 · 3rd Gen",
+  "Pickup-specific planning"
+]) {
+  requireIncludes(homepageTacomaCard, expected, "homepage Tacoma vehicle card");
+}
+
+const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
+requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, "<h1>Off-Road Vehicle Upgrade Guides</h1>", "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-4runner"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-tacoma"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
+
+const prohibitedTacomaGlobalRoutes = [
+  "/vehicles/toyota-tacoma/first-upgrades",
+  "/vehicles/toyota-tacoma/suspension",
+  "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/overland-build"
+];
+for (const guideRoute of prohibitedTacomaGlobalRoutes) {
+  if (homeHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Homepage must not list individual Tacoma guide: ${guideRoute}.`);
+  }
+  if (vehiclesDirectoryHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`/vehicles must link to Tacoma hub, not individual guide: ${guideRoute}.`);
+  }
+}
+
+const vehiclesDirectoryJsonLd = [
+  ...vehiclesDirectoryHtml.matchAll(
+    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g
+  )
+];
+if (vehiclesDirectoryJsonLd.length !== 1) {
+  errors.push("dist/vehicles/index.html must contain exactly one JSON-LD script.");
+} else {
+  try {
+    const data = JSON.parse(vehiclesDirectoryJsonLd[0][1]);
+    const types = new Set((data["@graph"] || []).map((item) => item["@type"]));
+    for (const type of ["WebPage", "BreadcrumbList", "Organization", "WebSite"]) {
+      if (!types.has(type)) {
+        errors.push(`dist/vehicles/index.html JSON-LD is missing ${type}.`);
+      }
+    }
+  } catch (error) {
+    errors.push(`dist/vehicles/index.html JSON-LD is invalid JSON: ${error.message}`);
+  }
+}
 
 for (const asset of [...homeHtml.matchAll(/<(?:img|source)[^>]+(?:src|srcset)="([^"]+)"/g)]) {
   const assetPath = asset[1].split(" ")[0];
@@ -452,7 +533,12 @@ const vehicleRoutes = [
   "/vehicles/toyota-4runner/kdss",
   "/vehicles/toyota-4runner/lift-kit",
   "/vehicles/toyota-4runner/tire-size",
-  "/vehicles/toyota-4runner/overland-build"
+  "/vehicles/toyota-4runner/overland-build",
+  "/vehicles/toyota-tacoma",
+  "/vehicles/toyota-tacoma/first-upgrades",
+  "/vehicles/toyota-tacoma/suspension",
+  "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -498,6 +584,37 @@ const expectedPageLinks = {
     "/vehicles/toyota-4runner/first-upgrades",
     "/vehicles/toyota-4runner/suspension",
     "/vehicles/toyota-4runner/tire-size"
+  ],
+  "/vehicles/toyota-tacoma": [
+    "/vehicles/toyota-tacoma/first-upgrades",
+    "/vehicles/toyota-tacoma/suspension",
+    "/vehicles/toyota-tacoma/tire-size",
+    "/vehicles/toyota-tacoma/overland-build",
+    "/vehicles/toyota-4runner"
+  ],
+  "/vehicles/toyota-tacoma/first-upgrades": [
+    "/vehicles/toyota-tacoma",
+    "/vehicles/toyota-tacoma/suspension",
+    "/vehicles/toyota-tacoma/tire-size",
+    "/vehicles/toyota-tacoma/overland-build"
+  ],
+  "/vehicles/toyota-tacoma/suspension": [
+    "/vehicles/toyota-tacoma",
+    "/vehicles/toyota-tacoma/first-upgrades",
+    "/vehicles/toyota-tacoma/tire-size",
+    "/vehicles/toyota-tacoma/overland-build"
+  ],
+  "/vehicles/toyota-tacoma/tire-size": [
+    "/vehicles/toyota-tacoma",
+    "/vehicles/toyota-tacoma/first-upgrades",
+    "/vehicles/toyota-tacoma/suspension",
+    "/vehicles/toyota-tacoma/overland-build"
+  ],
+  "/vehicles/toyota-tacoma/overland-build": [
+    "/vehicles/toyota-tacoma",
+    "/vehicles/toyota-tacoma/first-upgrades",
+    "/vehicles/toyota-tacoma/suspension",
+    "/vehicles/toyota-tacoma/tire-size"
   ]
 };
 
@@ -505,7 +622,11 @@ const newVehicleRoutes = new Set([
   "/vehicles/toyota-4runner/kdss",
   "/vehicles/toyota-4runner/lift-kit",
   "/vehicles/toyota-4runner/tire-size",
-  "/vehicles/toyota-4runner/overland-build"
+  "/vehicles/toyota-4runner/overland-build",
+  "/vehicles/toyota-tacoma/first-upgrades",
+  "/vehicles/toyota-tacoma/suspension",
+  "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/overland-build"
 ]);
 
 const titles = new Map();
@@ -516,15 +637,28 @@ for (const route of vehicleRoutes) {
   const html = readBuildFile(relativeOutput);
   const label = `dist/${relativeOutput.replaceAll("\\", "/")}`;
   const page = pages.find((item) => item.route === route);
+  const vehicleSlug = page.content.vehicle?.slug || "toyota-4runner";
 
   requireIncludes(html, '<html lang="en">', label);
   requireIncludes(html, '<nav class="breadcrumb article-breadcrumb" aria-label="Breadcrumb">', label);
   requireIncludes(html, '<nav class="article-toc" aria-label="Table of contents">', label);
-  requireIncludes(html, 'data-vehicle-slug="toyota-4runner"', label);
+  requireIncludes(html, `data-vehicle-slug="${vehicleSlug}"`, label);
   requireIncludes(html, 'class="callout vehicle-scope-callout"', label);
   requireIncludes(html, 'class="callout safety-disclaimer"', label);
-  requireIncludes(html, "Always verify model year, trim, drivetrain, KDSS status", label);
-  requireIncludes(html, 'href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">Check app availability</a>', label);
+  requireIncludes(
+    html,
+    vehicleSlug === "toyota-tacoma"
+      ? "Verify the exact model year, trim, cab, bed length, drivetrain"
+      : "Always verify model year, trim, drivetrain, KDSS status",
+    label
+  );
+  const expectedCtaLabel =
+    vehicleSlug === "toyota-tacoma" ? "Build My Setup" : "Check app availability";
+  requireIncludes(
+    html,
+    `href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">${expectedCtaLabel}</a>`,
+    label
+  );
   requireIncludes(html, "Editorial and fitment notes", label);
   requireIncludes(html, "RigAI Editorial Team", label);
   requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
@@ -585,6 +719,51 @@ for (const route of vehicleRoutes) {
     const contextualLinkCount = (html.match(/class="contextual-link"/g) || []).length;
     if (contextualLinkCount < 2 || contextualLinkCount > 4) {
       errors.push(`${label} has ${contextualLinkCount} contextual cluster links, expected 2-4.`);
+    }
+  }
+
+  if (vehicleSlug === "toyota-tacoma") {
+    requireIncludes(html, "2016-2023", label);
+    requireIncludes(html, 'data-vehicle-context="toyota-tacoma"', label);
+    requireIncludes(html, ">TACOMA</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/toyota-tacoma"',
+        label
+      );
+      requireIncludes(html, ">All Toyota Tacoma Guides</a>", label);
+      requireIncludes(html, "Related Tacoma guides", label);
+    }
+
+    for (const accidentalGenerationClaim of [
+      "2010-2024",
+      "5th Gen",
+      "6th Gen",
+      "KDSS status",
+      "fourth-generation Tacoma",
+      "4th Gen Tacoma"
+    ]) {
+      if (html.includes(accidentalGenerationClaim)) {
+        errors.push(`${label} contains a Toyota 4Runner-only or out-of-scope claim: ${accidentalGenerationClaim}`);
+      }
+    }
+
+    for (const universalFitmentClaim of [
+      "fits every Tacoma",
+      "guaranteed tire fitment",
+      "will fit all Tacoma",
+      "always fits a Tacoma"
+    ]) {
+      if (html.toLowerCase().includes(universalFitmentClaim.toLowerCase())) {
+        errors.push(`${label} contains a universal Tacoma fitment claim: ${universalFitmentClaim}`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
     }
   }
 
@@ -674,6 +853,118 @@ for (const route of vehicleRoutes) {
   }
 }
 
+const tacomaRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/toyota-tacoma")
+);
+const tacomaRequiredTopics = [
+  "payload",
+  "bed",
+  "leaf spring",
+  "empty-bed",
+  "alignment",
+  "caster",
+  "wheel",
+  "offset",
+  "body mount",
+  "spare",
+  "braking",
+  "gearing",
+  "rooftop tent",
+  "drawers",
+  "rear axle"
+];
+const tacomaClusterHtml = tacomaRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of tacomaRequiredTopics) {
+  if (!tacomaClusterHtml.includes(topic)) {
+    errors.push(`Toyota Tacoma cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of tacomaRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const tacomaHubRoute = "/vehicles/toyota-tacoma";
+const tacomaGuideRoutes = tacomaRoutes.filter((route) => route !== tacomaHubRoute);
+const tacomaHubHtml = readBuildFile(
+  join("vehicles", "toyota-tacoma", "index.html")
+);
+
+if (!homeHtml.includes(`href="${tacomaHubRoute}"`)) {
+  errors.push("Toyota Tacoma hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${tacomaHubRoute}"`)) {
+  errors.push("Toyota Tacoma hub is not linked from /vehicles.");
+}
+if (
+  !homeHtml.includes('href="/vehicles"') &&
+  ![...homeHtml.matchAll(/<footer[\s\S]*?<\/footer>/g)].some(([footer]) =>
+    footer.includes('href="/vehicles"')
+  )
+) {
+  errors.push("/vehicles is not linked from global homepage navigation or footer.");
+}
+
+for (const guideRoute of tacomaGuideRoutes) {
+  if (!tacomaHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Toyota Tacoma hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    tacomaHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="toyota-tacoma"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Tacoma hub card for ${guideRoute}`);
+  }
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/toyota-tacoma"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Tacoma guides.`);
+  }
+}
+
+for (const page of pages) {
+  const html = readBuildFile(pageOutputPath(page));
+  requireIncludes(
+    html,
+    'href="/vehicles"',
+    `dist/${pageOutputPath(page).replaceAll("\\", "/")}`
+  );
+
+  const footer = html.match(/<footer class="footer">([\s\S]*?)<\/footer>/)?.[1] || "";
+  for (const guideRoute of tacomaGuideRoutes) {
+    if (footer.includes(`href="${guideRoute}"`)) {
+      errors.push(
+        `Global footer must not list individual Tacoma guide: ${guideRoute}.`
+      );
+    }
+  }
+}
+
 for (const route of futureVehicleRoutes) {
   if (sitemap.includes(route)) {
     errors.push(`sitemap.xml contains unpublished route: ${route}`);
@@ -725,6 +1016,20 @@ for (const requiredParameter of [
   if (!buildSetupParameterBlock.includes(requiredParameter)) {
     errors.push(`build_setup_click is missing ${requiredParameter}.`);
   }
+}
+const vehicleGuideParameterBlock =
+  analyticsSource.match(/vehicle_guide_click:\s*\[([\s\S]*?)\]/)?.[1] || "";
+for (const requiredParameter of [
+  '"vehicle_slug"',
+  '"cta_location"',
+  '"page_path"'
+]) {
+  if (!vehicleGuideParameterBlock.includes(requiredParameter)) {
+    errors.push(`vehicle_guide_click is missing ${requiredParameter}.`);
+  }
+}
+if (vehicleGuideParameterBlock.includes('"link_location"')) {
+  errors.push("vehicle_guide_click still contains stale link_location.");
 }
 
 for (const staleParameter of [

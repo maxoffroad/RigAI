@@ -5,7 +5,7 @@ const EVENT_PARAMETERS = Object.freeze({
     "vehicle_slug"
   ],
   example_build_click: ["cta_location", "page_type", "page_path"],
-  vehicle_guide_click: ["vehicle_slug", "link_location", "page_path"],
+  vehicle_guide_click: ["vehicle_slug", "cta_location", "page_path"],
   guide_click: ["guide_slug", "vehicle_slug", "link_location", "page_path"],
   app_store_click: ["store", "cta_location", "page_path"],
   affiliate_click: [

@@ -59,9 +59,15 @@ export function inspectBuildOutput({ dist, pages, minimumFileCount = 18 }) {
     "sitemap.xml",
     join("src", "styles.css"),
     join("src", "main.js"),
+    join("vehicles", "index.html"),
     join("vehicles", "toyota-4runner", "index.html"),
     join("vehicles", "toyota-4runner", "suspension", "index.html"),
-    join("vehicles", "toyota-4runner", "first-upgrades", "index.html")
+    join("vehicles", "toyota-4runner", "first-upgrades", "index.html"),
+    join("vehicles", "toyota-tacoma", "index.html"),
+    join("vehicles", "toyota-tacoma", "first-upgrades", "index.html"),
+    join("vehicles", "toyota-tacoma", "suspension", "index.html"),
+    join("vehicles", "toyota-tacoma", "tire-size", "index.html"),
+    join("vehicles", "toyota-tacoma", "overland-build", "index.html")
   ]);
 
   for (const page of pages) {

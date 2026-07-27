@@ -81,7 +81,7 @@ export const phase4BPages = [
     dates: phase4BDates,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Vehicles", href: "/#vehicles" },
+      { label: "Vehicles", href: "/vehicles" },
       { label: "Toyota 4Runner", href: "/vehicles/toyota-4runner" },
       { label: "KDSS" }
     ],
@@ -261,7 +261,7 @@ export const phase4BPages = [
     dates: phase4BDates,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Vehicles", href: "/#vehicles" },
+      { label: "Vehicles", href: "/vehicles" },
       { label: "Toyota 4Runner", href: "/vehicles/toyota-4runner" },
       { label: "Lift Kit" }
     ],
@@ -468,7 +468,7 @@ export const phase4BPages = [
     dates: phase4BDates,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Vehicles", href: "/#vehicles" },
+      { label: "Vehicles", href: "/vehicles" },
       { label: "Toyota 4Runner", href: "/vehicles/toyota-4runner" },
       { label: "Tire Size" }
     ],
@@ -675,7 +675,7 @@ export const phase4BPages = [
     dates: phase4BDates,
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Vehicles", href: "/#vehicles" },
+      { label: "Vehicles", href: "/vehicles" },
       { label: "Toyota 4Runner", href: "/vehicles/toyota-4runner" },
       { label: "Overland Build" }
     ],

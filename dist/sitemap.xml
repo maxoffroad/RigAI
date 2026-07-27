@@ -4,6 +4,10 @@
     <loc>https://rigai-offroad.com/</loc>
   </url>
   <url>
+    <loc>https://rigai-offroad.com/vehicles</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
+  <url>
     <loc>https://rigai-offroad.com/privacy</loc>
   </url>
   <url>
@@ -23,23 +27,50 @@
   </url>
   <url>
     <loc>https://rigai-offroad.com/vehicles/toyota-4runner</loc>
+    <lastmod>2026-07-23</lastmod>
   </url>
   <url>
     <loc>https://rigai-offroad.com/vehicles/toyota-4runner/suspension</loc>
+    <lastmod>2026-07-23</lastmod>
   </url>
   <url>
     <loc>https://rigai-offroad.com/vehicles/toyota-4runner/first-upgrades</loc>
+    <lastmod>2026-07-23</lastmod>
   </url>
   <url>
     <loc>https://rigai-offroad.com/vehicles/toyota-4runner/kdss</loc>
+    <lastmod>2026-07-23</lastmod>
   </url>
   <url>
     <loc>https://rigai-offroad.com/vehicles/toyota-4runner/lift-kit</loc>
+    <lastmod>2026-07-23</lastmod>
   </url>
   <url>
     <loc>https://rigai-offroad.com/vehicles/toyota-4runner/tire-size</loc>
+    <lastmod>2026-07-23</lastmod>
   </url>
   <url>
     <loc>https://rigai-offroad.com/vehicles/toyota-4runner/overland-build</loc>
+    <lastmod>2026-07-23</lastmod>
+  </url>
+  <url>
+    <loc>https://rigai-offroad.com/vehicles/toyota-tacoma</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
+  <url>
+    <loc>https://rigai-offroad.com/vehicles/toyota-tacoma/first-upgrades</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
+  <url>
+    <loc>https://rigai-offroad.com/vehicles/toyota-tacoma/suspension</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
+  <url>
+    <loc>https://rigai-offroad.com/vehicles/toyota-tacoma/tire-size</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
+  <url>
+    <loc>https://rigai-offroad.com/vehicles/toyota-tacoma/overland-build</loc>
+    <lastmod>2026-07-27</lastmod>
   </url>
 </urlset>

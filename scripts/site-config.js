@@ -1,4 +1,5 @@
 import { toyota4RunnerPages } from "../src/content/toyota-4runner.js";
+import { toyotaTacomaPages } from "../src/content/toyota-tacoma.js";
 
 export const site = {
   name: "RigAI",
@@ -11,7 +12,7 @@ export const site = {
     path: "/assets/rigai-og-image.png",
     width: 1200,
     height: 630,
-    alt: "RigAI AI off-road setup assistant for SUV upgrade planning"
+    alt: "RigAI AI off-road setup assistant for SUV and pickup upgrade planning"
   },
   languages: {
     default: "en",
@@ -30,13 +31,14 @@ const footerLinks = [
 
 const homeNav = [
   { label: "How It Works", href: "#how-it-works" },
-  { label: "Vehicles", href: "#vehicles" },
+  { label: "Vehicles", href: "/vehicles" },
   { label: "Guides", href: "#guides" },
   { label: "About", href: "/about" }
 ];
 
 const pageNav = [
   { label: "Home", href: "/" },
+  { label: "Vehicles", href: "/vehicles" },
   { label: "About", href: "/about" },
   { label: "Support", href: "/support" },
   { label: "Contact", href: "/contact" },
@@ -44,7 +46,7 @@ const pageNav = [
   { label: "Terms", href: "/terms" }
 ];
 
-const vehiclePages = toyota4RunnerPages.map((content) => ({
+const vehiclePages = [...toyota4RunnerPages, ...toyotaTacomaPages].map((content) => ({
   key: content.key,
   route: content.route,
   output: `${content.route.replace(/^\//, "")}.html`,
@@ -59,7 +61,8 @@ const vehiclePages = toyota4RunnerPages.map((content) => ({
   renderer: "vehicleArticle",
   content,
   structuredData: content.kind,
-  openGraphType: content.kind === "article" ? "article" : "website"
+  openGraphType: content.kind === "article" ? "article" : "website",
+  lastmod: content.dates.modified.slice(0, 10)
 }));
 
 export const pages = [
@@ -82,6 +85,34 @@ export const pages = [
     scripts: ['<script type="module" src="/src/main.js?v=phase-5b"></script>'],
     extraHead: ['<meta name="impact-site-verification" value="829d8d13-665f-4a80-8ec4-797315534c1a" />'],
     structuredData: true
+  },
+  {
+    key: "vehicles",
+    route: "/vehicles",
+    output: "vehicles.html",
+    title: "Off-Road Vehicle Upgrade Guides | RigAI",
+    description:
+      "Browse RigAI vehicle-specific upgrade guides for Toyota 4Runner and the 2016-2023 third-generation Toyota Tacoma.",
+    socialTitle: "Off-Road Vehicle Upgrade Guides | RigAI",
+    socialDescription:
+      "Choose a vehicle planning hub for practical upgrade order, fitment reminders, and load considerations.",
+    nav: pageNav,
+    footerLinks,
+    includeInSitemap: true,
+    renderer: "vehicles",
+    structuredData: "vehicleDirectory",
+    content: {
+      h1: "Off-Road Vehicle Upgrade Guides",
+      breadcrumbs: [
+        { label: "Home", href: "/" },
+        { label: "Vehicles" }
+      ],
+      dates: {
+        published: "2026-07-27T12:00:00+05:00",
+        modified: "2026-07-27T12:00:00+05:00"
+      }
+    },
+    lastmod: "2026-07-27"
   },
   {
     key: "privacy",

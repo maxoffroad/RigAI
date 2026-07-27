@@ -1,4 +1,7 @@
 import { readingTimeMinutes, toyota4RunnerPages } from "../../content/toyota-4runner.js";
+import { toyotaTacomaPages } from "../../content/toyota-tacoma.js";
+
+const vehiclePages = [...toyota4RunnerPages, ...toyotaTacomaPages];
 
 function escapeHtml(value) {
   return String(value)
@@ -8,12 +11,42 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;");
 }
 
-function guideSlug(href) {
-  return href.split("/").filter(Boolean).pop() || "toyota-4runner";
+function vehicleMeta(page) {
+  return page.vehicle || {
+    slug: "toyota-4runner",
+    name: "Toyota 4Runner",
+    shortName: "4Runner",
+    guidesLabel: "Toyota 4Runner",
+    heroLabel: "4RUNNER",
+    planInputs: "generation, trim, drivetrain, KDSS status, driving profile, budget, installed equipment, and planned load"
+  };
 }
 
-function guideAnalytics(href, location) {
-  return `data-analytics-event="guide_click" data-analytics-location="${location}" data-guide-slug="${guideSlug(href)}" data-vehicle-slug="toyota-4runner"`;
+function renderVehicleBackLink(page) {
+  if (page.kind !== "article") return "";
+  const vehicle = vehicleMeta(page);
+  const hubHref = `/vehicles/${vehicle.slug}`;
+
+  return `<a class="article-back-link" href="${hubHref}" ${guideAnalytics(hubHref, "article_back_link", vehicle.slug)}>All ${escapeHtml(vehicle.guidesLabel)} Guides</a>`;
+}
+
+function vehicleSlugFromHref(href) {
+  return href.match(/^\/vehicles\/([^/]+)/)?.[1] || "";
+}
+
+function guideSlug(href) {
+  return href.split("/").filter(Boolean).pop() || vehicleSlugFromHref(href);
+}
+
+function guideAnalytics(href, location, fallbackVehicleSlug) {
+  const vehicleSlug = vehicleSlugFromHref(href) || fallbackVehicleSlug;
+  const event = href.split("/").filter(Boolean).length === 2
+    ? "vehicle_guide_click"
+    : "guide_click";
+  const guideAttribute = event === "guide_click"
+    ? ` data-guide-slug="${guideSlug(href)}"`
+    : "";
+  return `data-analytics-event="${event}" data-analytics-location="${location}"${guideAttribute} data-vehicle-slug="${vehicleSlug}"`;
 }
 
 function renderBreadcrumbs(items) {
@@ -49,16 +82,16 @@ function renderTakeaways(items) {
     </section>`;
 }
 
-function contextualLink(link) {
+function contextualLink(link, vehicleSlug) {
   if (!link) return "";
-  return `<p class="contextual-link">${escapeHtml(link.before)}<a href="${link.href}" ${guideAnalytics(link.href, "article_context")}>${escapeHtml(link.label)}</a>${escapeHtml(link.after)}</p>`;
+  return `<p class="contextual-link">${escapeHtml(link.before)}<a href="${link.href}" ${guideAnalytics(link.href, "article_context", vehicleSlug)}>${escapeHtml(link.label)}</a>${escapeHtml(link.after)}</p>`;
 }
 
-function renderProse(section) {
+function renderProse(section, page) {
   return `<section class="article-section" id="${section.id}">
       <h2>${escapeHtml(section.title)}</h2>
       ${section.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
-      ${contextualLink(section.contextualLink)}
+      ${contextualLink(section.contextualLink, vehicleMeta(page).slug)}
     </section>`;
 }
 
@@ -79,7 +112,7 @@ function renderScenarios(section) {
     </section>`;
 }
 
-function renderSystems(section) {
+function renderSystems(section, page) {
   return `<section class="article-section" id="${section.id}">
       <h2>${escapeHtml(section.title)}</h2>
       ${section.intro ? `<p>${escapeHtml(section.intro)}</p>` : ""}
@@ -89,7 +122,7 @@ function renderSystems(section) {
           <p>${escapeHtml(text)}</p>
         </article>`).join("")}
       </div>
-      ${contextualLink(section.contextualLink)}
+      ${contextualLink(section.contextualLink, vehicleMeta(page).slug)}
     </section>`;
 }
 
@@ -135,20 +168,20 @@ function renderDependency(section) {
     </section>`;
 }
 
-function renderMistakes(section) {
+function renderMistakes(section, page) {
   return `<section class="article-section" id="${section.id}">
       <h2>${escapeHtml(section.title)}</h2>
       ${section.intro ? `<p>${escapeHtml(section.intro)}</p>` : ""}
       <div class="mistake-list">${section.items.map(([title, text]) => `<article><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></article>`).join("")}</div>
-      ${contextualLink(section.contextualLink)}
+      ${contextualLink(section.contextualLink, vehicleMeta(page).slug)}
     </section>`;
 }
 
-function renderFeatured(section) {
+function renderFeatured(section, page) {
   return `<section class="article-section" id="${section.id}">
       <h2>${escapeHtml(section.title)}</h2>
       <div class="related-guide-grid">
-        ${section.published.map((item) => `<a class="related-guide-card is-published" href="${item.href}" ${guideAnalytics(item.href, "article_featured")}>
+        ${section.published.map((item) => `<a class="related-guide-card is-published" href="${item.href}" ${guideAnalytics(item.href, "article_featured", vehicleMeta(page).slug)}>
           <span class="eyebrow">${escapeHtml(item.eyebrow)}</span>
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.text)}</p>
@@ -190,7 +223,7 @@ function renderExample(section) {
     </section>`;
 }
 
-function renderSection(section) {
+function renderSection(section, page) {
   const renderers = {
     prose: renderProse,
     scenarios: renderScenarios,
@@ -208,18 +241,19 @@ function renderSection(section) {
 
   const renderer = renderers[section.type];
   if (!renderer) throw new Error(`Unknown article section type: ${section.type}`);
-  return renderer(section);
+  return renderer(section, page);
 }
 
-function renderRelated(items) {
+function renderRelated(items, page) {
+  const vehicle = vehicleMeta(page);
   return `<section class="related-guides" aria-labelledby="related-guides-title">
       <p class="eyebrow">Continue planning</p>
-      <h2 id="related-guides-title">Related 4Runner guides</h2>
+      <h2 id="related-guides-title">Related ${escapeHtml(vehicle.shortName)} guides</h2>
       <div class="related-guide-grid">
         ${items.map((item) => {
-          const relatedPage = toyota4RunnerPages.find((page) => page.route === item.href);
+          const relatedPage = vehiclePages.find((candidate) => candidate.route === item.href);
           const readingTime = relatedPage?.kind === "article" ? readingTimeMinutes(relatedPage) : null;
-          return `<a class="related-guide-card is-published" href="${item.href}" ${guideAnalytics(item.href, "related_guides")}>
+          return `<a class="related-guide-card is-published" href="${item.href}" ${guideAnalytics(item.href, "related_guides", vehicle.slug)}>
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.text)}</p>
           <strong>Read guide${readingTime ? ` · ${readingTime} min` : ""}</strong>
@@ -230,13 +264,14 @@ function renderRelated(items) {
 }
 
 function renderAppCta(page) {
+  const vehicle = vehicleMeta(page);
   return `<section class="article-app-cta" aria-labelledby="article-app-cta-title">
       <div>
         <p class="eyebrow">Personalized planning</p>
-        <h2 id="article-app-cta-title">Build Your 4Runner Plan</h2>
-        <p>RigAI uses your generation, trim, drivetrain, KDSS status, driving profile, budget, installed equipment, and planned load to organize what to consider first and what can wait.</p>
+        <h2 id="article-app-cta-title">Build Your ${escapeHtml(vehicle.shortName)} Plan</h2>
+        <p>RigAI uses your ${escapeHtml(vehicle.planInputs)} to organize what to consider first and what can wait.</p>
       </div>
-      <a class="button primary" href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">Check app availability</a>
+      <a class="button primary" href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">${escapeHtml(vehicle.ctaLabel || "Check app availability")}</a>
     </section>`;
 }
 
@@ -264,11 +299,12 @@ function renderSafety(safety) {
 
 export function renderVehicleArticle(page) {
   const readingTime = readingTimeMinutes(page);
-  const sectionsHtml = page.sections.map(renderSection).join("");
+  const vehicle = vehicleMeta(page);
+  const sectionsHtml = page.sections.map((section) => renderSection(section, page)).join("");
 
   return `<main id="main-content" class="vehicle-article-page">
       <div class="article-shell">
-        ${renderBreadcrumbs(page.breadcrumbs)}
+        ${renderBreadcrumbs(page.breadcrumbs)}${renderVehicleBackLink(page)}
         <header class="article-header">
           <div>
             <p class="eyebrow">${escapeHtml(page.eyebrow)}</p>
@@ -281,7 +317,7 @@ export function renderVehicleArticle(page) {
             </div>
           </div>
           <div class="article-hero-visual" aria-hidden="true">
-            <span>4RUNNER</span>
+            <span>${escapeHtml(vehicle.heroLabel)}</span>
             <div class="system-lines"><i></i><i></i><i></i><i></i></div>
             <strong>Vehicle plan</strong>
           </div>
@@ -293,7 +329,7 @@ export function renderVehicleArticle(page) {
           <article class="article-content">
             ${sectionsHtml}
             ${renderSafety(page.safety)}
-            ${renderRelated(page.related)}
+            ${renderRelated(page.related, page)}
             ${renderAppCta(page)}
             ${renderEditorial(page)}
           </article>

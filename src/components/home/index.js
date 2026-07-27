@@ -12,6 +12,7 @@ import {
   vehicleContext,
   vehicles
 } from "../../content/home.js";
+import { renderVehicleCard } from "../vehicles/card.js";
 
 function listItems(items, className = "clean-list") {
   return `<ul class="${className}">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
@@ -237,18 +238,21 @@ function supportedVehicles() {
         <div>
           <p class="eyebrow">Platforms</p>
           <h2>Built for real off-road platforms</h2>
-          <p>RigAI supports multiple off-road SUV platforms, with detailed website guides beginning with Toyota 4Runner.</p>
+          <p>RigAI supports multiple off-road platforms, with detailed website guides for Toyota 4Runner and third-generation Tacoma.</p>
         </div>
       </div>
       <div class="vehicle-grid">
-        ${vehicles.map((vehicle, index) => {
-          const content = `<div class="vehicle-media" aria-hidden="true" data-variant="${index + 1}"></div>
-          <h3>${vehicle.name}</h3>
-          <span class="status-label${vehicle.state === "guide" || vehicle.state === "supported" ? " success" : vehicle.state === "limited" ? " warning" : ""}">${vehicle.status}</span>`;
-          return vehicle.href
-            ? `<a class="vehicle-card vehicle-card--visual is-published" href="${vehicle.href}" aria-label="${vehicle.name} upgrade guide" data-analytics-event="vehicle_guide_click" data-analytics-location="homepage_vehicles" data-vehicle-slug="toyota-4runner">${content}<strong class="card-link-label">Open vehicle guide</strong></a>`
-            : `<article class="vehicle-card vehicle-card--visual vehicle-card--${vehicle.state}">${content}</article>`;
-        }).join("")}
+        ${vehicles
+          .map((vehicle, index) =>
+            renderVehicleCard(vehicle, {
+              index,
+              analyticsLocation: vehicle.href
+                ? "homepage_vehicle_card"
+                : "homepage_vehicles",
+              showDescription: Boolean(vehicle.href)
+            })
+          )
+          .join("")}
       </div>
       <aside class="vehicle-reassurance" aria-labelledby="vehicle-reassurance-title">
         <div>
@@ -265,7 +269,7 @@ function guidesPreview() {
       <div class="section-heading section-heading--stacked">
         <p class="eyebrow">Knowledge</p>
         <h2>Research before you upgrade</h2>
-        <p>Guides written for SUV owners who want to understand the decisions, not just the products.</p>
+        <p>Guides written for SUV and pickup owners who want to understand the decisions, not just the products.</p>
       </div>
       <div class="guide-grid">
         ${guides.map((guide) => {
@@ -278,7 +282,7 @@ function guidesPreview() {
             : `<article class="guide-card">${content}</article>`;
         }).join("")}
       </div>
-      <p class="guides-note">Our first detailed guide collection focuses on Toyota 4Runner. Additional vehicle-specific guides will follow as coverage expands.</p>
+      <p class="guides-note">Detailed guide collections now cover Toyota 4Runner and the 2016-2023 Toyota Tacoma. Additional vehicle-specific guides will follow as coverage expands.</p>
     </section>`;
 }
 

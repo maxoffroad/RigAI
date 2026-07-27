@@ -120,6 +120,53 @@ for (const eventName of [
   }
 }
 
+const tacomaVehicleCard = {
+  dataset: {
+    analyticsLocation: "homepage_vehicle_card",
+    vehicleSlug: "toyota-tacoma"
+  }
+};
+const homeDocument = {
+  location: { pathname: "/" },
+  body: { dataset: { pageType: "home" } }
+};
+windowLike.__RIGAI_ANALYTICS__.consent = "granted";
+const tacomaVehicleParams = eventParameters(
+  tacomaVehicleCard,
+  "vehicle_guide_click",
+  homeDocument
+);
+
+if (
+  JSON.stringify(tacomaVehicleParams) !==
+  JSON.stringify({
+    vehicle_slug: "toyota-tacoma",
+    cta_location: "homepage_vehicle_card",
+    page_path: "/"
+  })
+) {
+  throw new Error("Tacoma homepage vehicle-card analytics payload is invalid.");
+}
+
+const vehicleGuideCallsBefore = calls.filter(
+  ([command, eventName]) =>
+    command === "event" && eventName === "vehicle_guide_click"
+).length;
+if (!trackEvent("vehicle_guide_click", tacomaVehicleParams, windowLike)) {
+  throw new Error("Tacoma homepage vehicle-card event was not sent.");
+}
+const vehicleGuideCalls = calls.filter(
+  ([command, eventName]) =>
+    command === "event" && eventName === "vehicle_guide_click"
+);
+if (
+  vehicleGuideCalls.length !== vehicleGuideCallsBefore + 1 ||
+  JSON.stringify(vehicleGuideCalls.at(-1)[2]) !==
+    JSON.stringify(tacomaVehicleParams)
+) {
+  throw new Error("Tacoma homepage vehicle-card click must send exactly one event.");
+}
+
 updateAnalyticsConsent("denied", documentLike, windowLike);
 if (hasAnalyticsConsent(windowLike)) {
   throw new Error("Reject must set effective analytics consent to denied.");

@@ -1972,7 +1972,7 @@ h3 {
 }
 
 .vehicle-grid {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0;
 }
 
@@ -2042,6 +2042,7 @@ h3 {
 }
 
 .vehicle-card--visual.is-published {
+  min-height: 330px;
   border-color: rgba(124, 204, 132, 0.38);
   background-color: rgba(31, 44, 34, 0.34);
 }
@@ -2049,6 +2050,23 @@ h3 {
 .vehicle-card--visual h3,
 .vehicle-card--visual .status-label {
   position: relative;
+}
+
+.vehicle-card-scope {
+  position: relative;
+  margin-top: 6px;
+  color: var(--color-brand-primary);
+  font-family: var(--font-family-mono);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.vehicle-card-description {
+  position: relative;
+  margin: 9px 0 12px;
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.45;
 }
 
 .vehicle-reassurance {
@@ -2654,6 +2672,63 @@ h3 {
 .editorial-notes a:hover,
 .editorial-notes a:focus-visible {
   color: var(--color-brand-primary);
+}
+
+.article-back-link {
+  display: inline-flex;
+  margin-top: var(--space-5);
+  color: var(--color-brand-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+.article-back-link::before {
+  margin-right: var(--space-2);
+  content: "←";
+}
+
+.article-back-link:hover,
+.article-back-link:focus-visible {
+  color: var(--color-text-primary);
+}
+
+.vehicles-directory-page {
+  padding-bottom: var(--space-16);
+}
+
+.vehicles-directory-header {
+  max-width: 780px;
+  padding: 72px 0 48px;
+}
+
+.vehicles-directory-header h1 {
+  margin: var(--space-3) 0 var(--space-5);
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+}
+
+.vehicles-directory-header > p:last-child {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  line-height: 1.6;
+}
+
+.vehicles-directory-page section > h2 {
+  margin-bottom: var(--space-6);
+}
+
+.vehicle-directory-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.vehicle-directory-grid .vehicle-card--visual {
+  min-height: 360px;
+  border: 1px solid var(--color-border);
+  padding: 0 28px 28px;
+}
+
+.vehicle-directory-grid .vehicle-card-description {
+  max-width: 420px;
 }
 
 .article-header {
@@ -3418,6 +3493,18 @@ h3 {
 @media (max-width: 620px) {
   .article-shell {
     width: min(100% - 24px, var(--container-wide));
+  }
+
+  .vehicles-directory-header {
+    padding: 48px 0 36px;
+  }
+
+  .vehicles-directory-header h1 {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+  }
+
+  .vehicle-directory-grid {
+    grid-template-columns: 1fr;
   }
 
   .article-header {

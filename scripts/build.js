@@ -5,6 +5,7 @@ import { pages } from "./site-config.js";
 import { extractMain, renderPage, renderRobots, renderSitemap } from "./page-template.js";
 import { renderHomePage } from "../src/components/home/index.js";
 import { renderVehicleArticle } from "../src/components/articles/index.js";
+import { renderVehiclesDirectory } from "../src/components/vehicles/index.js";
 import { assertBuildOutput } from "./build-contract.js";
 import { analyticsConfig } from "../config/analytics.js";
 
@@ -63,6 +64,8 @@ for (const page of pages) {
 
   if (page.renderer === "home") {
     mainHtml = renderHomePage();
+  } else if (page.renderer === "vehicles") {
+    mainHtml = renderVehiclesDirectory();
   } else if (page.renderer === "vehicleArticle") {
     mainHtml = renderVehicleArticle(page.content);
   } else {

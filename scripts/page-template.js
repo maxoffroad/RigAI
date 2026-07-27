@@ -46,6 +46,7 @@ function renderHeader(page) {
 
 function analyticsPageType(page) {
   if (page.route === "/") return "home";
+  if (page.structuredData === "vehicleDirectory") return "vehicle_directory";
   if (page.structuredData === "vehicleHub") return "vehicle_hub";
   if (page.structuredData === "article") return "article";
   if (["privacy", "terms", "affiliate-disclosure"].includes(page.key)) return "legal";
@@ -138,12 +139,12 @@ function renderFooter(page, analytics) {
           <a class="brand" href="/">
             <span class="brand-word">Rig<span>AI</span></span>
           </a>
-          <p>Personalized off-road build planning for SUV owners. The right upgrades in the right order.</p>
+          <p>Personalized off-road build planning for SUV and pickup owners. The right upgrades in the right order.</p>
         </div>
         <nav class="footer-column" aria-label="Product links">
           <h2>Product</h2>
           <a href="/#how-it-works">How It Works</a>
-          <a href="/#vehicles">Vehicles</a>
+          <a href="/vehicles">Vehicles</a>
           <a href="/#guides">Guides</a>
           <a href="/about">About</a>
         </nav>
@@ -184,7 +185,11 @@ function breadcrumbSchema(page) {
 }
 
 function renderStructuredData(page) {
-  if (page.structuredData === "vehicleHub" || page.structuredData === "article") {
+  if (
+    page.structuredData === "vehicleDirectory" ||
+    page.structuredData === "vehicleHub" ||
+    page.structuredData === "article"
+  ) {
     const canonical = absoluteUrl(page.route);
     const graph = [
       {
@@ -355,8 +360,9 @@ export function renderPage(page, mainHtml, { analytics } = {}) {
     ...(page.scripts || [])
   ];
   const uniqueScripts = [...new Set(scripts)].map((script) => `    ${script}`).join("\n");
-  const vehicleContext = page.route.startsWith("/vehicles/toyota-4runner")
-    ? ' data-vehicle-context="toyota-4runner" data-vehicle-slug="toyota-4runner"'
+  const vehicleSlug = page.route.match(/^\/vehicles\/([^/]+)/)?.[1];
+  const vehicleContext = vehicleSlug
+    ? ` data-vehicle-context="${vehicleSlug}" data-vehicle-slug="${vehicleSlug}"`
     : "";
 
   return `<!doctype html>
@@ -380,7 +386,10 @@ ${uniqueScripts ? `\n${uniqueScripts}` : ""}
 export function renderSitemap(pages) {
   const urls = pages
     .filter((page) => page.includeInSitemap)
-    .map((page) => `  <url>\n    <loc>${absoluteUrl(page.route)}</loc>\n  </url>`)
+    .map((page) => {
+      const lastmod = page.lastmod ? `\n    <lastmod>${page.lastmod}</lastmod>` : "";
+      return `  <url>\n    <loc>${absoluteUrl(page.route)}</loc>${lastmod}\n  </url>`;
+    })
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;

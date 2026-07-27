@@ -11,13 +11,19 @@ const indexablePaths = [
   "/privacy",
   "/terms",
   "/affiliate-disclosure",
+  "/vehicles",
   "/vehicles/toyota-4runner",
   "/vehicles/toyota-4runner/suspension",
   "/vehicles/toyota-4runner/first-upgrades",
   "/vehicles/toyota-4runner/kdss",
   "/vehicles/toyota-4runner/lift-kit",
   "/vehicles/toyota-4runner/tire-size",
-  "/vehicles/toyota-4runner/overland-build"
+  "/vehicles/toyota-4runner/overland-build",
+  "/vehicles/toyota-tacoma",
+  "/vehicles/toyota-tacoma/first-upgrades",
+  "/vehicles/toyota-tacoma/suspension",
+  "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];
@@ -325,21 +331,21 @@ async function main() {
 
   pass(
     vehiclePaths.every((path) => pages.has(path)),
-    "All critical Toyota 4Runner pages were checked",
-    "One or more critical Toyota 4Runner pages could not be checked"
+    "All critical vehicle pages were checked",
+    "One or more critical vehicle pages could not be checked"
   );
   const linkedVehiclePaths = new Set(
     [...pages.values()].flatMap(({ details }) =>
       details.links
         .map((href) => new URL(href, productionOrigin).pathname)
-        .filter((path) => path.startsWith("/vehicles/toyota-4runner"))
+        .filter((path) => path.startsWith("/vehicles/"))
         .map(normalizePath)
     )
   );
   pass(
     vehiclePaths.every((path) => linkedVehiclePaths.has(path)),
-    "No Toyota 4Runner page is orphaned",
-    "One or more Toyota 4Runner pages have no checked internal link"
+    "No vehicle page is orphaned",
+    "One or more vehicle pages have no checked internal link"
   );
 
   if (homepageHtml) {
