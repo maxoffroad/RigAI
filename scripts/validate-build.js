@@ -299,6 +299,36 @@ if (!/position:\s*fixed/.test(consentStyleBlock) || !/bottom:\s*\d/.test(consent
   errors.push("Analytics consent banner must be a fixed bottom overlay.");
 }
 
+const articleBulletItemRule =
+  stylesheet.match(
+    /\.article-takeaways li,\s*\.article-checklist li\s*\{([\s\S]*?)\}/
+  )?.[1] || "";
+const articleBulletMarkerRule =
+  stylesheet.match(
+    /\.article-takeaways li::before,\s*\.article-checklist li::before\s*\{([\s\S]*?)\}/
+  )?.[1] || "";
+
+for (const requiredDeclaration of [
+  /display:\s*grid/,
+  /grid-template-columns:\s*12px minmax\(0,\s*1fr\)/,
+  /column-gap:\s*10px/,
+  /min-width:\s*0/
+]) {
+  if (!requiredDeclaration.test(articleBulletItemRule)) {
+    errors.push("Shared article list items are missing the stable bullet/text grid.");
+    break;
+  }
+}
+
+if (
+  !/position:\s*static/.test(articleBulletMarkerRule) ||
+  !/width:\s*8px/.test(articleBulletMarkerRule) ||
+  !/height:\s*8px/.test(articleBulletMarkerRule) ||
+  /position:\s*absolute/.test(articleBulletMarkerRule)
+) {
+  errors.push("Shared article bullet marker must remain a static 8px square.");
+}
+
 const homeHtml = readBuildFile("index.html");
 const requiredHomeSections = [
   "home-hero",
