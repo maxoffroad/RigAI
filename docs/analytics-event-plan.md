@@ -4,7 +4,7 @@ RigAI uses GA4 only when `GA4_MEASUREMENT_ID` is present at build time. Event pa
 
 | Event name | Trigger | Parameters | Key event | Pages | Privacy risk | Validation method |
 |---|---|---|---|---|---|---|
-| `build_setup_click` | A working Build My Setup or article app-availability link is clicked | `cta_location`, `page_type`, `page_path`, `vehicle_context`, `destination_type` | Recommended | Home and vehicle guides | Low; taxonomy and path only | Build validator checks attributes; mocked `gtag` test checks one event and normalized path |
+| `build_setup_click` | A visible Build My Setup or article app-availability control is clicked | `cta_location`, `page_type`, `vehicle_slug` when relevant | Recommended | Home and vehicle guides | Low; stable page and vehicle taxonomy only | Build validator checks attributes; delegated synthetic click test requires exactly one event |
 | `example_build_click` | See an Example Build is clicked | `cta_location`, `page_type`, `page_path` | No | Home | Low | Build validator checks event and attributes |
 | `vehicle_guide_click` | Published Toyota 4Runner vehicle card is clicked | `vehicle_slug`, `link_location`, `page_path` | No | Home | Low | Build validator checks published card markup |
 | `guide_click` | Published guide card, contextual guide link, featured guide, or related guide is clicked | `guide_slug`, `vehicle_slug`, `link_location`, `page_path` | No | Home, vehicle hub, articles | Low | Build validator checks guide attributes on generated pages |
@@ -22,7 +22,7 @@ The basic acquisition-to-intent funnel is:
 3. Article `build_setup_click`
 4. Future `app_store_click` when an official store URL exists
 
-`build_setup_click` currently has `destination_type=internal_section` because the website links to the Coming Soon section. It must not be interpreted as an app install.
+`build_setup_click` measures interest in starting a RigAI plan. It must not be interpreted as an app install while the website still points to the Coming Soon section.
 
 ## Event Rules
 

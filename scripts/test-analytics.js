@@ -35,14 +35,13 @@ const documentLike = {
   body: {
     dataset: {
       pageType: "article",
-      vehicleContext: "toyota-4runner"
+      vehicleSlug: "toyota-4runner"
     }
   }
 };
 const element = {
   dataset: {
-    analyticsLocation: "article_cta",
-    destinationType: "internal_section"
+    analyticsLocation: "article_cta"
   }
 };
 
@@ -88,7 +87,12 @@ const buildSetupCall = calls.find(
 
 if (
   !buildSetupCall ||
-  buildSetupCall[2].page_path !== "/vehicles/toyota-4runner/suspension"
+  JSON.stringify(buildSetupCall[2]) !==
+    JSON.stringify({
+      cta_location: "article_cta",
+      page_type: "article",
+      vehicle_slug: "toyota-4runner"
+    })
 ) {
   throw new Error("Analytics event payload is invalid.");
 }
@@ -236,6 +240,79 @@ if (consentWindow.scrollY !== 777 || scrollCalls.length !== 0) {
   throw new Error("Reject must preserve an unchanged scroll position.");
 }
 
+const delegatedCalls = [];
+let delegatedClickListener;
+let delegatedListenerCount = 0;
+const delegatedWindow = {
+  __RIGAI_ANALYTICS__: {
+    enabled: true,
+    consent: "granted",
+    savedChoice: "granted",
+    pageViewSent: true,
+    listenersBound: false,
+    storageKey: ANALYTICS_CONSENT_KEY
+  },
+  gtag: (...args) => delegatedCalls.push(args),
+  location: { pathname: "/vehicles/toyota-4runner" }
+};
+const delegatedElement = {
+  dataset: {
+    analyticsEvent: "build_setup_click",
+    analyticsLocation: "article_cta"
+  },
+  matches: () => false
+};
+const delegatedDocument = {
+  location: { pathname: "/vehicles/toyota-4runner" },
+  body: {
+    dataset: {
+      pageType: "vehicle_hub",
+      vehicleSlug: "toyota-4runner"
+    }
+  },
+  querySelector: () => null,
+  querySelectorAll: () => [],
+  addEventListener: (type, listener) => {
+    if (type === "click") {
+      delegatedListenerCount += 1;
+      delegatedClickListener = listener;
+    }
+  }
+};
+
+bindAnalytics(delegatedDocument, delegatedWindow);
+bindAnalytics(delegatedDocument, delegatedWindow);
+
+delegatedClickListener?.({
+  target: {
+    closest: (selector) =>
+      selector === "[data-analytics-event]" ? delegatedElement : null
+  },
+  preventDefault: () => {
+    throw new Error("CTA analytics must not prevent navigation.");
+  }
+});
+
+const delegatedBuildCalls = delegatedCalls.filter(
+  ([command, eventName]) =>
+    command === "event" && eventName === "build_setup_click"
+);
+
+if (delegatedListenerCount !== 1 || delegatedBuildCalls.length !== 1) {
+  throw new Error("One delegated CTA click must produce exactly one build_setup_click.");
+}
+
+if (
+  JSON.stringify(delegatedBuildCalls[0][2]) !==
+  JSON.stringify({
+    cta_location: "article_cta",
+    page_type: "vehicle_hub",
+    vehicle_slug: "toyota-4runner"
+  })
+) {
+  throw new Error("Delegated CTA event parameters are invalid.");
+}
+
 console.log(
-  "Analytics consent test passed: event gating, persistence, page_view, and scroll safety verified."
+  "Analytics test passed: consent, scroll safety, and one delegated CTA event verified."
 );

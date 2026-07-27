@@ -75,14 +75,13 @@ Create event-scoped custom dimensions for:
 |---|---|
 | CTA location | `cta_location` |
 | Page type | `page_type` |
-| Vehicle context | `vehicle_context` |
+| Vehicle slug | `vehicle_slug` |
 | Vehicle slug | `vehicle_slug` |
 | Guide slug | `guide_slug` |
 | Link location | `link_location` |
 | Store | `store` |
 | Merchant | `merchant` |
 | Product category | `product_category` |
-| Destination type | `destination_type` |
 
 `page_path` is already available through standard page dimensions and does not need a redundant custom dimension.
 

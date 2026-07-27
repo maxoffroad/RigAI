@@ -85,7 +85,7 @@ Mark `build_setup_click` as a key event after GA4 receives it. Mark `app_store_c
 
 ## Custom Dimensions
 
-Manual event-scoped dimensions are documented for `cta_location`, `page_type`, `vehicle_context`, `vehicle_slug`, `guide_slug`, `link_location`, `store`, `merchant`, `product_category`, and `destination_type`.
+Manual event-scoped dimensions are documented for `cta_location`, `page_type`, `vehicle_slug`, `guide_slug`, `link_location`, `store`, `merchant`, and `product_category`.
 
 ## Privacy
 

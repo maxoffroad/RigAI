@@ -2,9 +2,7 @@ const EVENT_PARAMETERS = Object.freeze({
   build_setup_click: [
     "cta_location",
     "page_type",
-    "page_path",
-    "vehicle_context",
-    "destination_type"
+    "vehicle_slug"
   ],
   example_build_click: ["cta_location", "page_type", "page_path"],
   vehicle_guide_click: ["vehicle_slug", "link_location", "page_path"],
@@ -23,8 +21,6 @@ const EVENT_PARAMETERS = Object.freeze({
 const DATASET_KEYS = Object.freeze({
   cta_location: "analyticsLocation",
   page_type: "pageType",
-  vehicle_context: "vehicleContext",
-  destination_type: "destinationType",
   vehicle_slug: "vehicleSlug",
   guide_slug: "guideSlug",
   link_location: "analyticsLocation",

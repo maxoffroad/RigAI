@@ -356,7 +356,7 @@ export function renderPage(page, mainHtml, { analytics } = {}) {
   ];
   const uniqueScripts = [...new Set(scripts)].map((script) => `    ${script}`).join("\n");
   const vehicleContext = page.route.startsWith("/vehicles/toyota-4runner")
-    ? ' data-vehicle-context="toyota-4runner"'
+    ? ' data-vehicle-context="toyota-4runner" data-vehicle-slug="toyota-4runner"'
     : "";
 
   return `<!doctype html>

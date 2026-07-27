@@ -394,6 +394,28 @@ for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "play.go
 }
 
 requireIncludes(homeHtml, '<a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>', "dist/index.html");
+requireIncludes(homeHtml, '<span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>', "dist/index.html");
+
+const homepageBuildCtas = [
+  ...homeHtml.matchAll(
+    /<(?:a|span)\b[^>]*data-analytics-event="build_setup_click"[^>]*>/g
+  )
+];
+const homepageBuildLocations = new Set(
+  homepageBuildCtas.map(
+    ([markup]) =>
+      markup.match(/data-analytics-location="([^"]+)"/)?.[1] || ""
+  )
+);
+
+if (
+  homepageBuildCtas.length !== 3 ||
+  !["header", "hero", "final_cta"].every((location) =>
+    homepageBuildLocations.has(location)
+  )
+) {
+  errors.push("Homepage must expose exactly three uniquely located Build My Setup controls.");
+}
 requireIncludes(homeHtml, '<a href="#how-it-works">How It Works</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="#vehicles">Vehicles</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="#guides">Guides</a>', "dist/index.html");
@@ -498,6 +520,7 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, '<html lang="en">', label);
   requireIncludes(html, '<nav class="breadcrumb article-breadcrumb" aria-label="Breadcrumb">', label);
   requireIncludes(html, '<nav class="article-toc" aria-label="Table of contents">', label);
+  requireIncludes(html, 'data-vehicle-slug="toyota-4runner"', label);
   requireIncludes(html, 'class="callout vehicle-scope-callout"', label);
   requireIncludes(html, 'class="callout safety-disclaimer"', label);
   requireIncludes(html, "Always verify model year, trim, drivetrain, KDSS status", label);
@@ -506,6 +529,13 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, "RigAI Editorial Team", label);
   requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
   requireIncludes(html, 'class="related-guides"', label);
+
+  const articleBuildCtaCount = (
+    html.match(/data-analytics-event="build_setup_click"/g) || []
+  ).length;
+  if (articleBuildCtaCount !== 1) {
+    errors.push(`${label} must contain exactly one tracked vehicle-plan CTA.`);
+  }
 
   if (/noindex/i.test(html)) {
     errors.push(`${label} must be indexable but contains noindex.`);
@@ -684,6 +714,28 @@ for (const page of pages) {
 
 const analyticsSource = readBuildFile(join("src", "analytics.js"));
 const mainScript = readBuildFile(join("src", "main.js"));
+const buildSetupParameterBlock =
+  analyticsSource.match(/build_setup_click:\s*\[([\s\S]*?)\]/)?.[1] || "";
+
+for (const requiredParameter of [
+  '"cta_location"',
+  '"page_type"',
+  '"vehicle_slug"'
+]) {
+  if (!buildSetupParameterBlock.includes(requiredParameter)) {
+    errors.push(`build_setup_click is missing ${requiredParameter}.`);
+  }
+}
+
+for (const staleParameter of [
+  '"page_path"',
+  '"vehicle_context"',
+  '"destination_type"'
+]) {
+  if (buildSetupParameterBlock.includes(staleParameter)) {
+    errors.push(`build_setup_click contains stale parameter ${staleParameter}.`);
+  }
+}
 const allowedAnalyticsEvents = new Set([
   "build_setup_click",
   "example_build_click",
@@ -695,7 +747,7 @@ const allowedAnalyticsEvents = new Set([
   "outbound_link_click"
 ]);
 const requiredEventAttributes = {
-  build_setup_click: ["data-analytics-location", "data-destination-type"],
+  build_setup_click: ["data-analytics-location"],
   example_build_click: ["data-analytics-location"],
   vehicle_guide_click: ["data-analytics-location", "data-vehicle-slug"],
   guide_click: [
@@ -888,7 +940,7 @@ for (const page of pages) {
   }
 
   for (const tag of html.matchAll(
-    /<(?:a|details)\b[^>]*\bdata-analytics-event="([^"]+)"[^>]*>/g
+    /<(?:a|button|span|details)\b[^>]*\bdata-analytics-event="([^"]+)"[^>]*>/g
   )) {
     const [markup, eventName] = tag;
     if (!allowedAnalyticsEvents.has(eventName)) {
