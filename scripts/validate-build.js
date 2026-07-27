@@ -294,6 +294,11 @@ for (const className of [".button", ".card", ".badge", ".form-field", ".table", 
   }
 }
 
+const consentStyleBlock = stylesheet.match(/\.analytics-consent\s*\{([\s\S]*?)\}/)?.[1] || "";
+if (!/position:\s*fixed/.test(consentStyleBlock) || !/bottom:\s*\d/.test(consentStyleBlock)) {
+  errors.push("Analytics consent banner must be a fixed bottom overlay.");
+}
+
 const homeHtml = readBuildFile("index.html");
 const requiredHomeSections = [
   "home-hero",
@@ -714,8 +719,23 @@ if ((analyticsSource.match(/documentLike\.addEventListener\("click"/g) || []).le
   errors.push("Analytics helper must bind exactly one delegated click listener.");
 }
 
-if (analyticsSource.includes("preventDefault")) {
-  errors.push("Analytics helper must not block navigation with preventDefault.");
+if ((analyticsSource.match(/event\.preventDefault\(\)/g) || []).length !== 2) {
+  errors.push("Consent controls must defensively prevent only their two button defaults.");
+}
+
+if (analyticsSource.includes("settingsButton.focus(")) {
+  errors.push("Consent choice must not move focus to the footer settings control.");
+}
+
+for (const prohibitedScrollBehavior of [
+  "scrollIntoView",
+  "location.hash",
+  "location.href",
+  "form.submit"
+]) {
+  if (analyticsSource.includes(prohibitedScrollBehavior)) {
+    errors.push(`Consent helper contains prohibited behavior: ${prohibitedScrollBehavior}.`);
+  }
 }
 
 for (const prohibitedParameter of [
@@ -782,8 +802,16 @@ for (const page of pages) {
     requireIncludes(html, "analytics_storage: 'granted'", label);
     requireIncludes(html, "rigai_analytics_consent", label);
     requireIncludes(html, "data-analytics-consent", label);
-    requireIncludes(html, 'data-consent-choice="granted"', label);
-    requireIncludes(html, 'data-consent-choice="denied"', label);
+    requireIncludes(
+      html,
+      '<button class="consent-button consent-button-primary" type="button" data-consent-choice="granted">',
+      label
+    );
+    requireIncludes(
+      html,
+      '<button class="consent-button consent-button-secondary" type="button" data-consent-choice="denied">',
+      label
+    );
     requireIncludes(html, "data-analytics-settings", label);
     requireIncludes(html, 'href="/privacy"', label);
 

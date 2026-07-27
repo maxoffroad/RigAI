@@ -180,10 +180,33 @@ function bindConsentControls(documentLike, windowLike) {
 
   if (!banner || !settingsButton || choiceButtons.length !== 2) return;
 
+  const preserveScrollPosition = (update) => {
+    const scrollX = windowLike.scrollX;
+    const scrollY = windowLike.scrollY;
+    update();
+
+    const verifyScroll = () => {
+      if (
+        Math.abs(windowLike.scrollX - scrollX) > 1 ||
+        Math.abs(windowLike.scrollY - scrollY) > 1
+      ) {
+        windowLike.scrollTo(scrollX, scrollY);
+      }
+    };
+
+    if (typeof windowLike.requestAnimationFrame === "function") {
+      windowLike.requestAnimationFrame(verifyScroll);
+    } else {
+      verifyScroll();
+    }
+  };
+
   const showBanner = ({ moveFocus = false } = {}) => {
     banner.hidden = false;
     if (moveFocus) {
-      banner.querySelector('[data-consent-choice="granted"]')?.focus();
+      banner
+        .querySelector('[data-consent-choice="granted"]')
+        ?.focus({ preventScroll: true });
     }
   };
 
@@ -191,22 +214,28 @@ function bindConsentControls(documentLike, windowLike) {
     banner.hidden = true;
   };
 
-  settingsButton.addEventListener("click", () => {
-    showBanner({ moveFocus: true });
+  settingsButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    preserveScrollPosition(() => {
+      showBanner({ moveFocus: true });
+    });
   });
 
   for (const button of choiceButtons) {
-    button.addEventListener("click", () => {
-      if (
-        updateAnalyticsConsent(
-          button.dataset.consentChoice,
-          documentLike,
-          windowLike
-        )
-      ) {
-        hideBanner();
-        settingsButton.focus();
-      }
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      preserveScrollPosition(() => {
+        if (
+          updateAnalyticsConsent(
+            button.dataset.consentChoice,
+            documentLike,
+            windowLike
+          )
+        ) {
+          hideBanner();
+          button.blur();
+        }
+      });
     });
   }
 

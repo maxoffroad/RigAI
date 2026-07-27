@@ -1,5 +1,6 @@
 import {
   ANALYTICS_CONSENT_KEY,
+  bindAnalytics,
   eventParameters,
   hasAnalyticsConsent,
   normalizedPagePath,
@@ -136,6 +137,105 @@ if (trackEvent("unknown_event", { email: "private@example.com" }, windowLike)) {
   throw new Error("Unknown analytics events must be ignored.");
 }
 
+function mockControl(dataset = {}) {
+  const listeners = new Map();
+  return {
+    dataset,
+    blurred: false,
+    focusOptions: null,
+    addEventListener: (type, listener) => listeners.set(type, listener),
+    blur() {
+      this.blurred = true;
+    },
+    focus(options) {
+      this.focusOptions = options;
+    },
+    click() {
+      let defaultPrevented = false;
+      listeners.get("click")?.({
+        preventDefault: () => {
+          defaultPrevented = true;
+        }
+      });
+      return defaultPrevented;
+    }
+  };
+}
+
+const acceptButton = mockControl({ consentChoice: "granted" });
+const rejectButton = mockControl({ consentChoice: "denied" });
+const settingsButton = mockControl();
+const consentBanner = {
+  hidden: true,
+  querySelector: () => acceptButton
+};
+const scrollCalls = [];
+const consentWindow = {
+  __RIGAI_ANALYTICS__: {
+    enabled: true,
+    consent: "denied",
+    savedChoice: "denied",
+    pageViewSent: false,
+    listenersBound: false,
+    storageKey: ANALYTICS_CONSENT_KEY
+  },
+  gtag: () => {},
+  localStorage: {
+    setItem: (key, value) => storedValues.set(key, value)
+  },
+  location: { pathname: "/" },
+  scrollX: 0,
+  scrollY: 420,
+  requestAnimationFrame: (callback) => callback(),
+  scrollTo: (x, y) => {
+    scrollCalls.push([x, y]);
+    consentWindow.scrollX = x;
+    consentWindow.scrollY = y;
+  }
+};
+const consentDocument = {
+  location: { pathname: "/" },
+  body: { dataset: {} },
+  querySelector: (selector) => {
+    if (selector === "[data-analytics-consent]") return consentBanner;
+    if (selector === "[data-analytics-settings]") return settingsButton;
+    return null;
+  },
+  querySelectorAll: (selector) => {
+    if (selector === "[data-consent-choice]") {
+      return [acceptButton, rejectButton];
+    }
+    return [];
+  },
+  addEventListener: () => {}
+};
+
+bindAnalytics(consentDocument, consentWindow);
+
+if (!settingsButton.click() || consentBanner.hidden) {
+  throw new Error("Analytics settings must open the consent banner with a button click.");
+}
+
+if (acceptButton.focusOptions?.preventScroll !== true) {
+  throw new Error("Opening consent settings must focus without scrolling.");
+}
+
+if (!acceptButton.click() || !consentBanner.hidden || !acceptButton.blurred) {
+  throw new Error("Accept must close the consent banner without moving focus to the footer.");
+}
+
+if (consentWindow.scrollY !== 420 || scrollCalls.length !== 0) {
+  throw new Error("Accept must preserve an unchanged scroll position.");
+}
+
+consentWindow.scrollY = 777;
+settingsButton.click();
+rejectButton.click();
+
+if (consentWindow.scrollY !== 777 || scrollCalls.length !== 0) {
+  throw new Error("Reject must preserve an unchanged scroll position.");
+}
+
 console.log(
-  "Analytics consent test passed: consent gating and single page_view verified."
+  "Analytics consent test passed: event gating, persistence, page_view, and scroll safety verified."
 );
