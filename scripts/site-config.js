@@ -79,7 +79,7 @@ export const pages = [
     headerVariant: "home",
     renderer: "home",
     includeInSitemap: true,
-    scripts: ['<script type="module" src="/src/main.js?v=launch-1"></script>'],
+    scripts: ['<script type="module" src="/src/main.js?v=phase-5b"></script>'],
     extraHead: ['<meta name="impact-site-verification" value="829d8d13-665f-4a80-8ec4-797315534c1a" />'],
     structuredData: true
   },
@@ -175,7 +175,7 @@ export const pages = [
     footerLinks,
     includeInSitemap: false,
     robots: "noindex, follow",
-    scripts: ['<script type="module" src="/src/main.js?v=launch-1"></script>']
+    scripts: ['<script type="module" src="/src/main.js?v=phase-5b"></script>']
   },
   {
     key: "not-found",

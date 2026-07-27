@@ -1,3 +1,5 @@
+import "./analytics.js";
+
 const header = document.querySelector("[data-header]");
 const navToggle = document.querySelector("[data-nav-toggle]");
 const nav = document.querySelector("[data-nav]");

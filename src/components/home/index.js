@@ -32,8 +32,8 @@ function hero() {
         <h1>Your SUV.<br>Your terrain.<br><span>The right build.</span></h1>
         <p class="hero-copy">RigAI creates personalized off-road upgrade plans for SUVs based on the vehicle, driving goals, terrain and budget.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#download">Build My Setup</a>
-          <a class="button secondary" href="#example-build">See an Example Build</a>
+          <a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>
+          <a class="button secondary" href="#example-build" data-analytics-event="example_build_click" data-analytics-location="hero">See an Example Build</a>
         </div>
       </div>
       <aside class="home-hero-visual" aria-label="Example RigAI plan preview">
@@ -246,7 +246,7 @@ function supportedVehicles() {
           <h3>${vehicle.name}</h3>
           <span class="status-label${vehicle.state === "guide" || vehicle.state === "supported" ? " success" : vehicle.state === "limited" ? " warning" : ""}">${vehicle.status}</span>`;
           return vehicle.href
-            ? `<a class="vehicle-card vehicle-card--visual is-published" href="${vehicle.href}" aria-label="${vehicle.name} upgrade guide">${content}<strong class="card-link-label">Open vehicle guide</strong></a>`
+            ? `<a class="vehicle-card vehicle-card--visual is-published" href="${vehicle.href}" aria-label="${vehicle.name} upgrade guide" data-analytics-event="vehicle_guide_click" data-analytics-location="homepage_vehicles" data-vehicle-slug="toyota-4runner">${content}<strong class="card-link-label">Open vehicle guide</strong></a>`
             : `<article class="vehicle-card vehicle-card--visual vehicle-card--${vehicle.state}">${content}</article>`;
         }).join("")}
       </div>
@@ -274,7 +274,7 @@ function guidesPreview() {
           <p>${guide.text}</p>
           ${guide.href ? `<small>${guide.readingTime} min read</small><strong class="card-link-label">Read guide</strong>` : "<small>Guide in development</small>"}`;
           return guide.href
-            ? `<a class="guide-card is-published" href="${guide.href}">${content}</a>`
+            ? `<a class="guide-card is-published" href="${guide.href}" data-analytics-event="guide_click" data-analytics-location="homepage_guides" data-guide-slug="${guide.href.split("/").pop()}" data-vehicle-slug="toyota-4runner">${content}</a>`
             : `<article class="guide-card">${content}</article>`;
         }).join("")}
       </div>
@@ -303,7 +303,7 @@ function faq() {
         <h2>Common questions</h2>
       </div>
       <div class="faq-list">
-        ${faqs.map((item) => `<details class="faq-item"><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}
+        ${faqs.map((item, index) => `<details class="faq-item" data-analytics-event="faq_open" data-faq-id="home-faq-${index + 1}"><summary>${item.question}</summary><p>${item.answer}</p></details>`).join("")}
       </div>
     </section>`;
 }

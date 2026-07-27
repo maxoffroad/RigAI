@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="/src/styles.css?v=launch-1" />
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://rigai-offroad.com/#organization","name":"RigAI","url":"https://rigai-offroad.com/","logo":"https://rigai-offroad.com/favicon.svg","contactPoint":{"@type":"ContactPoint","email":"maxoffroad.store@gmail.com","contactType":"customer support"}},{"@type":"WebSite","@id":"https://rigai-offroad.com/#website","name":"RigAI","url":"https://rigai-offroad.com/","description":"RigAI helps SUV and offroad owners build a prioritized upgrade plan with buy-first guidance, skip-for-now warnings, and fitment reminders.","publisher":{"@id":"https://rigai-offroad.com/#organization"},"inLanguage":"en"},{"@type":"SoftwareApplication","@id":"https://rigai-offroad.com/#app","name":"RigAI","applicationCategory":"LifestyleApplication","operatingSystem":"Android","url":"https://rigai-offroad.com/","description":"RigAI is an AI off-road setup assistant that helps SUV beginners plan first upgrades, understand what to skip for now, and verify fitment before purchasing.","publisher":{"@id":"https://rigai-offroad.com/#organization"}}]}</script>
   </head>
-  <body>
+  <body data-page-type="home">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header class="site-header" data-header>
       <a class="brand" href="/">
@@ -45,7 +45,7 @@
         <a href="#guides">Guides</a>
         <a href="/about">About</a>
       </nav>
-      <a class="header-cta" href="#download">Build My Setup</a>
+      <a class="header-cta" href="#download" data-analytics-event="build_setup_click" data-analytics-location="header" data-destination-type="internal_section">Build My Setup</a>
     </header>
 
     <main id="main-content">
@@ -55,8 +55,8 @@
         <h1>Your SUV.<br>Your terrain.<br><span>The right build.</span></h1>
         <p class="hero-copy">RigAI creates personalized off-road upgrade plans for SUVs based on the vehicle, driving goals, terrain and budget.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#download">Build My Setup</a>
-          <a class="button secondary" href="#example-build">See an Example Build</a>
+          <a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>
+          <a class="button secondary" href="#example-build" data-analytics-event="example_build_click" data-analytics-location="hero">See an Example Build</a>
         </div>
       </div>
       <aside class="home-hero-visual" aria-label="Example RigAI plan preview">
@@ -318,7 +318,7 @@
         </div>
       </div>
       <div class="vehicle-grid">
-        <a class="vehicle-card vehicle-card--visual is-published" href="/vehicles/toyota-4runner" aria-label="Toyota 4Runner upgrade guide"><div class="vehicle-media" aria-hidden="true" data-variant="1"></div>
+        <a class="vehicle-card vehicle-card--visual is-published" href="/vehicles/toyota-4runner" aria-label="Toyota 4Runner upgrade guide" data-analytics-event="vehicle_guide_click" data-analytics-location="homepage_vehicles" data-vehicle-slug="toyota-4runner"><div class="vehicle-media" aria-hidden="true" data-variant="1"></div>
           <h3>Toyota 4Runner</h3>
           <span class="status-label success">Detailed guide available</span><strong class="card-link-label">Open vehicle guide</strong></a><article class="vehicle-card vehicle-card--visual vehicle-card--supported"><div class="vehicle-media" aria-hidden="true" data-variant="2"></div>
           <h3>Land Cruiser Prado</h3>
@@ -347,22 +347,22 @@
         <p>Guides written for SUV owners who want to understand the decisions, not just the products.</p>
       </div>
       <div class="guide-grid">
-        <a class="guide-card is-published" href="/vehicles/toyota-4runner/suspension"><div><span class="status-label">Suspension</span><span class="mini-label">Published</span></div>
+        <a class="guide-card is-published" href="/vehicles/toyota-4runner/suspension" data-analytics-event="guide_click" data-analytics-location="homepage_guides" data-guide-slug="suspension" data-vehicle-slug="toyota-4runner"><div><span class="status-label">Suspension</span><span class="mini-label">Published</span></div>
           <h3>Toyota 4Runner Suspension Guide</h3>
           <p>Choose suspension by use, condition, added load, damping needs, geometry, and KDSS status.</p>
-          <small>6 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/first-upgrades"><div><span class="status-label">First upgrades</span><span class="mini-label">Published</span></div>
+          <small>6 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/first-upgrades" data-analytics-event="guide_click" data-analytics-location="homepage_guides" data-guide-slug="first-upgrades" data-vehicle-slug="toyota-4runner"><div><span class="status-label">First upgrades</span><span class="mini-label">Published</span></div>
           <h3>Best First Upgrades for a 4Runner</h3>
           <p>A practical framework for deciding what to buy first and what can wait.</p>
-          <small>4 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/lift-kit"><div><span class="status-label">Lift kits</span><span class="mini-label">Published</span></div>
+          <small>4 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/lift-kit" data-analytics-event="guide_click" data-analytics-location="homepage_guides" data-guide-slug="lift-kit" data-vehicle-slug="toyota-4runner"><div><span class="status-label">Lift kits</span><span class="mini-label">Published</span></div>
           <h3>Toyota 4Runner Lift Kit Guide</h3>
           <p>Choose a lift objective using load, geometry, clearance, and daily-driving trade-offs.</p>
-          <small>5 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/tire-size"><div><span class="status-label">Tires</span><span class="mini-label">Published</span></div>
+          <small>5 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/tire-size" data-analytics-event="guide_click" data-analytics-location="homepage_guides" data-guide-slug="tire-size" data-vehicle-slug="toyota-4runner"><div><span class="status-label">Tires</span><span class="mini-label">Published</span></div>
           <h3>Toyota 4Runner Tire Size Guide</h3>
           <p>Evaluate the placard baseline, real dimensions, wheels, clearance, and load.</p>
-          <small>5 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/kdss"><div><span class="status-label">KDSS</span><span class="mini-label">Published</span></div>
+          <small>5 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/kdss" data-analytics-event="guide_click" data-analytics-location="homepage_guides" data-guide-slug="kdss" data-vehicle-slug="toyota-4runner"><div><span class="status-label">KDSS</span><span class="mini-label">Published</span></div>
           <h3>Toyota 4Runner KDSS Guide</h3>
           <p>Confirm KDSS and plan compatible suspension, lift, load, and installation checks.</p>
-          <small>4 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/overland-build"><div><span class="status-label">Overland travel</span><span class="mini-label">Published</span></div>
+          <small>4 min read</small><strong class="card-link-label">Read guide</strong></a><a class="guide-card is-published" href="/vehicles/toyota-4runner/overland-build" data-analytics-event="guide_click" data-analytics-location="homepage_guides" data-guide-slug="overland-build" data-vehicle-slug="toyota-4runner"><div><span class="status-label">Overland travel</span><span class="mini-label">Published</span></div>
           <h3>Toyota 4Runner Overland Build Guide</h3>
           <p>Plan travel around operating load, reliability, recovery, cargo, and comfort.</p>
           <small>6 min read</small><strong class="card-link-label">Read guide</strong></a>
@@ -386,7 +386,7 @@
         <h2>Common questions</h2>
       </div>
       <div class="faq-list">
-        <details class="faq-item"><summary>What does RigAI recommend?</summary><p>RigAI recommends a first upgrade path, what to skip for now, and what to verify before purchasing.</p></details><details class="faq-item"><summary>Is RigAI only for suspension upgrades?</summary><p>No. RigAI can organize suspension, tires, protection, recovery gear, winches, bumpers, lighting, roof cargo, and overland equipment.</p></details><details class="faq-item"><summary>Does RigAI guarantee that a part will fit my vehicle?</summary><p>No. You must verify fitment, compatibility, seller details, and installation requirements before purchasing.</p></details><details class="faq-item"><summary>Can beginners use RigAI?</summary><p>Yes. RigAI uses plain language and explains why an upgrade helps, what to buy first, and what to skip for now.</p></details><details class="faq-item"><summary>Does RigAI consider my budget?</summary><p>Yes. Budget is part of the planning flow, but final prices and availability depend on sellers and selected products.</p></details><details class="faq-item"><summary>How are product links selected?</summary><p>For now, RigAI supports Amazon search ideas only. Some links may be affiliate links, and RigAI may earn from qualifying purchases.</p></details>
+        <details class="faq-item" data-analytics-event="faq_open" data-faq-id="home-faq-1"><summary>What does RigAI recommend?</summary><p>RigAI recommends a first upgrade path, what to skip for now, and what to verify before purchasing.</p></details><details class="faq-item" data-analytics-event="faq_open" data-faq-id="home-faq-2"><summary>Is RigAI only for suspension upgrades?</summary><p>No. RigAI can organize suspension, tires, protection, recovery gear, winches, bumpers, lighting, roof cargo, and overland equipment.</p></details><details class="faq-item" data-analytics-event="faq_open" data-faq-id="home-faq-3"><summary>Does RigAI guarantee that a part will fit my vehicle?</summary><p>No. You must verify fitment, compatibility, seller details, and installation requirements before purchasing.</p></details><details class="faq-item" data-analytics-event="faq_open" data-faq-id="home-faq-4"><summary>Can beginners use RigAI?</summary><p>Yes. RigAI uses plain language and explains why an upgrade helps, what to buy first, and what to skip for now.</p></details><details class="faq-item" data-analytics-event="faq_open" data-faq-id="home-faq-5"><summary>Does RigAI consider my budget?</summary><p>Yes. Budget is part of the planning flow, but final prices and availability depend on sellers and selected products.</p></details><details class="faq-item" data-analytics-event="faq_open" data-faq-id="home-faq-6"><summary>How are product links selected?</summary><p>For now, RigAI supports Amazon search ideas only. Some links may be affiliate links, and RigAI may earn from qualifying purchases.</p></details>
       </div>
     </section>
       <section class="home-final-cta" id="download" data-figma-section="home-final-cta">
@@ -447,6 +447,6 @@
       </div>
     </footer>
 
-    <script type="module" src="/src/main.js?v=launch-1"></script>
+    <script type="module" src="/src/main.js?v=phase-5b"></script>
   </body>
 </html>

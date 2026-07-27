@@ -3,6 +3,11 @@ import { join } from "node:path";
 import { XMLParser } from "fast-xml-parser";
 import { pages, site } from "./site-config.js";
 import { inspectBuildOutput } from "./build-contract.js";
+import {
+  analyticsConfig,
+  measurementIdPattern,
+  placeholderMeasurementIdPattern
+} from "../config/analytics.js";
 
 const root = process.cwd();
 const dist = join(root, "dist");
@@ -205,7 +210,7 @@ for (const page of pages) {
   requireIncludes(html, 'class="nav-toggle"', label);
   requireIncludes(html, 'aria-expanded="false"', label);
   requireIncludes(html, 'data-nav-toggle', label);
-  requireIncludes(html, '<script type="module" src="/src/main.js?v=launch-1"></script>', label);
+  requireIncludes(html, '<script type="module" src="/src/main.js?v=phase-5b"></script>', label);
 
   if (canonical !== `${site.domain}/` && canonical.endsWith("/")) {
     errors.push(`${label} canonical has an unexpected trailing slash.`);
@@ -353,12 +358,12 @@ for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "play.go
   }
 }
 
-requireIncludes(homeHtml, '<a class="button primary" href="#download">Build My Setup</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="#how-it-works">How It Works</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="#vehicles">Vehicles</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="#guides">Guides</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="/about">About</a>', "dist/index.html");
-requireIncludes(homeHtml, '<a class="button secondary" href="#example-build">See an Example Build</a>', "dist/index.html");
+requireIncludes(homeHtml, '<a class="button secondary" href="#example-build" data-analytics-event="example_build_click" data-analytics-location="hero">See an Example Build</a>', "dist/index.html");
 requireIncludes(homeHtml, '<img src="/src/assets/rigai-garage-bg.jpg" width="1200" height="800"', "dist/index.html");
 requireIncludes(homeHtml, 'loading="lazy"', "dist/index.html");
 requireIncludes(homeHtml, "Example only &mdash; recommendations and estimated costs vary", "dist/index.html");
@@ -461,7 +466,7 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, 'class="callout vehicle-scope-callout"', label);
   requireIncludes(html, 'class="callout safety-disclaimer"', label);
   requireIncludes(html, "Always verify model year, trim, drivetrain, KDSS status", label);
-  requireIncludes(html, 'href="/#download">Check app availability</a>', label);
+  requireIncludes(html, 'href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">Check app availability</a>', label);
   requireIncludes(html, "Editorial and fitment notes", label);
   requireIncludes(html, "RigAI Editorial Team", label);
   requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
@@ -640,6 +645,196 @@ for (const page of pages) {
       }
     }
   }
+}
+
+const analyticsSource = readBuildFile(join("src", "analytics.js"));
+const mainScript = readBuildFile(join("src", "main.js"));
+const allowedAnalyticsEvents = new Set([
+  "build_setup_click",
+  "example_build_click",
+  "vehicle_guide_click",
+  "guide_click",
+  "app_store_click",
+  "affiliate_click",
+  "faq_open",
+  "outbound_link_click"
+]);
+const requiredEventAttributes = {
+  build_setup_click: ["data-analytics-location", "data-destination-type"],
+  example_build_click: ["data-analytics-location"],
+  vehicle_guide_click: ["data-analytics-location", "data-vehicle-slug"],
+  guide_click: [
+    "data-analytics-location",
+    "data-guide-slug",
+    "data-vehicle-slug"
+  ],
+  app_store_click: ["data-analytics-location", "data-store"],
+  affiliate_click: [
+    "data-analytics-location",
+    "data-merchant",
+    "data-product-category"
+  ],
+  faq_open: ["data-faq-id"],
+  outbound_link_click: ["data-analytics-location"]
+};
+
+requireFile(join("src", "analytics.js"));
+requireIncludes(mainScript, 'import "./analytics.js";', "dist/src/main.js");
+requireIncludes(
+  analyticsSource,
+  "windowLike.__RIGAI_ANALYTICS__.listenersBound = true;",
+  "dist/src/analytics.js"
+);
+
+if ((analyticsSource.match(/documentLike\.addEventListener\("click"/g) || []).length !== 1) {
+  errors.push("Analytics helper must bind exactly one delegated click listener.");
+}
+
+if (analyticsSource.includes("preventDefault")) {
+  errors.push("Analytics helper must not block navigation with preventDefault.");
+}
+
+for (const prohibitedParameter of [
+  "email",
+  "phone",
+  "vin",
+  "free_text",
+  "form_content",
+  "budget",
+  "user_id",
+  "full_url",
+  "destination_url",
+  "affiliate_id"
+]) {
+  const parameterPattern = new RegExp(`["']${prohibitedParameter}["']`, "i");
+  if (parameterPattern.test(analyticsSource)) {
+    errors.push(`Analytics helper contains prohibited parameter: ${prohibitedParameter}.`);
+  }
+}
+
+if (
+  analyticsConfig.ga4MeasurementId &&
+  (!measurementIdPattern.test(analyticsConfig.ga4MeasurementId) ||
+    placeholderMeasurementIdPattern.test(analyticsConfig.ga4MeasurementId))
+) {
+  errors.push("GA4 Measurement ID is invalid or a placeholder.");
+}
+
+for (const page of pages) {
+  const outputPath = pageOutputPath(page);
+  const html = readBuildFile(outputPath);
+  const label = `dist/${outputPath.replaceAll("\\", "/")}`;
+  const googleTagCount = (
+    html.match(/googletagmanager\.com\/gtag\/js\?id=/g) || []
+  ).length;
+  const configCallCount = (html.match(/\bgtag\(['"]config['"]/g) || []).length;
+
+  if (googleTagCount > 1 || configCallCount > 1) {
+    errors.push(`${label} includes the Google tag more than once.`);
+  }
+
+  if (analyticsConfig.enabled) {
+    if (googleTagCount !== 1 || configCallCount !== 1) {
+      errors.push(`${label} must include one Google tag and one config call.`);
+    }
+    requireIncludes(
+      html,
+      `gtag/js?id=${analyticsConfig.ga4MeasurementId}`,
+      label
+    );
+    requireIncludes(
+      html,
+      `gtag('config', '${analyticsConfig.ga4MeasurementId}'`,
+      label
+    );
+    requireIncludes(html, "allow_google_signals", label);
+    requireIncludes(html, "allow_ad_personalization_signals", label);
+    requireIncludes(html, "send_page_view: true", label);
+    requireIncludes(html, "analytics_storage: 'denied'", label);
+    requireIncludes(html, "ad_storage: 'denied'", label);
+    requireIncludes(html, "ad_user_data: 'denied'", label);
+    requireIncludes(html, "ad_personalization: 'denied'", label);
+  } else if (
+    googleTagCount !== 0 ||
+    configCallCount !== 0 ||
+    html.includes("__RIGAI_ANALYTICS__")
+  ) {
+    errors.push(`${label} contains analytics initialization while analytics is disabled.`);
+  }
+
+  if (/G-(?:X{4,}|0{4,})/i.test(html)) {
+    errors.push(`${label} contains a placeholder GA4 Measurement ID.`);
+  }
+
+  if (html.includes("GA4_MEASUREMENT_ID")) {
+    errors.push(`${label} exposes the build environment variable name.`);
+  }
+
+  for (const tag of html.matchAll(
+    /<(?:a|details)\b[^>]*\bdata-analytics-event="([^"]+)"[^>]*>/g
+  )) {
+    const [markup, eventName] = tag;
+    if (!allowedAnalyticsEvents.has(eventName)) {
+      errors.push(`${label} contains unsupported analytics event: ${eventName}.`);
+      continue;
+    }
+
+    if ((markup.match(/data-analytics-event=/g) || []).length !== 1) {
+      errors.push(`${label} has multiple analytics events on one interactive element.`);
+    }
+
+    for (const attribute of requiredEventAttributes[eventName]) {
+      if (!markup.includes(`${attribute}="`)) {
+        errors.push(`${label} ${eventName} is missing ${attribute}.`);
+      }
+    }
+  }
+
+  if (
+    /^\/(?:privacy|terms|affiliate-disclosure)$/.test(page.route) &&
+    html.includes("data-analytics-event")
+  ) {
+    errors.push(`${label} legal page contains unnecessary interaction events.`);
+  }
+
+  for (const anchor of html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>/g)) {
+    const [markup, href] = anchor;
+    if (/^\/[^"]*[?&]utm_/i.test(href)) {
+      errors.push(`${label} contains UTM parameters on an internal link: ${href}.`);
+    }
+
+    if (/play\.google\.com/i.test(href) && !markup.includes('data-analytics-event="app_store_click"')) {
+      errors.push(`${label} Google Play link is missing app_store_click analytics.`);
+    }
+
+    if (/amazon\./i.test(href) && !markup.includes('data-analytics-event="affiliate_click"')) {
+      errors.push(`${label} Amazon link is missing affiliate_click analytics.`);
+    }
+  }
+}
+
+for (const plannedCard of homeHtml.matchAll(
+  /<article class="(?:guide-card|vehicle-card)[^"]*"[\s\S]*?<\/article>/g
+)) {
+  if (plannedCard[0].includes("data-analytics-event")) {
+    errors.push("Homepage planned cards must not contain analytics events.");
+  }
+}
+
+requireIncludes(
+  homeHtml,
+  'data-analytics-event="vehicle_guide_click"',
+  "dist/index.html"
+);
+requireIncludes(homeHtml, 'data-analytics-event="guide_click"', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="faq_open"', "dist/index.html");
+
+for (const route of vehicleRoutes) {
+  const html = readBuildFile(join(route.replace(/^\//, ""), "index.html"));
+  const label = `dist${route}/index.html`;
+  requireIncludes(html, 'data-analytics-event="build_setup_click"', label);
+  requireIncludes(html, 'data-analytics-event="guide_click"', label);
+  requireIncludes(html, 'data-analytics-event="outbound_link_click"', label);
 }
 
 const jsonLdMatches = [...homeHtml.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];

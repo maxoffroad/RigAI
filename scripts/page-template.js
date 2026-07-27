@@ -23,6 +23,9 @@ function renderHeader(page) {
   const navId = `nav-${page.key}`;
   const ctaHref = isHome ? "#download" : "/";
   const ctaLabel = isHome ? "Build My Setup" : "Home";
+  const ctaAnalytics = isHome
+    ? ' data-analytics-event="build_setup_click" data-analytics-location="header" data-destination-type="internal_section"'
+    : "";
 
   return `<header class="${classes}"${dataHeader}>
       <a class="brand" href="/">
@@ -37,8 +40,44 @@ function renderHeader(page) {
       <nav class="nav" id="${navId}" aria-label="Main navigation" data-nav>
         ${renderLinks(page.nav)}
       </nav>
-      <a class="header-cta" href="${ctaHref}">${ctaLabel}</a>
+      <a class="header-cta" href="${ctaHref}"${ctaAnalytics}>${ctaLabel}</a>
     </header>`;
+}
+
+function analyticsPageType(page) {
+  if (page.route === "/") return "home";
+  if (page.structuredData === "vehicleHub") return "vehicle_hub";
+  if (page.structuredData === "article") return "article";
+  if (["privacy", "terms", "affiliate-disclosure"].includes(page.key)) return "legal";
+  if (page.key === "not-found") return "error";
+  return "support";
+}
+
+function renderGoogleTag(analytics) {
+  if (!analytics?.enabled) return "";
+
+  const measurementId = analytics.ga4MeasurementId;
+  const debugConfig = analytics.debug ? "\n        debug_mode: true," : "";
+
+  return `<script async src="https://www.googletagmanager.com/gtag/js?id=${measurementId}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      window.__RIGAI_ANALYTICS__ = { enabled: true, listenersBound: false };
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+      gtag('js', new Date());
+      gtag('config', '${measurementId}', {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        send_page_view: true,${debugConfig}
+      });
+    </script>`;
 }
 
 function renderFooter(page) {
@@ -198,7 +237,7 @@ function renderStructuredData(page) {
   return `<script type="application/ld+json">${JSON.stringify(graph)}</script>`;
 }
 
-function renderHead(page) {
+function renderHead(page, analytics) {
   const canonical = absoluteUrl(page.route);
   const imageUrl = `${site.domain}${site.socialImage.path}`;
   const meta = [
@@ -233,7 +272,8 @@ function renderHead(page) {
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />',
     '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />',
     '<link rel="stylesheet" href="/src/styles.css?v=launch-1" />',
-    page.structuredData ? renderStructuredData(page) : ""
+    page.structuredData ? renderStructuredData(page) : "",
+    renderGoogleTag(analytics)
   ].filter(Boolean);
 
   return meta.map((item) => `    ${item}`).join("\n");
@@ -259,19 +299,22 @@ export function extractMain(sourceHtml, sourceFile) {
   return withMainTarget(match[0]);
 }
 
-export function renderPage(page, mainHtml) {
+export function renderPage(page, mainHtml, { analytics } = {}) {
   const scripts = [
-    '<script type="module" src="/src/main.js?v=launch-1"></script>',
+    '<script type="module" src="/src/main.js?v=phase-5b"></script>',
     ...(page.scripts || [])
   ];
   const uniqueScripts = [...new Set(scripts)].map((script) => `    ${script}`).join("\n");
+  const vehicleContext = page.route.startsWith("/vehicles/toyota-4runner")
+    ? ' data-vehicle-context="toyota-4runner"'
+    : "";
 
   return `<!doctype html>
 <html lang="${page.language || site.defaultLanguage}">
   <head>
-${renderHead(page)}
+${renderHead(page, analytics)}
   </head>
-  <body>
+  <body data-page-type="${analyticsPageType(page)}"${vehicleContext}>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     ${renderHeader(page)}
 

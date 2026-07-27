@@ -8,6 +8,7 @@
     "build": "node scripts/build.js",
     "preview": "node scripts/dev-server.js dist",
     "validate": "node scripts/validate-build.js",
+    "test:analytics": "node scripts/test-analytics.js",
     "verify:production-seo": "node scripts/verify-production-seo.js"
   },
   "devDependencies": {

@@ -8,6 +8,14 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;");
 }
 
+function guideSlug(href) {
+  return href.split("/").filter(Boolean).pop() || "toyota-4runner";
+}
+
+function guideAnalytics(href, location) {
+  return `data-analytics-event="guide_click" data-analytics-location="${location}" data-guide-slug="${guideSlug(href)}" data-vehicle-slug="toyota-4runner"`;
+}
+
 function renderBreadcrumbs(items) {
   return `<nav class="breadcrumb article-breadcrumb" aria-label="Breadcrumb">
       <ol>
@@ -43,7 +51,7 @@ function renderTakeaways(items) {
 
 function contextualLink(link) {
   if (!link) return "";
-  return `<p class="contextual-link">${escapeHtml(link.before)}<a href="${link.href}">${escapeHtml(link.label)}</a>${escapeHtml(link.after)}</p>`;
+  return `<p class="contextual-link">${escapeHtml(link.before)}<a href="${link.href}" ${guideAnalytics(link.href, "article_context")}>${escapeHtml(link.label)}</a>${escapeHtml(link.after)}</p>`;
 }
 
 function renderProse(section) {
@@ -140,7 +148,7 @@ function renderFeatured(section) {
   return `<section class="article-section" id="${section.id}">
       <h2>${escapeHtml(section.title)}</h2>
       <div class="related-guide-grid">
-        ${section.published.map((item) => `<a class="related-guide-card is-published" href="${item.href}">
+        ${section.published.map((item) => `<a class="related-guide-card is-published" href="${item.href}" ${guideAnalytics(item.href, "article_featured")}>
           <span class="eyebrow">${escapeHtml(item.eyebrow)}</span>
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.text)}</p>
@@ -158,7 +166,7 @@ function renderFaq(section) {
   return `<section class="article-section" id="${section.id}">
       <h2>${escapeHtml(section.title)}</h2>
       <div class="faq-list article-faq">
-        ${section.items.map((item) => `<details class="faq-item"><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join("")}
+        ${section.items.map((item, index) => `<details class="faq-item" data-analytics-event="faq_open" data-faq-id="${section.id}-faq-${index + 1}"><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join("")}
       </div>
     </section>`;
 }
@@ -211,7 +219,7 @@ function renderRelated(items) {
         ${items.map((item) => {
           const relatedPage = toyota4RunnerPages.find((page) => page.route === item.href);
           const readingTime = relatedPage?.kind === "article" ? readingTimeMinutes(relatedPage) : null;
-          return `<a class="related-guide-card is-published" href="${item.href}">
+          return `<a class="related-guide-card is-published" href="${item.href}" ${guideAnalytics(item.href, "related_guides")}>
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.text)}</p>
           <strong>Read guide${readingTime ? ` · ${readingTime} min` : ""}</strong>
@@ -228,7 +236,7 @@ function renderAppCta(page) {
         <h2 id="article-app-cta-title">Build Your 4Runner Plan</h2>
         <p>RigAI uses your generation, trim, drivetrain, KDSS status, driving profile, budget, installed equipment, and planned load to organize what to consider first and what can wait.</p>
       </div>
-      <a class="button primary" href="/#download">Check app availability</a>
+      <a class="button primary" href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">Check app availability</a>
     </section>`;
 }
 
@@ -242,7 +250,7 @@ function renderEditorial(page) {
       </div>
       <div>
         <h3>Core sources</h3>
-        <ul>${page.sources.map((source) => `<li><a href="${source.href}" rel="noopener noreferrer">${escapeHtml(source.label)}</a><span>${escapeHtml(source.type)}</span></li>`).join("")}</ul>
+        <ul>${page.sources.map((source) => `<li><a href="${source.href}" rel="noopener noreferrer" data-analytics-event="outbound_link_click" data-analytics-location="article_sources">${escapeHtml(source.label)}</a><span>${escapeHtml(source.type)}</span></li>`).join("")}</ul>
       </div>
     </section>`;
 }
