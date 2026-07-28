@@ -91,7 +91,13 @@ export function inspectBuildOutput({ dist, pages, minimumFileCount = 18 }) {
     join("vehicles", "chevrolet-colorado", "suspension", "index.html"),
     join("vehicles", "chevrolet-colorado", "tire-size", "index.html"),
     join("vehicles", "chevrolet-colorado", "lift-kit", "index.html"),
-    join("vehicles", "chevrolet-colorado", "overland-build", "index.html")
+    join("vehicles", "chevrolet-colorado", "overland-build", "index.html"),
+    join("vehicles", "ford-ranger", "index.html"),
+    join("vehicles", "ford-ranger", "first-upgrades", "index.html"),
+    join("vehicles", "ford-ranger", "suspension", "index.html"),
+    join("vehicles", "ford-ranger", "tire-size", "index.html"),
+    join("vehicles", "ford-ranger", "lift-kit", "index.html"),
+    join("vehicles", "ford-ranger", "overland-build", "index.html")
   ]);
 
   for (const page of pages) {

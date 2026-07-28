@@ -75,6 +75,15 @@ if (configuredColoradoRoutes.length !== 6) {
   );
 }
 
+const configuredRangerRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/ford-ranger")
+);
+if (configuredRangerRoutes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Ford Ranger routes, found ${configuredRangerRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -507,7 +516,7 @@ for (const expected of [
   "EXAMPLE RECOMMENDATION",
   "RigAI supports multiple off-road platforms",
   "Your SUV is not listed?",
-  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, the 2020-present Jeep Gladiator JT, and the 2023-present Chevrolet Colorado",
+  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, the 2020-present Jeep Gladiator JT, the 2023-present Chevrolet Colorado, and the 2024-present US Ford Ranger",
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
@@ -572,6 +581,8 @@ requireIncludes(homeHtml, 'href="/vehicles/jeep-gladiator"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="jeep-gladiator"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/chevrolet-colorado"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="chevrolet-colorado"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/ford-ranger"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="ford-ranger"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -658,6 +669,22 @@ for (const expected of [
   requireIncludes(homepageColoradoCard, expected, "homepage Chevrolet Colorado vehicle card");
 }
 
+const homepageRangerCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/ford-ranger"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="ford-ranger"',
+  "Ford Ranger",
+  "2024–present · US generation",
+  "Suspension, tire fitment, lift, payload, and overland guidance",
+  "View Ranger guides"
+]) {
+  requireIncludes(homepageRangerCard, expected, "homepage Ford Ranger vehicle card");
+}
+
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
 requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
@@ -668,12 +695,14 @@ requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-wrangler-jl"', "dis
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-bronco"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-gladiator"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/chevrolet-colorado"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-ranger"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-bronco"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-gladiator"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="chevrolet-colorado"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-ranger"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -709,12 +738,20 @@ const prohibitedColoradoGlobalRoutes = [
   "/vehicles/chevrolet-colorado/lift-kit",
   "/vehicles/chevrolet-colorado/overland-build"
 ];
+const prohibitedRangerGlobalRoutes = [
+  "/vehicles/ford-ranger/first-upgrades",
+  "/vehicles/ford-ranger/suspension",
+  "/vehicles/ford-ranger/tire-size",
+  "/vehicles/ford-ranger/lift-kit",
+  "/vehicles/ford-ranger/overland-build"
+];
 for (const guideRoute of [
   ...prohibitedTacomaGlobalRoutes,
   ...prohibitedWranglerGlobalRoutes,
   ...prohibitedBroncoGlobalRoutes,
   ...prohibitedGladiatorGlobalRoutes,
-  ...prohibitedColoradoGlobalRoutes
+  ...prohibitedColoradoGlobalRoutes,
+  ...prohibitedRangerGlobalRoutes
 ]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
     errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
@@ -792,7 +829,13 @@ const vehicleRoutes = [
   "/vehicles/chevrolet-colorado/suspension",
   "/vehicles/chevrolet-colorado/tire-size",
   "/vehicles/chevrolet-colorado/lift-kit",
-  "/vehicles/chevrolet-colorado/overland-build"
+  "/vehicles/chevrolet-colorado/overland-build",
+  "/vehicles/ford-ranger",
+  "/vehicles/ford-ranger/first-upgrades",
+  "/vehicles/ford-ranger/suspension",
+  "/vehicles/ford-ranger/tire-size",
+  "/vehicles/ford-ranger/lift-kit",
+  "/vehicles/ford-ranger/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -1037,6 +1080,48 @@ const expectedPageLinks = {
     "/vehicles/chevrolet-colorado/suspension",
     "/vehicles/chevrolet-colorado/tire-size",
     "/vehicles/chevrolet-colorado/lift-kit"
+  ],
+  "/vehicles/ford-ranger": [
+    "/vehicles/ford-ranger/first-upgrades",
+    "/vehicles/ford-ranger/suspension",
+    "/vehicles/ford-ranger/tire-size",
+    "/vehicles/ford-ranger/lift-kit",
+    "/vehicles/ford-ranger/overland-build"
+  ],
+  "/vehicles/ford-ranger/first-upgrades": [
+    "/vehicles/ford-ranger",
+    "/vehicles/ford-ranger/suspension",
+    "/vehicles/ford-ranger/tire-size",
+    "/vehicles/ford-ranger/lift-kit",
+    "/vehicles/ford-ranger/overland-build"
+  ],
+  "/vehicles/ford-ranger/suspension": [
+    "/vehicles/ford-ranger",
+    "/vehicles/ford-ranger/first-upgrades",
+    "/vehicles/ford-ranger/tire-size",
+    "/vehicles/ford-ranger/lift-kit",
+    "/vehicles/ford-ranger/overland-build"
+  ],
+  "/vehicles/ford-ranger/tire-size": [
+    "/vehicles/ford-ranger",
+    "/vehicles/ford-ranger/first-upgrades",
+    "/vehicles/ford-ranger/suspension",
+    "/vehicles/ford-ranger/lift-kit",
+    "/vehicles/ford-ranger/overland-build"
+  ],
+  "/vehicles/ford-ranger/lift-kit": [
+    "/vehicles/ford-ranger",
+    "/vehicles/ford-ranger/first-upgrades",
+    "/vehicles/ford-ranger/suspension",
+    "/vehicles/ford-ranger/tire-size",
+    "/vehicles/ford-ranger/overland-build"
+  ],
+  "/vehicles/ford-ranger/overland-build": [
+    "/vehicles/ford-ranger",
+    "/vehicles/ford-ranger/first-upgrades",
+    "/vehicles/ford-ranger/suspension",
+    "/vehicles/ford-ranger/tire-size",
+    "/vehicles/ford-ranger/lift-kit"
   ]
 };
 
@@ -1072,11 +1157,12 @@ for (const route of vehicleRoutes) {
     "jeep-wrangler-jl": "Verify model year, door count, trim, engine, transmission",
     "ford-bronco": "Verify model year, door count, trim, engine, transmission",
     "jeep-gladiator": "Verify model year, trim, engine, transmission, axles",
-    "chevrolet-colorado": "Verify model year, trim, drivetrain, suspension package"
+    "chevrolet-colorado": "Verify model year, trim, drivetrain, suspension package",
+    "ford-ranger": "Verify model year, trim, engine, drivetrain, FX4 or Raptor configuration"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado"].includes(vehicleSlug)
+    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger"].includes(vehicleSlug)
       ? "Build My Setup"
       : "Check app availability";
   requireIncludes(
@@ -1402,6 +1488,68 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
         errors.push(`${label} contains an unsupported Colorado claim: ${universalClaim}.`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "ford-ranger") {
+    requireIncludes(html, "2024-present", label);
+    requireIncludes(html, 'data-vehicle-context="ford-ranger"', label);
+    requireIncludes(html, ">RANGER US</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/ford-ranger"',
+        label
+      );
+      requireIncludes(html, ">All Ford Ranger Guides</a>", label);
+      requireIncludes(html, "Related Ranger guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "2019-2023",
+      "2019–2023",
+      "earlier North American Ranger",
+      "international-market Ranger",
+      "global-market Ranger",
+      "Ford Bronco",
+      "Ford Maverick",
+      "Ford F-150",
+      "Toyota Tacoma",
+      "Chevrolet Colorado",
+      "Jeep Gladiator",
+      "Jeep Wrangler",
+      "Toyota 4Runner",
+      "KDSS",
+      "solid front axle"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const universalClaim of [
+      "every Ranger has FOX",
+      "all Rangers have FOX",
+      "every Ranger has Live Valve",
+      "all Rangers use rear leaf springs",
+      "every Ranger has rear leaf springs",
+      "same payload for every Ranger",
+      "same towing capacity for every Ranger",
+      "fits every 2024-present Ranger",
+      "fits all 2024-present Ranger",
+      "largest tire for every Ranger",
+      "every Ranger needs a lift",
+      "one lift height fits every Ranger"
+    ]) {
+      if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported Ranger claim: ${universalClaim}.`);
       }
     }
 
@@ -2056,6 +2204,130 @@ for (const guideRoute of coloradoGuideRoutes) {
   }
 }
 
+const rangerRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/ford-ranger")
+);
+const rangerRequiredTopics = [
+  "2024-present",
+  "us-market",
+  "xl",
+  "xlt",
+  "lariat",
+  "fx4",
+  "ranger raptor",
+  "independent front suspension",
+  "rear solid axle",
+  "leaf springs",
+  "fox live valve",
+  "trailing-arm",
+  "watts link",
+  "control arms",
+  "wider track",
+  "full-time",
+  "locking",
+  "payload",
+  "towing",
+  "tongue weight",
+  "tow-hook",
+  "underbody protection",
+  "upper control arms",
+  "tie rods",
+  "cv joints",
+  "caster",
+  "camber",
+  "toe",
+  "bump stops",
+  "wheel offset",
+  "backspacing",
+  "full suspension compression",
+  "under-bed spare",
+  "leveling",
+  "top spacer",
+  "preload spacer",
+  "add-a-leaf",
+  "bed rack",
+  "rooftop",
+  "solar",
+  "stage 4"
+];
+const rangerClusterHtml = rangerRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of rangerRequiredTopics) {
+  if (!rangerClusterHtml.includes(topic)) {
+    errors.push(`Ford Ranger cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of rangerRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const rangerHubRoute = "/vehicles/ford-ranger";
+const rangerGuideRoutes = rangerRoutes.filter(
+  (route) => route !== rangerHubRoute
+);
+const rangerHubHtml = readBuildFile(
+  join("vehicles", "ford-ranger", "index.html")
+);
+
+if (!homeHtml.includes(`href="${rangerHubRoute}"`)) {
+  errors.push("Ford Ranger hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${rangerHubRoute}"`)) {
+  errors.push("Ford Ranger hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of rangerGuideRoutes) {
+  if (!rangerHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Ford Ranger hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    rangerHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="ford-ranger"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Ford Ranger hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/ford-ranger"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Ford Ranger guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/ford-ranger\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Ford Ranger guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -2070,7 +2342,8 @@ for (const page of pages) {
     ...wranglerGuideRoutes,
     ...broncoGuideRoutes,
     ...gladiatorGuideRoutes,
-    ...coloradoGuideRoutes
+    ...coloradoGuideRoutes,
+    ...rangerGuideRoutes
   ]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(

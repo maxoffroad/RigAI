@@ -4,6 +4,7 @@ import { jeepWranglerJlPages } from "../src/content/jeep-wrangler-jl.js";
 import { fordBroncoPages } from "../src/content/ford-bronco.js";
 import { jeepGladiatorPages } from "../src/content/jeep-gladiator.js";
 import { chevroletColoradoPages } from "../src/content/chevrolet-colorado.js";
+import { fordRangerPages } from "../src/content/ford-ranger.js";
 
 export const site = {
   name: "RigAI",
@@ -56,7 +57,8 @@ const vehiclePages = [
   ...jeepWranglerJlPages,
   ...fordBroncoPages,
   ...jeepGladiatorPages,
-  ...chevroletColoradoPages
+  ...chevroletColoradoPages,
+  ...fordRangerPages
 ].map((content) => ({
   key: content.key,
   route: content.route,
@@ -103,7 +105,7 @@ export const pages = [
     output: "vehicles.html",
     title: "Off-Road Vehicle Upgrade Guides | RigAI",
     description:
-      "Browse RigAI vehicle-specific upgrade guides for Toyota 4Runner, Toyota Tacoma, Jeep Wrangler JL, Ford Bronco, Jeep Gladiator JT, and the 2023-present Chevrolet Colorado.",
+      "Browse RigAI vehicle-specific upgrade guides for Toyota 4Runner, Toyota Tacoma, Jeep Wrangler JL, Ford Bronco, Jeep Gladiator JT, Chevrolet Colorado, and the 2024-present US Ford Ranger.",
     socialTitle: "Off-Road Vehicle Upgrade Guides | RigAI",
     socialDescription:
       "Choose a vehicle planning hub for practical upgrade order, fitment reminders, and load considerations.",

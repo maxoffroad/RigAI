@@ -190,6 +190,16 @@ export const vehicles = [
     href: "/vehicles/chevrolet-colorado",
     slug: "chevrolet-colorado",
     ctaLabel: "View Colorado guides"
+  },
+  {
+    name: "Ford Ranger",
+    scope: "2024–present · US generation",
+    description: "Suspension, tire fitment, lift, payload, and overland guidance for the current-generation Ford Ranger.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/ford-ranger",
+    slug: "ford-ranger",
+    ctaLabel: "View Ranger guides"
   }
 ];
 

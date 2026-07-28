@@ -47,7 +47,13 @@ const indexablePaths = [
   "/vehicles/chevrolet-colorado/suspension",
   "/vehicles/chevrolet-colorado/tire-size",
   "/vehicles/chevrolet-colorado/lift-kit",
-  "/vehicles/chevrolet-colorado/overland-build"
+  "/vehicles/chevrolet-colorado/overland-build",
+  "/vehicles/ford-ranger",
+  "/vehicles/ford-ranger/first-upgrades",
+  "/vehicles/ford-ranger/suspension",
+  "/vehicles/ford-ranger/tire-size",
+  "/vehicles/ford-ranger/lift-kit",
+  "/vehicles/ford-ranger/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];
