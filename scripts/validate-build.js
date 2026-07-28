@@ -57,6 +57,15 @@ if (configuredBroncoRoutes.length !== 6) {
   );
 }
 
+const configuredGladiatorRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/jeep-gladiator")
+);
+if (configuredGladiatorRoutes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Jeep Gladiator routes, found ${configuredGladiatorRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -489,7 +498,7 @@ for (const expected of [
   "EXAMPLE RECOMMENDATION",
   "RigAI supports multiple off-road platforms",
   "Your SUV is not listed?",
-  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, and the 2021-present Ford Bronco",
+  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, and the 2020-present Jeep Gladiator JT",
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
@@ -550,6 +559,8 @@ requireIncludes(homeHtml, 'href="/vehicles/jeep-wrangler-jl"', "dist/index.html"
 requireIncludes(homeHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/ford-bronco"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="ford-bronco"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/jeep-gladiator"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="jeep-gladiator"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -604,6 +615,22 @@ for (const expected of [
   requireIncludes(homepageBroncoCard, expected, "homepage Ford Bronco vehicle card");
 }
 
+const homepageGladiatorCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/jeep-gladiator"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="jeep-gladiator"',
+  "Jeep Gladiator JT",
+  "2020–present · Midsize pickup",
+  "Suspension, tire fitment, lift, payload, and overland guidance",
+  "View Gladiator guides"
+]) {
+  requireIncludes(homepageGladiatorCard, expected, "homepage Jeep Gladiator vehicle card");
+}
+
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
 requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
@@ -612,10 +639,12 @@ requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-4runner"', "dist/
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-wrangler-jl"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-bronco"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-gladiator"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-bronco"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-gladiator"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -637,10 +666,18 @@ const prohibitedBroncoGlobalRoutes = [
   "/vehicles/ford-bronco/lift-kit",
   "/vehicles/ford-bronco/overland-build"
 ];
+const prohibitedGladiatorGlobalRoutes = [
+  "/vehicles/jeep-gladiator/first-upgrades",
+  "/vehicles/jeep-gladiator/suspension",
+  "/vehicles/jeep-gladiator/tire-size",
+  "/vehicles/jeep-gladiator/lift-kit",
+  "/vehicles/jeep-gladiator/overland-build"
+];
 for (const guideRoute of [
   ...prohibitedTacomaGlobalRoutes,
   ...prohibitedWranglerGlobalRoutes,
-  ...prohibitedBroncoGlobalRoutes
+  ...prohibitedBroncoGlobalRoutes,
+  ...prohibitedGladiatorGlobalRoutes
 ]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
     errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
@@ -706,7 +743,13 @@ const vehicleRoutes = [
   "/vehicles/ford-bronco/suspension",
   "/vehicles/ford-bronco/tire-size",
   "/vehicles/ford-bronco/lift-kit",
-  "/vehicles/ford-bronco/overland-build"
+  "/vehicles/ford-bronco/overland-build",
+  "/vehicles/jeep-gladiator",
+  "/vehicles/jeep-gladiator/first-upgrades",
+  "/vehicles/jeep-gladiator/suspension",
+  "/vehicles/jeep-gladiator/tire-size",
+  "/vehicles/jeep-gladiator/lift-kit",
+  "/vehicles/jeep-gladiator/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -867,6 +910,48 @@ const expectedPageLinks = {
     "/vehicles/ford-bronco/suspension",
     "/vehicles/ford-bronco/tire-size",
     "/vehicles/ford-bronco/lift-kit"
+  ],
+  "/vehicles/jeep-gladiator": [
+    "/vehicles/jeep-gladiator/first-upgrades",
+    "/vehicles/jeep-gladiator/suspension",
+    "/vehicles/jeep-gladiator/tire-size",
+    "/vehicles/jeep-gladiator/lift-kit",
+    "/vehicles/jeep-gladiator/overland-build"
+  ],
+  "/vehicles/jeep-gladiator/first-upgrades": [
+    "/vehicles/jeep-gladiator",
+    "/vehicles/jeep-gladiator/suspension",
+    "/vehicles/jeep-gladiator/tire-size",
+    "/vehicles/jeep-gladiator/lift-kit",
+    "/vehicles/jeep-gladiator/overland-build"
+  ],
+  "/vehicles/jeep-gladiator/suspension": [
+    "/vehicles/jeep-gladiator",
+    "/vehicles/jeep-gladiator/first-upgrades",
+    "/vehicles/jeep-gladiator/tire-size",
+    "/vehicles/jeep-gladiator/lift-kit",
+    "/vehicles/jeep-gladiator/overland-build"
+  ],
+  "/vehicles/jeep-gladiator/tire-size": [
+    "/vehicles/jeep-gladiator",
+    "/vehicles/jeep-gladiator/first-upgrades",
+    "/vehicles/jeep-gladiator/suspension",
+    "/vehicles/jeep-gladiator/lift-kit",
+    "/vehicles/jeep-gladiator/overland-build"
+  ],
+  "/vehicles/jeep-gladiator/lift-kit": [
+    "/vehicles/jeep-gladiator",
+    "/vehicles/jeep-gladiator/first-upgrades",
+    "/vehicles/jeep-gladiator/suspension",
+    "/vehicles/jeep-gladiator/tire-size",
+    "/vehicles/jeep-gladiator/overland-build"
+  ],
+  "/vehicles/jeep-gladiator/overland-build": [
+    "/vehicles/jeep-gladiator",
+    "/vehicles/jeep-gladiator/first-upgrades",
+    "/vehicles/jeep-gladiator/suspension",
+    "/vehicles/jeep-gladiator/tire-size",
+    "/vehicles/jeep-gladiator/lift-kit"
   ]
 };
 
@@ -900,11 +985,12 @@ for (const route of vehicleRoutes) {
   const expectedSafetyText = {
     "toyota-tacoma": "Verify the exact model year, trim, cab, bed length, drivetrain",
     "jeep-wrangler-jl": "Verify model year, door count, trim, engine, transmission",
-    "ford-bronco": "Verify model year, door count, trim, engine, transmission"
+    "ford-bronco": "Verify model year, door count, trim, engine, transmission",
+    "jeep-gladiator": "Verify model year, trim, engine, transmission, axles"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco"].includes(vehicleSlug)
+    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator"].includes(vehicleSlug)
       ? "Build My Setup"
       : "Check app availability";
   requireIncludes(
@@ -1121,6 +1207,58 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
         errors.push(`${label} contains an unsupported Bronco claim: ${universalClaim}.`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "jeep-gladiator") {
+    requireIncludes(html, "2020-present", label);
+    requireIncludes(html, 'data-vehicle-context="jeep-gladiator"', label);
+    requireIncludes(html, ">GLADIATOR JT</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/jeep-gladiator"',
+        label
+      );
+      requireIncludes(html, ">All Jeep Gladiator Guides</a>", label);
+      requireIncludes(html, "Related Gladiator guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "Wrangler JL",
+      "Wrangler JK",
+      "Jeep Cherokee",
+      "Grand Cherokee",
+      "Ram pickup",
+      "Toyota Tacoma",
+      "Toyota 4Runner",
+      "Ford Bronco",
+      "KDSS",
+      "rear leaf spring",
+      "rear leaf-spring"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const universalClaim of [
+      "same towing rating for every Gladiator",
+      "same payload for every Gladiator",
+      "fits every Gladiator JT",
+      "fits all Gladiator JT",
+      "every Gladiator needs a lift",
+      "one lift height fits every Gladiator"
+    ]) {
+      if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported Gladiator claim: ${universalClaim}.`);
       }
     }
 
@@ -1535,6 +1673,124 @@ for (const guideRoute of broncoGuideRoutes) {
   }
 }
 
+const gladiatorRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/jeep-gladiator")
+);
+const gladiatorRequiredTopics = [
+  "2020-present",
+  "sport",
+  "willys",
+  "overland",
+  "mojave",
+  "rubicon",
+  "pickup bed",
+  "longer wheelbase",
+  "rear overhang",
+  "breakover",
+  "payload",
+  "towing",
+  "tongue weight",
+  "bed rack",
+  "rooftop tent",
+  "under-bed spare",
+  "rear suspension",
+  "solid front and rear axles",
+  "coil springs",
+  "control arms",
+  "track bars",
+  "caster",
+  "pinion angle",
+  "axle centering",
+  "driveshaft",
+  "brake lines",
+  "abs wires",
+  "wheel offset",
+  "backspacing",
+  "sway-bar-connected",
+  "spacer lift",
+  "hardtop and soft top",
+  "gas and diesel",
+  "solar",
+  "stage 4"
+];
+const gladiatorClusterHtml = gladiatorRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of gladiatorRequiredTopics) {
+  if (!gladiatorClusterHtml.includes(topic)) {
+    errors.push(`Jeep Gladiator cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of gladiatorRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const gladiatorHubRoute = "/vehicles/jeep-gladiator";
+const gladiatorGuideRoutes = gladiatorRoutes.filter(
+  (route) => route !== gladiatorHubRoute
+);
+const gladiatorHubHtml = readBuildFile(
+  join("vehicles", "jeep-gladiator", "index.html")
+);
+
+if (!homeHtml.includes(`href="${gladiatorHubRoute}"`)) {
+  errors.push("Jeep Gladiator hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${gladiatorHubRoute}"`)) {
+  errors.push("Jeep Gladiator hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of gladiatorGuideRoutes) {
+  if (!gladiatorHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Jeep Gladiator hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    gladiatorHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="jeep-gladiator"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Jeep Gladiator hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/jeep-gladiator"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Jeep Gladiator guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/jeep-gladiator\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Jeep Gladiator guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -1547,7 +1803,8 @@ for (const page of pages) {
   for (const guideRoute of [
     ...tacomaGuideRoutes,
     ...wranglerGuideRoutes,
-    ...broncoGuideRoutes
+    ...broncoGuideRoutes,
+    ...gladiatorGuideRoutes
   ]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(

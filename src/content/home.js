@@ -170,6 +170,16 @@ export const vehicles = [
     href: "/vehicles/ford-bronco",
     slug: "ford-bronco",
     ctaLabel: "View Bronco guides"
+  },
+  {
+    name: "Jeep Gladiator JT",
+    scope: "2020–present · Midsize pickup",
+    description: "Suspension, tire fitment, lift, payload, and overland guidance for the Jeep Gladiator JT.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/jeep-gladiator",
+    slug: "jeep-gladiator",
+    ctaLabel: "View Gladiator guides"
   }
 ];
 

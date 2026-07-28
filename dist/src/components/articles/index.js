@@ -2,12 +2,14 @@ import { readingTimeMinutes, toyota4RunnerPages } from "../../content/toyota-4ru
 import { toyotaTacomaPages } from "../../content/toyota-tacoma.js";
 import { jeepWranglerJlPages } from "../../content/jeep-wrangler-jl.js";
 import { fordBroncoPages } from "../../content/ford-bronco.js";
+import { jeepGladiatorPages } from "../../content/jeep-gladiator.js";
 
 const vehiclePages = [
   ...toyota4RunnerPages,
   ...toyotaTacomaPages,
   ...jeepWranglerJlPages,
-  ...fordBroncoPages
+  ...fordBroncoPages,
+  ...jeepGladiatorPages
 ];
 
 function escapeHtml(value) {

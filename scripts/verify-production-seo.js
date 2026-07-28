@@ -35,7 +35,13 @@ const indexablePaths = [
   "/vehicles/ford-bronco/suspension",
   "/vehicles/ford-bronco/tire-size",
   "/vehicles/ford-bronco/lift-kit",
-  "/vehicles/ford-bronco/overland-build"
+  "/vehicles/ford-bronco/overland-build",
+  "/vehicles/jeep-gladiator",
+  "/vehicles/jeep-gladiator/first-upgrades",
+  "/vehicles/jeep-gladiator/suspension",
+  "/vehicles/jeep-gladiator/tire-size",
+  "/vehicles/jeep-gladiator/lift-kit",
+  "/vehicles/jeep-gladiator/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];
