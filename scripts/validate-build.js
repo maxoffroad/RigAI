@@ -48,6 +48,15 @@ if (configuredWranglerRoutes.length !== 6) {
   );
 }
 
+const configuredBroncoRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/ford-bronco")
+);
+if (configuredBroncoRoutes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Ford Bronco routes, found ${configuredBroncoRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -480,7 +489,7 @@ for (const expected of [
   "EXAMPLE RECOMMENDATION",
   "RigAI supports multiple off-road platforms",
   "Your SUV is not listed?",
-  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, and the 2018-present Jeep Wrangler JL",
+  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, and the 2021-present Ford Bronco",
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
@@ -539,6 +548,8 @@ requireIncludes(homeHtml, 'href="/vehicles/toyota-tacoma"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/jeep-wrangler-jl"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/ford-bronco"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="ford-bronco"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -577,6 +588,22 @@ for (const expected of [
   requireIncludes(homepageWranglerCard, expected, "homepage Wrangler JL vehicle card");
 }
 
+const homepageBroncoCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/ford-bronco"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="ford-bronco"',
+  "Ford Bronco",
+  "2021–present · 6th Gen",
+  "Suspension, tire fitment, lift, and trail-build guidance",
+  "View Bronco guides"
+]) {
+  requireIncludes(homepageBroncoCard, expected, "homepage Ford Bronco vehicle card");
+}
+
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
 requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
@@ -584,9 +611,11 @@ requireIncludes(vehiclesDirectoryHtml, "<h1>Off-Road Vehicle Upgrade Guides</h1>
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-4runner"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-wrangler-jl"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-bronco"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-bronco"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -601,9 +630,17 @@ const prohibitedWranglerGlobalRoutes = [
   "/vehicles/jeep-wrangler-jl/lift-kit",
   "/vehicles/jeep-wrangler-jl/overland-build"
 ];
+const prohibitedBroncoGlobalRoutes = [
+  "/vehicles/ford-bronco/first-upgrades",
+  "/vehicles/ford-bronco/suspension",
+  "/vehicles/ford-bronco/tire-size",
+  "/vehicles/ford-bronco/lift-kit",
+  "/vehicles/ford-bronco/overland-build"
+];
 for (const guideRoute of [
   ...prohibitedTacomaGlobalRoutes,
-  ...prohibitedWranglerGlobalRoutes
+  ...prohibitedWranglerGlobalRoutes,
+  ...prohibitedBroncoGlobalRoutes
 ]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
     errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
@@ -663,7 +700,13 @@ const vehicleRoutes = [
   "/vehicles/jeep-wrangler-jl/suspension",
   "/vehicles/jeep-wrangler-jl/tire-size",
   "/vehicles/jeep-wrangler-jl/lift-kit",
-  "/vehicles/jeep-wrangler-jl/overland-build"
+  "/vehicles/jeep-wrangler-jl/overland-build",
+  "/vehicles/ford-bronco",
+  "/vehicles/ford-bronco/first-upgrades",
+  "/vehicles/ford-bronco/suspension",
+  "/vehicles/ford-bronco/tire-size",
+  "/vehicles/ford-bronco/lift-kit",
+  "/vehicles/ford-bronco/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -782,6 +825,48 @@ const expectedPageLinks = {
     "/vehicles/jeep-wrangler-jl/suspension",
     "/vehicles/jeep-wrangler-jl/tire-size",
     "/vehicles/jeep-wrangler-jl/lift-kit"
+  ],
+  "/vehicles/ford-bronco": [
+    "/vehicles/ford-bronco/first-upgrades",
+    "/vehicles/ford-bronco/suspension",
+    "/vehicles/ford-bronco/tire-size",
+    "/vehicles/ford-bronco/lift-kit",
+    "/vehicles/ford-bronco/overland-build"
+  ],
+  "/vehicles/ford-bronco/first-upgrades": [
+    "/vehicles/ford-bronco",
+    "/vehicles/ford-bronco/suspension",
+    "/vehicles/ford-bronco/tire-size",
+    "/vehicles/ford-bronco/lift-kit",
+    "/vehicles/ford-bronco/overland-build"
+  ],
+  "/vehicles/ford-bronco/suspension": [
+    "/vehicles/ford-bronco",
+    "/vehicles/ford-bronco/first-upgrades",
+    "/vehicles/ford-bronco/tire-size",
+    "/vehicles/ford-bronco/lift-kit",
+    "/vehicles/ford-bronco/overland-build"
+  ],
+  "/vehicles/ford-bronco/tire-size": [
+    "/vehicles/ford-bronco",
+    "/vehicles/ford-bronco/first-upgrades",
+    "/vehicles/ford-bronco/suspension",
+    "/vehicles/ford-bronco/lift-kit",
+    "/vehicles/ford-bronco/overland-build"
+  ],
+  "/vehicles/ford-bronco/lift-kit": [
+    "/vehicles/ford-bronco",
+    "/vehicles/ford-bronco/first-upgrades",
+    "/vehicles/ford-bronco/suspension",
+    "/vehicles/ford-bronco/tire-size",
+    "/vehicles/ford-bronco/overland-build"
+  ],
+  "/vehicles/ford-bronco/overland-build": [
+    "/vehicles/ford-bronco",
+    "/vehicles/ford-bronco/first-upgrades",
+    "/vehicles/ford-bronco/suspension",
+    "/vehicles/ford-bronco/tire-size",
+    "/vehicles/ford-bronco/lift-kit"
   ]
 };
 
@@ -814,11 +899,12 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, 'class="callout safety-disclaimer"', label);
   const expectedSafetyText = {
     "toyota-tacoma": "Verify the exact model year, trim, cab, bed length, drivetrain",
-    "jeep-wrangler-jl": "Verify model year, door count, trim, engine, transmission"
+    "jeep-wrangler-jl": "Verify model year, door count, trim, engine, transmission",
+    "ford-bronco": "Verify model year, door count, trim, engine, transmission"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl"].includes(vehicleSlug)
+    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco"].includes(vehicleSlug)
       ? "Build My Setup"
       : "Check app availability";
   requireIncludes(
@@ -984,6 +1070,57 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
         errors.push(`${label} contains an unsupported Wrangler claim: ${universalClaim}.`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "ford-bronco") {
+    requireIncludes(html, "2021-present", label);
+    requireIncludes(html, 'data-vehicle-context="ford-bronco"', label);
+    requireIncludes(html, ">BRONCO</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/ford-bronco"',
+        label
+      );
+      requireIncludes(html, ">All Ford Bronco Guides</a>", label);
+      requireIncludes(html, "Related Bronco guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "Bronco Sport",
+      "1966-1996",
+      "Ford Ranger",
+      "Ford F-150",
+      "Jeep Wrangler",
+      "Toyota Tacoma",
+      "Toyota 4Runner",
+      "KDSS",
+      "rear leaf spring",
+      "rear leaf-spring",
+      "solid front axle"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const universalClaim of [
+      "fits every 2021-present Bronco",
+      "fits all Ford Bronco",
+      "every Bronco needs a lift",
+      "every lifted Bronco requires aftermarket upper control arms",
+      "one lift height fits"
+    ]) {
+      if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported Bronco claim: ${universalClaim}.`);
       }
     }
 
@@ -1283,6 +1420,121 @@ for (const guideRoute of wranglerGuideRoutes) {
   }
 }
 
+const broncoRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/ford-bronco")
+);
+const broncoRequiredTopics = [
+  "2-door",
+  "4-door",
+  "base",
+  "big bend",
+  "black diamond",
+  "outer banks",
+  "badlands",
+  "wildtrak",
+  "heritage edition",
+  "raptor configuration",
+  "sasquatch",
+  "hoss",
+  "2.3l",
+  "2.7l",
+  "manual",
+  "automatic",
+  "independent front suspension",
+  "rear solid axle",
+  "upper control arms",
+  "tie rods",
+  "steering rack",
+  "rear track bar",
+  "caster",
+  "camber",
+  "toe",
+  "cv",
+  "backspacing",
+  "third brake light",
+  "speedometer",
+  "perch collars",
+  "solar",
+  "stage 4"
+];
+const broncoClusterHtml = broncoRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of broncoRequiredTopics) {
+  if (!broncoClusterHtml.includes(topic)) {
+    errors.push(`Ford Bronco cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of broncoRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const broncoHubRoute = "/vehicles/ford-bronco";
+const broncoGuideRoutes = broncoRoutes.filter(
+  (route) => route !== broncoHubRoute
+);
+const broncoHubHtml = readBuildFile(
+  join("vehicles", "ford-bronco", "index.html")
+);
+
+if (!homeHtml.includes(`href="${broncoHubRoute}"`)) {
+  errors.push("Ford Bronco hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${broncoHubRoute}"`)) {
+  errors.push("Ford Bronco hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of broncoGuideRoutes) {
+  if (!broncoHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Ford Bronco hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    broncoHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="ford-bronco"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Ford Bronco hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/ford-bronco"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Ford Bronco guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/ford-bronco\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Ford Bronco guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -1292,7 +1544,11 @@ for (const page of pages) {
   );
 
   const footer = html.match(/<footer class="footer">([\s\S]*?)<\/footer>/)?.[1] || "";
-  for (const guideRoute of [...tacomaGuideRoutes, ...wranglerGuideRoutes]) {
+  for (const guideRoute of [
+    ...tacomaGuideRoutes,
+    ...wranglerGuideRoutes,
+    ...broncoGuideRoutes
+  ]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(
         `Global footer must not list individual vehicle guide: ${guideRoute}.`

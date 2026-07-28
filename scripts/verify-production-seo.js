@@ -29,7 +29,13 @@ const indexablePaths = [
   "/vehicles/jeep-wrangler-jl/suspension",
   "/vehicles/jeep-wrangler-jl/tire-size",
   "/vehicles/jeep-wrangler-jl/lift-kit",
-  "/vehicles/jeep-wrangler-jl/overland-build"
+  "/vehicles/jeep-wrangler-jl/overland-build",
+  "/vehicles/ford-bronco",
+  "/vehicles/ford-bronco/first-upgrades",
+  "/vehicles/ford-bronco/suspension",
+  "/vehicles/ford-bronco/tire-size",
+  "/vehicles/ford-bronco/lift-kit",
+  "/vehicles/ford-bronco/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];

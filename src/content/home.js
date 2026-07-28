@@ -161,7 +161,16 @@ export const vehicles = [
   { name: "Land Cruiser Prado", status: "Supported in app", state: "supported" },
   { name: "Land Cruiser 200", status: "Limited support", state: "limited" },
   { name: "Lexus GX", status: "Supported in app", state: "supported" },
-  { name: "Ford Bronco", status: "Supported in app", state: "supported" }
+  {
+    name: "Ford Bronco",
+    scope: "2021–present · 6th Gen",
+    description: "Suspension, tire fitment, lift, and trail-build guidance for the modern Ford Bronco.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/ford-bronco",
+    slug: "ford-bronco",
+    ctaLabel: "View Bronco guides"
+  }
 ];
 
 const suspensionPage = getToyota4RunnerPage("toyota-4runner-suspension");
