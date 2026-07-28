@@ -30,5 +30,5 @@ export function renderVehicleCard(
     return `<article class="vehicle-card vehicle-card--visual vehicle-card--${vehicle.state}">${content}</article>`;
   }
 
-  return `<a class="vehicle-card vehicle-card--visual is-published" href="${vehicle.href}" aria-label="${escapeHtml(vehicle.name)} upgrade guide" data-analytics-event="vehicle_guide_click" data-analytics-location="${analyticsLocation}" data-vehicle-slug="${vehicle.slug}">${content}<strong class="card-link-label">Open vehicle guide</strong></a>`;
+  return `<a class="vehicle-card vehicle-card--visual is-published" href="${vehicle.href}" aria-label="${escapeHtml(vehicle.name)} upgrade guide" data-analytics-event="vehicle_guide_click" data-analytics-location="${analyticsLocation}" data-vehicle-slug="${vehicle.slug}">${content}<strong class="card-link-label">${escapeHtml(vehicle.ctaLabel || "Open vehicle guide")}</strong></a>`;
 }

@@ -211,6 +211,72 @@ if (
   throw new Error("Tacoma directory vehicle-card click must send exactly one event.");
 }
 
+const wranglerHomepageParams = eventParameters(
+  {
+    dataset: {
+      analyticsLocation: "homepage_vehicle_card",
+      vehicleSlug: "jeep-wrangler-jl"
+    }
+  },
+  "vehicle_guide_click",
+  homeDocument
+);
+const wranglerDirectoryParams = eventParameters(
+  {
+    dataset: {
+      analyticsLocation: "vehicles_directory_card",
+      vehicleSlug: "jeep-wrangler-jl"
+    }
+  },
+  "vehicle_guide_click",
+  directoryDocument
+);
+
+for (const [label, params, expected] of [
+  [
+    "homepage",
+    wranglerHomepageParams,
+    {
+      vehicle_slug: "jeep-wrangler-jl",
+      cta_location: "homepage_vehicle_card",
+      page_type: "home",
+      page_path: "/"
+    }
+  ],
+  [
+    "directory",
+    wranglerDirectoryParams,
+    {
+      vehicle_slug: "jeep-wrangler-jl",
+      cta_location: "vehicles_directory_card",
+      page_type: "vehicle_directory",
+      page_path: "/vehicles"
+    }
+  ]
+]) {
+  if (JSON.stringify(params) !== JSON.stringify(expected)) {
+    throw new Error(`Wrangler JL ${label} vehicle-card analytics payload is invalid.`);
+  }
+
+  const callsBefore = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "vehicle_guide_click"
+  ).length;
+  if (!trackEvent("vehicle_guide_click", params, windowLike)) {
+    throw new Error(`Wrangler JL ${label} vehicle-card event was not sent.`);
+  }
+  const matchingCalls = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "vehicle_guide_click"
+  );
+  if (
+    matchingCalls.length !== callsBefore + 1 ||
+    JSON.stringify(matchingCalls.at(-1)[2]) !== JSON.stringify(params)
+  ) {
+    throw new Error(`Wrangler JL ${label} click must send exactly one event.`);
+  }
+}
+
 updateAnalyticsConsent("denied", documentLike, windowLike);
 if (hasAnalyticsConsent(windowLike)) {
   throw new Error("Reject must set effective analytics consent to denied.");

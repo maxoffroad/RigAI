@@ -1,5 +1,6 @@
 import { toyota4RunnerPages } from "../src/content/toyota-4runner.js";
 import { toyotaTacomaPages } from "../src/content/toyota-tacoma.js";
+import { jeepWranglerJlPages } from "../src/content/jeep-wrangler-jl.js";
 
 export const site = {
   name: "RigAI",
@@ -46,7 +47,11 @@ const pageNav = [
   { label: "Terms", href: "/terms" }
 ];
 
-const vehiclePages = [...toyota4RunnerPages, ...toyotaTacomaPages].map((content) => ({
+const vehiclePages = [
+  ...toyota4RunnerPages,
+  ...toyotaTacomaPages,
+  ...jeepWranglerJlPages
+].map((content) => ({
   key: content.key,
   route: content.route,
   output: `${content.route.replace(/^\//, "")}.html`,
@@ -92,7 +97,7 @@ export const pages = [
     output: "vehicles.html",
     title: "Off-Road Vehicle Upgrade Guides | RigAI",
     description:
-      "Browse RigAI vehicle-specific upgrade guides for Toyota 4Runner and the 2016-2023 third-generation Toyota Tacoma.",
+      "Browse RigAI vehicle-specific upgrade guides for Toyota 4Runner, 2016-2023 Toyota Tacoma, and 2018-present Jeep Wrangler JL.",
     socialTitle: "Off-Road Vehicle Upgrade Guides | RigAI",
     socialDescription:
       "Choose a vehicle planning hub for practical upgrade order, fitment reminders, and load considerations.",
@@ -109,10 +114,10 @@ export const pages = [
       ],
       dates: {
         published: "2026-07-27T12:00:00+05:00",
-        modified: "2026-07-27T12:00:00+05:00"
+        modified: "2026-07-28T12:00:00+05:00"
       }
     },
-    lastmod: "2026-07-27"
+    lastmod: "2026-07-28"
   },
   {
     key: "privacy",

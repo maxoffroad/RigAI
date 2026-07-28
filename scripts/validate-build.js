@@ -39,6 +39,15 @@ if (configuredTacomaRoutes.length !== 5) {
   );
 }
 
+const configuredWranglerRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/jeep-wrangler-jl")
+);
+if (configuredWranglerRoutes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Wrangler JL routes, found ${configuredWranglerRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -101,7 +110,13 @@ const requiredFiles = [
   join("vehicles", "toyota-tacoma", "first-upgrades", "index.html"),
   join("vehicles", "toyota-tacoma", "suspension", "index.html"),
   join("vehicles", "toyota-tacoma", "tire-size", "index.html"),
-  join("vehicles", "toyota-tacoma", "overland-build", "index.html")
+  join("vehicles", "toyota-tacoma", "overland-build", "index.html"),
+  join("vehicles", "jeep-wrangler-jl", "index.html"),
+  join("vehicles", "jeep-wrangler-jl", "first-upgrades", "index.html"),
+  join("vehicles", "jeep-wrangler-jl", "suspension", "index.html"),
+  join("vehicles", "jeep-wrangler-jl", "tire-size", "index.html"),
+  join("vehicles", "jeep-wrangler-jl", "lift-kit", "index.html"),
+  join("vehicles", "jeep-wrangler-jl", "overland-build", "index.html")
 ];
 
 for (const file of requiredFiles) {
@@ -465,7 +480,7 @@ for (const expected of [
   "EXAMPLE RECOMMENDATION",
   "RigAI supports multiple off-road platforms",
   "Your SUV is not listed?",
-  "Detailed guide collections now cover Toyota 4Runner and the 2016-2023 Toyota Tacoma",
+  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, and the 2018-present Jeep Wrangler JL",
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
@@ -522,6 +537,8 @@ requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/tire-size"', "dist/ind
 requireIncludes(homeHtml, 'href="/vehicles/toyota-4runner/overland-build"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-tacoma"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/jeep-wrangler-jl"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -544,14 +561,32 @@ for (const expected of [
   requireIncludes(homepageTacomaCard, expected, "homepage Tacoma vehicle card");
 }
 
+const homepageWranglerCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/jeep-wrangler-jl"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="jeep-wrangler-jl"',
+  "Jeep Wrangler JL",
+  "2018–present · 2-door and 4-door",
+  "Suspension, tire fitment, lift, and trail-build guidance",
+  "View Wrangler guides"
+]) {
+  requireIncludes(homepageWranglerCard, expected, "homepage Wrangler JL vehicle card");
+}
+
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
 requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, "<h1>Off-Road Vehicle Upgrade Guides</h1>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-4runner"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-tacoma"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-wrangler-jl"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -559,12 +594,22 @@ const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/tire-size",
   "/vehicles/toyota-tacoma/overland-build"
 ];
-for (const guideRoute of prohibitedTacomaGlobalRoutes) {
+const prohibitedWranglerGlobalRoutes = [
+  "/vehicles/jeep-wrangler-jl/first-upgrades",
+  "/vehicles/jeep-wrangler-jl/suspension",
+  "/vehicles/jeep-wrangler-jl/tire-size",
+  "/vehicles/jeep-wrangler-jl/lift-kit",
+  "/vehicles/jeep-wrangler-jl/overland-build"
+];
+for (const guideRoute of [
+  ...prohibitedTacomaGlobalRoutes,
+  ...prohibitedWranglerGlobalRoutes
+]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
-    errors.push(`Homepage must not list individual Tacoma guide: ${guideRoute}.`);
+    errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
   }
   if (vehiclesDirectoryHtml.includes(`href="${guideRoute}"`)) {
-    errors.push(`/vehicles must link to Tacoma hub, not individual guide: ${guideRoute}.`);
+    errors.push(`/vehicles must link to vehicle hubs, not individual guide: ${guideRoute}.`);
   }
 }
 
@@ -612,7 +657,13 @@ const vehicleRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
   "/vehicles/toyota-tacoma/suspension",
   "/vehicles/toyota-tacoma/tire-size",
-  "/vehicles/toyota-tacoma/overland-build"
+  "/vehicles/toyota-tacoma/overland-build",
+  "/vehicles/jeep-wrangler-jl",
+  "/vehicles/jeep-wrangler-jl/first-upgrades",
+  "/vehicles/jeep-wrangler-jl/suspension",
+  "/vehicles/jeep-wrangler-jl/tire-size",
+  "/vehicles/jeep-wrangler-jl/lift-kit",
+  "/vehicles/jeep-wrangler-jl/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -689,6 +740,48 @@ const expectedPageLinks = {
     "/vehicles/toyota-tacoma/first-upgrades",
     "/vehicles/toyota-tacoma/suspension",
     "/vehicles/toyota-tacoma/tire-size"
+  ],
+  "/vehicles/jeep-wrangler-jl": [
+    "/vehicles/jeep-wrangler-jl/first-upgrades",
+    "/vehicles/jeep-wrangler-jl/suspension",
+    "/vehicles/jeep-wrangler-jl/tire-size",
+    "/vehicles/jeep-wrangler-jl/lift-kit",
+    "/vehicles/jeep-wrangler-jl/overland-build"
+  ],
+  "/vehicles/jeep-wrangler-jl/first-upgrades": [
+    "/vehicles/jeep-wrangler-jl",
+    "/vehicles/jeep-wrangler-jl/suspension",
+    "/vehicles/jeep-wrangler-jl/tire-size",
+    "/vehicles/jeep-wrangler-jl/lift-kit",
+    "/vehicles/jeep-wrangler-jl/overland-build"
+  ],
+  "/vehicles/jeep-wrangler-jl/suspension": [
+    "/vehicles/jeep-wrangler-jl",
+    "/vehicles/jeep-wrangler-jl/first-upgrades",
+    "/vehicles/jeep-wrangler-jl/tire-size",
+    "/vehicles/jeep-wrangler-jl/lift-kit",
+    "/vehicles/jeep-wrangler-jl/overland-build"
+  ],
+  "/vehicles/jeep-wrangler-jl/tire-size": [
+    "/vehicles/jeep-wrangler-jl",
+    "/vehicles/jeep-wrangler-jl/first-upgrades",
+    "/vehicles/jeep-wrangler-jl/suspension",
+    "/vehicles/jeep-wrangler-jl/lift-kit",
+    "/vehicles/jeep-wrangler-jl/overland-build"
+  ],
+  "/vehicles/jeep-wrangler-jl/lift-kit": [
+    "/vehicles/jeep-wrangler-jl",
+    "/vehicles/jeep-wrangler-jl/first-upgrades",
+    "/vehicles/jeep-wrangler-jl/suspension",
+    "/vehicles/jeep-wrangler-jl/tire-size",
+    "/vehicles/jeep-wrangler-jl/overland-build"
+  ],
+  "/vehicles/jeep-wrangler-jl/overland-build": [
+    "/vehicles/jeep-wrangler-jl",
+    "/vehicles/jeep-wrangler-jl/first-upgrades",
+    "/vehicles/jeep-wrangler-jl/suspension",
+    "/vehicles/jeep-wrangler-jl/tire-size",
+    "/vehicles/jeep-wrangler-jl/lift-kit"
   ]
 };
 
@@ -719,15 +812,15 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, `data-vehicle-slug="${vehicleSlug}"`, label);
   requireIncludes(html, 'class="callout vehicle-scope-callout"', label);
   requireIncludes(html, 'class="callout safety-disclaimer"', label);
-  requireIncludes(
-    html,
-    vehicleSlug === "toyota-tacoma"
-      ? "Verify the exact model year, trim, cab, bed length, drivetrain"
-      : "Always verify model year, trim, drivetrain, KDSS status",
-    label
-  );
+  const expectedSafetyText = {
+    "toyota-tacoma": "Verify the exact model year, trim, cab, bed length, drivetrain",
+    "jeep-wrangler-jl": "Verify model year, door count, trim, engine, transmission"
+  }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
+  requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    vehicleSlug === "toyota-tacoma" ? "Build My Setup" : "Check app availability";
+    ["toyota-tacoma", "jeep-wrangler-jl"].includes(vehicleSlug)
+      ? "Build My Setup"
+      : "Check app availability";
   requireIncludes(
     html,
     `href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">${expectedCtaLabel}</a>`,
@@ -737,6 +830,13 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, "RigAI Editorial Team", label);
   requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
   requireIncludes(html, 'class="related-guides"', label);
+  if (page.structuredData === "article") {
+    requireIncludes(
+      html,
+      `<time datetime="${page.content.dates.modified}">Updated ${page.content.dates.reviewedLabel}</time>`,
+      label
+    );
+  }
 
   const articleBuildCtaCount = (
     html.match(/data-analytics-event="build_setup_click"/g) || []
@@ -833,6 +933,57 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(universalFitmentClaim.toLowerCase())) {
         errors.push(`${label} contains a universal Tacoma fitment claim: ${universalFitmentClaim}`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "jeep-wrangler-jl") {
+    requireIncludes(html, "2018-present", label);
+    requireIncludes(html, 'data-vehicle-context="jeep-wrangler-jl"', label);
+    requireIncludes(html, ">WRANGLER JL</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/jeep-wrangler-jl"',
+        label
+      );
+      requireIncludes(html, ">All Jeep Wrangler JL Guides</a>", label);
+      requireIncludes(html, "Related Wrangler JL guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "Wrangler JK",
+      "Wrangler TJ",
+      "Wrangler YJ",
+      "Jeep CJ",
+      "Jeep Gladiator",
+      "Toyota Tacoma",
+      "Toyota 4Runner",
+      "KDSS",
+      "rear leaf spring",
+      "rear leaf-spring"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const universalClaim of [
+      "fits every Wrangler JL",
+      "fits all Wrangler JL",
+      "largest tire for every Wrangler",
+      "every JL requires adjustable control arms",
+      "every JL requires an adjustable track bar",
+      "best lift height for every Wrangler"
+    ]) {
+      if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported Wrangler claim: ${universalClaim}.`);
       }
     }
 
@@ -1025,6 +1176,113 @@ for (const guideRoute of tacomaGuideRoutes) {
   }
 }
 
+const wranglerRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/jeep-wrangler-jl")
+);
+const wranglerRequiredTopics = [
+  "2-door",
+  "4-door",
+  "sport",
+  "willys",
+  "sahara",
+  "rubicon x",
+  "4xe",
+  "axle ratio",
+  "sway-bar disconnect",
+  "locking differentials",
+  "solid front and rear axles",
+  "control arms",
+  "track bars",
+  "caster",
+  "pinion angle",
+  "brake-line",
+  "abs-wire",
+  "wheel offset",
+  "backspacing",
+  "third brake light",
+  "spacer lift",
+  "roof racks",
+  "rooftop tents",
+  "stage 4"
+];
+const wranglerClusterHtml = wranglerRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of wranglerRequiredTopics) {
+  if (!wranglerClusterHtml.includes(topic)) {
+    errors.push(`Jeep Wrangler JL cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of wranglerRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const wranglerHubRoute = "/vehicles/jeep-wrangler-jl";
+const wranglerGuideRoutes = wranglerRoutes.filter(
+  (route) => route !== wranglerHubRoute
+);
+const wranglerHubHtml = readBuildFile(
+  join("vehicles", "jeep-wrangler-jl", "index.html")
+);
+
+if (!homeHtml.includes(`href="${wranglerHubRoute}"`)) {
+  errors.push("Jeep Wrangler JL hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${wranglerHubRoute}"`)) {
+  errors.push("Jeep Wrangler JL hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of wranglerGuideRoutes) {
+  if (!wranglerHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Jeep Wrangler JL hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    wranglerHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="jeep-wrangler-jl"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Wrangler JL hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/jeep-wrangler-jl"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Wrangler JL guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/jeep-wrangler-jl\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Wrangler JL guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -1034,10 +1292,10 @@ for (const page of pages) {
   );
 
   const footer = html.match(/<footer class="footer">([\s\S]*?)<\/footer>/)?.[1] || "";
-  for (const guideRoute of tacomaGuideRoutes) {
+  for (const guideRoute of [...tacomaGuideRoutes, ...wranglerGuideRoutes]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(
-        `Global footer must not list individual Tacoma guide: ${guideRoute}.`
+        `Global footer must not list individual vehicle guide: ${guideRoute}.`
       );
     }
   }

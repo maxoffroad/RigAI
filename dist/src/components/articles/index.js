@@ -1,7 +1,12 @@
 import { readingTimeMinutes, toyota4RunnerPages } from "../../content/toyota-4runner.js";
 import { toyotaTacomaPages } from "../../content/toyota-tacoma.js";
+import { jeepWranglerJlPages } from "../../content/jeep-wrangler-jl.js";
 
-const vehiclePages = [...toyota4RunnerPages, ...toyotaTacomaPages];
+const vehiclePages = [
+  ...toyota4RunnerPages,
+  ...toyotaTacomaPages,
+  ...jeepWranglerJlPages
+];
 
 function escapeHtml(value) {
   return String(value)
@@ -312,8 +317,9 @@ export function renderVehicleArticle(page) {
             <p class="article-dek">${escapeHtml(page.dek)}</p>
             <div class="article-meta">
               <span>RigAI Editorial Team</span>
-              <time datetime="${page.dates.published}">Published ${escapeHtml(page.dates.reviewedLabel)}</time>
-              ${page.kind === "article" ? `<span>${readingTime} min read</span>` : ""}
+              <time datetime="${page.dates.published}">Published ${escapeHtml(page.dates.reviewedLabel)}</time>${page.kind === "article" ? `
+              <time datetime="${page.dates.modified}">Updated ${escapeHtml(page.dates.reviewedLabel)}</time>
+              <span>${readingTime} min read</span>` : ""}
             </div>
           </div>
           <div class="article-hero-visual" aria-hidden="true">

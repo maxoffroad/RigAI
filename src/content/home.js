@@ -148,10 +148,19 @@ export const vehicles = [
     href: "/vehicles/toyota-tacoma",
     slug: "toyota-tacoma"
   },
+  {
+    name: "Jeep Wrangler JL",
+    scope: "2018–present · 2-door and 4-door",
+    description: "Suspension, tire fitment, lift, and trail-build guidance for the Jeep Wrangler JL.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/jeep-wrangler-jl",
+    slug: "jeep-wrangler-jl",
+    ctaLabel: "View Wrangler guides"
+  },
   { name: "Land Cruiser Prado", status: "Supported in app", state: "supported" },
   { name: "Land Cruiser 200", status: "Limited support", state: "limited" },
   { name: "Lexus GX", status: "Supported in app", state: "supported" },
-  { name: "Jeep Wrangler", status: "Supported in app", state: "supported" },
   { name: "Ford Bronco", status: "Supported in app", state: "supported" }
 ];
 
