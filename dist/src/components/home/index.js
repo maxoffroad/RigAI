@@ -238,7 +238,7 @@ function supportedVehicles() {
         <div>
           <p class="eyebrow">Platforms</p>
           <h2>Built for real off-road platforms</h2>
-          <p>RigAI supports multiple off-road platforms, with detailed website guides for Toyota 4Runner, third-generation Tacoma, Jeep Wrangler JL, sixth-generation Ford Bronco, Jeep Gladiator JT, third-generation Chevrolet Colorado, and the current US Ford Ranger.</p>
+          <p>RigAI supports multiple off-road platforms, with detailed website guides for Toyota 4Runner, third-generation Tacoma, Jeep Wrangler JL, sixth-generation Ford Bronco, Jeep Gladiator JT, third-generation Chevrolet Colorado, current US Ford Ranger, and modern off-road-focused Ford F-150 configurations.</p>
         </div>
       </div>
       <div class="vehicle-grid">
@@ -282,7 +282,7 @@ function guidesPreview() {
             : `<article class="guide-card">${content}</article>`;
         }).join("")}
       </div>
-      <p class="guides-note">Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, the 2020-present Jeep Gladiator JT, the 2023-present Chevrolet Colorado, and the 2024-present US Ford Ranger. Additional vehicle-specific guides will follow as coverage expands.</p>
+      <p class="guides-note">Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, the 2020-present Jeep Gladiator JT, the 2023-present Chevrolet Colorado, the 2024-present US Ford Ranger, and the 2021-present Ford F-150. Additional vehicle-specific guides will follow as coverage expands.</p>
     </section>`;
 }
 

@@ -84,6 +84,15 @@ if (configuredRangerRoutes.length !== 6) {
   );
 }
 
+const configuredF150Routes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/ford-f150")
+);
+if (configuredF150Routes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Ford F-150 routes, found ${configuredF150Routes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -516,7 +525,7 @@ for (const expected of [
   "EXAMPLE RECOMMENDATION",
   "RigAI supports multiple off-road platforms",
   "Your SUV is not listed?",
-  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, the 2020-present Jeep Gladiator JT, the 2023-present Chevrolet Colorado, and the 2024-present US Ford Ranger",
+  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, the 2020-present Jeep Gladiator JT, the 2023-present Chevrolet Colorado, the 2024-present US Ford Ranger, and the 2021-present Ford F-150",
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
@@ -583,6 +592,8 @@ requireIncludes(homeHtml, 'href="/vehicles/chevrolet-colorado"', "dist/index.htm
 requireIncludes(homeHtml, 'data-vehicle-slug="chevrolet-colorado"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/ford-ranger"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="ford-ranger"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/ford-f150"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="ford-f150"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -678,11 +689,27 @@ for (const expected of [
   'data-analytics-location="homepage_vehicle_card"',
   'data-vehicle-slug="ford-ranger"',
   "Ford Ranger",
-  "2024–present · US generation",
+  "2024-present · US generation",
   "Suspension, tire fitment, lift, payload, and overland guidance",
   "View Ranger guides"
 ]) {
   requireIncludes(homepageRangerCard, expected, "homepage Ford Ranger vehicle card");
+}
+
+const homepageF150Card =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/ford-f150"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="ford-f150"',
+  "Ford F-150",
+  "2021-present · FX4, Tremor and Raptor",
+  "Suspension, tire fitment, lift, payload, and overland guidance",
+  "View F-150 guides"
+]) {
+  requireIncludes(homepageF150Card, expected, "homepage Ford F-150 vehicle card");
 }
 
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
@@ -696,6 +723,7 @@ requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-bronco"', "dist/veh
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-gladiator"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/chevrolet-colorado"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-ranger"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-f150"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
@@ -703,6 +731,7 @@ requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-bronco"', "dist/
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-gladiator"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="chevrolet-colorado"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-ranger"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-f150"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -745,13 +774,21 @@ const prohibitedRangerGlobalRoutes = [
   "/vehicles/ford-ranger/lift-kit",
   "/vehicles/ford-ranger/overland-build"
 ];
+const prohibitedF150GlobalRoutes = [
+  "/vehicles/ford-f150/first-upgrades",
+  "/vehicles/ford-f150/suspension",
+  "/vehicles/ford-f150/tire-size",
+  "/vehicles/ford-f150/lift-kit",
+  "/vehicles/ford-f150/overland-build"
+];
 for (const guideRoute of [
   ...prohibitedTacomaGlobalRoutes,
   ...prohibitedWranglerGlobalRoutes,
   ...prohibitedBroncoGlobalRoutes,
   ...prohibitedGladiatorGlobalRoutes,
   ...prohibitedColoradoGlobalRoutes,
-  ...prohibitedRangerGlobalRoutes
+  ...prohibitedRangerGlobalRoutes,
+  ...prohibitedF150GlobalRoutes
 ]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
     errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
@@ -835,7 +872,13 @@ const vehicleRoutes = [
   "/vehicles/ford-ranger/suspension",
   "/vehicles/ford-ranger/tire-size",
   "/vehicles/ford-ranger/lift-kit",
-  "/vehicles/ford-ranger/overland-build"
+  "/vehicles/ford-ranger/overland-build",
+  "/vehicles/ford-f150",
+  "/vehicles/ford-f150/first-upgrades",
+  "/vehicles/ford-f150/suspension",
+  "/vehicles/ford-f150/tire-size",
+  "/vehicles/ford-f150/lift-kit",
+  "/vehicles/ford-f150/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -1122,6 +1165,47 @@ const expectedPageLinks = {
     "/vehicles/ford-ranger/suspension",
     "/vehicles/ford-ranger/tire-size",
     "/vehicles/ford-ranger/lift-kit"
+  ],
+  "/vehicles/ford-f150": [
+    "/vehicles/ford-f150/first-upgrades",
+    "/vehicles/ford-f150/suspension",
+    "/vehicles/ford-f150/tire-size",
+    "/vehicles/ford-f150/lift-kit",
+    "/vehicles/ford-f150/overland-build"
+  ],
+  "/vehicles/ford-f150/first-upgrades": [
+    "/vehicles/ford-f150",
+    "/vehicles/ford-f150/suspension",
+    "/vehicles/ford-f150/tire-size",
+    "/vehicles/ford-f150/overland-build"
+  ],
+  "/vehicles/ford-f150/suspension": [
+    "/vehicles/ford-f150",
+    "/vehicles/ford-f150/first-upgrades",
+    "/vehicles/ford-f150/tire-size",
+    "/vehicles/ford-f150/lift-kit",
+    "/vehicles/ford-f150/overland-build"
+  ],
+  "/vehicles/ford-f150/tire-size": [
+    "/vehicles/ford-f150",
+    "/vehicles/ford-f150/first-upgrades",
+    "/vehicles/ford-f150/suspension",
+    "/vehicles/ford-f150/lift-kit",
+    "/vehicles/ford-f150/overland-build"
+  ],
+  "/vehicles/ford-f150/lift-kit": [
+    "/vehicles/ford-f150",
+    "/vehicles/ford-f150/first-upgrades",
+    "/vehicles/ford-f150/suspension",
+    "/vehicles/ford-f150/tire-size",
+    "/vehicles/ford-f150/overland-build"
+  ],
+  "/vehicles/ford-f150/overland-build": [
+    "/vehicles/ford-f150",
+    "/vehicles/ford-f150/first-upgrades",
+    "/vehicles/ford-f150/suspension",
+    "/vehicles/ford-f150/tire-size",
+    "/vehicles/ford-f150/lift-kit"
   ]
 };
 
@@ -1158,11 +1242,12 @@ for (const route of vehicleRoutes) {
     "ford-bronco": "Verify model year, door count, trim, engine, transmission",
     "jeep-gladiator": "Verify model year, trim, engine, transmission, axles",
     "chevrolet-colorado": "Verify model year, trim, drivetrain, suspension package",
-    "ford-ranger": "Verify model year, trim, engine, drivetrain, FX4 or Raptor configuration"
+    "ford-ranger": "Verify model year, trim, engine, drivetrain, FX4 or Raptor configuration",
+    "ford-f150": "Verify model year, trim, cab, bed length, engine, drivetrain"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger"].includes(vehicleSlug)
+    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger", "ford-f150"].includes(vehicleSlug)
       ? "Build My Setup"
       : "Check app availability";
   requireIncludes(
@@ -1550,6 +1635,71 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
         errors.push(`${label} contains an unsupported Ranger claim: ${universalClaim}.`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "ford-f150") {
+    requireIncludes(html, "2021-present", label);
+    requireIncludes(html, 'data-vehicle-context="ford-f150"', label);
+    requireIncludes(html, ">F-150</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/ford-f150"',
+        label
+      );
+      requireIncludes(html, ">All Ford F-150 Guides</a>", label);
+      requireIncludes(html, "Related F-150 guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "2015-2020",
+      "2015–2020",
+      "previous-generation F-150",
+      "older Raptor generation",
+      "Ford Super Duty",
+      "F-250",
+      "F-350",
+      "Ford Ranger",
+      "Ford Bronco",
+      "Ford Maverick",
+      "Toyota Tacoma",
+      "Chevrolet Colorado",
+      "Jeep Gladiator",
+      "Jeep Wrangler",
+      "Toyota 4Runner",
+      "KDSS",
+      "solid front axle"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const universalClaim of [
+      "every F-150 has FOX",
+      "all F-150s have FOX",
+      "every F-150 has 33-inch tires",
+      "every F-150 has 35-inch tires",
+      "every F-150 has 37-inch tires",
+      "every F-150 has a locking rear differential",
+      "same payload for every F-150",
+      "same towing capacity for every F-150",
+      "fits every 2021-present F-150",
+      "fits all 2021-present F-150",
+      "largest tire for every F-150",
+      "every F-150 needs a lift",
+      "one lift height fits every F-150"
+    ]) {
+      if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported F-150 claim: ${universalClaim}.`);
       }
     }
 
@@ -2328,6 +2478,133 @@ for (const guideRoute of rangerGuideRoutes) {
   }
 }
 
+const f150Routes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/ford-f150")
+);
+const f150RequiredTopics = [
+  "2021-present",
+  "regular 4x4",
+  "fx4",
+  "f-150 tremor",
+  "f-150 raptor",
+  "raptor r",
+  "supercrew",
+  "bed length",
+  "engine",
+  "axle ratio",
+  "factory skid plates",
+  "locking differential",
+  "independent front suspension",
+  "rear leaf",
+  "fox live valve",
+  "wide track",
+  "payload label",
+  "tongue weight",
+  "tow-hook",
+  "differential",
+  "transfer-case",
+  "coilover",
+  "control arms",
+  "tie rods",
+  "cv-joint",
+  "caster",
+  "camber",
+  "toe",
+  "bump stops",
+  "wheel width",
+  "offset",
+  "backspacing",
+  "full compression",
+  "under-bed spare",
+  "leveling",
+  "top spacer",
+  "preload spacer",
+  "rear block",
+  "add-a-leaf",
+  "bed rack",
+  "slide-in camper",
+  "rooftop",
+  "pro power onboard",
+  "stage 4"
+];
+const f150ClusterHtml = f150Routes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of f150RequiredTopics) {
+  if (!f150ClusterHtml.includes(topic)) {
+    errors.push(`Ford F-150 cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of f150Routes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const f150HubRoute = "/vehicles/ford-f150";
+const f150GuideRoutes = f150Routes.filter(
+  (route) => route !== f150HubRoute
+);
+const f150HubHtml = readBuildFile(
+  join("vehicles", "ford-f150", "index.html")
+);
+
+if (!homeHtml.includes(`href="${f150HubRoute}"`)) {
+  errors.push("Ford F-150 hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${f150HubRoute}"`)) {
+  errors.push("Ford F-150 hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of f150GuideRoutes) {
+  if (!f150HubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Ford F-150 hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    f150HubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="ford-f150"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Ford F-150 hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/ford-f150"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Ford F-150 guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/ford-f150\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Ford F-150 guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -2343,7 +2620,8 @@ for (const page of pages) {
     ...broncoGuideRoutes,
     ...gladiatorGuideRoutes,
     ...coloradoGuideRoutes,
-    ...rangerGuideRoutes
+    ...rangerGuideRoutes,
+    ...f150GuideRoutes
   ]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(

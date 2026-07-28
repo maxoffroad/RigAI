@@ -53,7 +53,13 @@ const indexablePaths = [
   "/vehicles/ford-ranger/suspension",
   "/vehicles/ford-ranger/tire-size",
   "/vehicles/ford-ranger/lift-kit",
-  "/vehicles/ford-ranger/overland-build"
+  "/vehicles/ford-ranger/overland-build",
+  "/vehicles/ford-f150",
+  "/vehicles/ford-f150/first-upgrades",
+  "/vehicles/ford-f150/suspension",
+  "/vehicles/ford-f150/tire-size",
+  "/vehicles/ford-f150/lift-kit",
+  "/vehicles/ford-f150/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];

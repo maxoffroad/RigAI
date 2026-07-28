@@ -477,6 +477,56 @@ for (const [label, documentLike, analyticsLocation, expectedPageType, expectedPa
   }
 }
 
+for (const [label, documentLike, analyticsLocation, expectedPageType, expectedPath] of [
+  ["homepage", homeDocument, "homepage_vehicle_card", "home", "/"],
+  [
+    "directory",
+    directoryDocument,
+    "vehicles_directory_card",
+    "vehicle_directory",
+    "/vehicles"
+  ]
+]) {
+  const params = eventParameters(
+    {
+      dataset: {
+        analyticsLocation,
+        vehicleSlug: "ford-f150"
+      }
+    },
+    "vehicle_guide_click",
+    documentLike
+  );
+  const expected = {
+    vehicle_slug: "ford-f150",
+    cta_location: analyticsLocation,
+    page_type: expectedPageType,
+    page_path: expectedPath
+  };
+
+  if (JSON.stringify(params) !== JSON.stringify(expected)) {
+    throw new Error(`Ford F-150 ${label} vehicle-card analytics payload is invalid.`);
+  }
+
+  const callsBefore = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "vehicle_guide_click"
+  ).length;
+  if (!trackEvent("vehicle_guide_click", params, windowLike)) {
+    throw new Error(`Ford F-150 ${label} vehicle-card event was not sent.`);
+  }
+  const matchingCalls = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "vehicle_guide_click"
+  );
+  if (
+    matchingCalls.length !== callsBefore + 1 ||
+    JSON.stringify(matchingCalls.at(-1)[2]) !== JSON.stringify(params)
+  ) {
+    throw new Error(`Ford F-150 ${label} click must send exactly one event.`);
+  }
+}
+
 updateAnalyticsConsent("denied", documentLike, windowLike);
 if (hasAnalyticsConsent(windowLike)) {
   throw new Error("Reject must set effective analytics consent to denied.");

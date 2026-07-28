@@ -5,6 +5,7 @@ import { fordBroncoPages } from "../src/content/ford-bronco.js";
 import { jeepGladiatorPages } from "../src/content/jeep-gladiator.js";
 import { chevroletColoradoPages } from "../src/content/chevrolet-colorado.js";
 import { fordRangerPages } from "../src/content/ford-ranger.js";
+import { fordF150Pages } from "../src/content/ford-f150.js";
 
 export const site = {
   name: "RigAI",
@@ -58,7 +59,8 @@ const vehiclePages = [
   ...fordBroncoPages,
   ...jeepGladiatorPages,
   ...chevroletColoradoPages,
-  ...fordRangerPages
+  ...fordRangerPages,
+  ...fordF150Pages
 ].map((content) => ({
   key: content.key,
   route: content.route,

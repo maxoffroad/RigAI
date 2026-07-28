@@ -193,13 +193,23 @@ export const vehicles = [
   },
   {
     name: "Ford Ranger",
-    scope: "2024–present · US generation",
+    scope: "2024-present · US generation",
     description: "Suspension, tire fitment, lift, payload, and overland guidance for the current-generation Ford Ranger.",
     status: "Detailed guide available",
     state: "guide",
     href: "/vehicles/ford-ranger",
     slug: "ford-ranger",
     ctaLabel: "View Ranger guides"
+  },
+  {
+    name: "Ford F-150",
+    scope: "2021-present · FX4, Tremor and Raptor",
+    description: "Suspension, tire fitment, lift, payload, and overland guidance for modern off-road-focused Ford F-150 configurations.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/ford-f150",
+    slug: "ford-f150",
+    ctaLabel: "View F-150 guides"
   }
 ];
 
