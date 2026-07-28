@@ -41,7 +41,13 @@ const indexablePaths = [
   "/vehicles/jeep-gladiator/suspension",
   "/vehicles/jeep-gladiator/tire-size",
   "/vehicles/jeep-gladiator/lift-kit",
-  "/vehicles/jeep-gladiator/overland-build"
+  "/vehicles/jeep-gladiator/overland-build",
+  "/vehicles/chevrolet-colorado",
+  "/vehicles/chevrolet-colorado/first-upgrades",
+  "/vehicles/chevrolet-colorado/suspension",
+  "/vehicles/chevrolet-colorado/tire-size",
+  "/vehicles/chevrolet-colorado/lift-kit",
+  "/vehicles/chevrolet-colorado/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];

@@ -180,6 +180,16 @@ export const vehicles = [
     href: "/vehicles/jeep-gladiator",
     slug: "jeep-gladiator",
     ctaLabel: "View Gladiator guides"
+  },
+  {
+    name: "Chevrolet Colorado",
+    scope: "2023–present · 3rd Gen",
+    description: "Suspension, tire fitment, lift, payload, and overland guidance for the third-generation Chevrolet Colorado.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/chevrolet-colorado",
+    slug: "chevrolet-colorado",
+    ctaLabel: "View Colorado guides"
   }
 ];
 

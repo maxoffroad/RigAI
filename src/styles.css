@@ -2421,7 +2421,7 @@ h3 {
 
 @media (min-width: 961px) and (max-width: 1099px) {
   .vehicle-grid:not(.vehicle-directory-grid) .vehicle-card--visual.is-published {
-    min-height: 380px;
+    min-height: 418px;
   }
 }
 

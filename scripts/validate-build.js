@@ -66,6 +66,15 @@ if (configuredGladiatorRoutes.length !== 6) {
   );
 }
 
+const configuredColoradoRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/chevrolet-colorado")
+);
+if (configuredColoradoRoutes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Chevrolet Colorado routes, found ${configuredColoradoRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -498,7 +507,7 @@ for (const expected of [
   "EXAMPLE RECOMMENDATION",
   "RigAI supports multiple off-road platforms",
   "Your SUV is not listed?",
-  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, and the 2020-present Jeep Gladiator JT",
+  "Detailed guide collections now cover Toyota 4Runner, the 2016-2023 Toyota Tacoma, the 2018-present Jeep Wrangler JL, the 2021-present Ford Bronco, the 2020-present Jeep Gladiator JT, and the 2023-present Chevrolet Colorado",
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
@@ -561,6 +570,8 @@ requireIncludes(homeHtml, 'href="/vehicles/ford-bronco"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="ford-bronco"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/jeep-gladiator"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="jeep-gladiator"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/chevrolet-colorado"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="chevrolet-colorado"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -631,6 +642,22 @@ for (const expected of [
   requireIncludes(homepageGladiatorCard, expected, "homepage Jeep Gladiator vehicle card");
 }
 
+const homepageColoradoCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/chevrolet-colorado"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="chevrolet-colorado"',
+  "Chevrolet Colorado",
+  "2023–present · 3rd Gen",
+  "Suspension, tire fitment, lift, payload, and overland guidance",
+  "View Colorado guides"
+]) {
+  requireIncludes(homepageColoradoCard, expected, "homepage Chevrolet Colorado vehicle card");
+}
+
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
 requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
@@ -640,11 +667,13 @@ requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-tacoma"', "dist/v
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-wrangler-jl"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-bronco"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-gladiator"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/chevrolet-colorado"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-bronco"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-gladiator"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="chevrolet-colorado"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -673,11 +702,19 @@ const prohibitedGladiatorGlobalRoutes = [
   "/vehicles/jeep-gladiator/lift-kit",
   "/vehicles/jeep-gladiator/overland-build"
 ];
+const prohibitedColoradoGlobalRoutes = [
+  "/vehicles/chevrolet-colorado/first-upgrades",
+  "/vehicles/chevrolet-colorado/suspension",
+  "/vehicles/chevrolet-colorado/tire-size",
+  "/vehicles/chevrolet-colorado/lift-kit",
+  "/vehicles/chevrolet-colorado/overland-build"
+];
 for (const guideRoute of [
   ...prohibitedTacomaGlobalRoutes,
   ...prohibitedWranglerGlobalRoutes,
   ...prohibitedBroncoGlobalRoutes,
-  ...prohibitedGladiatorGlobalRoutes
+  ...prohibitedGladiatorGlobalRoutes,
+  ...prohibitedColoradoGlobalRoutes
 ]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
     errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
@@ -749,7 +786,13 @@ const vehicleRoutes = [
   "/vehicles/jeep-gladiator/suspension",
   "/vehicles/jeep-gladiator/tire-size",
   "/vehicles/jeep-gladiator/lift-kit",
-  "/vehicles/jeep-gladiator/overland-build"
+  "/vehicles/jeep-gladiator/overland-build",
+  "/vehicles/chevrolet-colorado",
+  "/vehicles/chevrolet-colorado/first-upgrades",
+  "/vehicles/chevrolet-colorado/suspension",
+  "/vehicles/chevrolet-colorado/tire-size",
+  "/vehicles/chevrolet-colorado/lift-kit",
+  "/vehicles/chevrolet-colorado/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -952,6 +995,48 @@ const expectedPageLinks = {
     "/vehicles/jeep-gladiator/suspension",
     "/vehicles/jeep-gladiator/tire-size",
     "/vehicles/jeep-gladiator/lift-kit"
+  ],
+  "/vehicles/chevrolet-colorado": [
+    "/vehicles/chevrolet-colorado/first-upgrades",
+    "/vehicles/chevrolet-colorado/suspension",
+    "/vehicles/chevrolet-colorado/tire-size",
+    "/vehicles/chevrolet-colorado/lift-kit",
+    "/vehicles/chevrolet-colorado/overland-build"
+  ],
+  "/vehicles/chevrolet-colorado/first-upgrades": [
+    "/vehicles/chevrolet-colorado",
+    "/vehicles/chevrolet-colorado/suspension",
+    "/vehicles/chevrolet-colorado/tire-size",
+    "/vehicles/chevrolet-colorado/lift-kit",
+    "/vehicles/chevrolet-colorado/overland-build"
+  ],
+  "/vehicles/chevrolet-colorado/suspension": [
+    "/vehicles/chevrolet-colorado",
+    "/vehicles/chevrolet-colorado/first-upgrades",
+    "/vehicles/chevrolet-colorado/tire-size",
+    "/vehicles/chevrolet-colorado/lift-kit",
+    "/vehicles/chevrolet-colorado/overland-build"
+  ],
+  "/vehicles/chevrolet-colorado/tire-size": [
+    "/vehicles/chevrolet-colorado",
+    "/vehicles/chevrolet-colorado/first-upgrades",
+    "/vehicles/chevrolet-colorado/suspension",
+    "/vehicles/chevrolet-colorado/lift-kit",
+    "/vehicles/chevrolet-colorado/overland-build"
+  ],
+  "/vehicles/chevrolet-colorado/lift-kit": [
+    "/vehicles/chevrolet-colorado",
+    "/vehicles/chevrolet-colorado/first-upgrades",
+    "/vehicles/chevrolet-colorado/suspension",
+    "/vehicles/chevrolet-colorado/tire-size",
+    "/vehicles/chevrolet-colorado/overland-build"
+  ],
+  "/vehicles/chevrolet-colorado/overland-build": [
+    "/vehicles/chevrolet-colorado",
+    "/vehicles/chevrolet-colorado/first-upgrades",
+    "/vehicles/chevrolet-colorado/suspension",
+    "/vehicles/chevrolet-colorado/tire-size",
+    "/vehicles/chevrolet-colorado/lift-kit"
   ]
 };
 
@@ -986,11 +1071,12 @@ for (const route of vehicleRoutes) {
     "toyota-tacoma": "Verify the exact model year, trim, cab, bed length, drivetrain",
     "jeep-wrangler-jl": "Verify model year, door count, trim, engine, transmission",
     "ford-bronco": "Verify model year, door count, trim, engine, transmission",
-    "jeep-gladiator": "Verify model year, trim, engine, transmission, axles"
+    "jeep-gladiator": "Verify model year, trim, engine, transmission, axles",
+    "chevrolet-colorado": "Verify model year, trim, drivetrain, suspension package"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator"].includes(vehicleSlug)
+    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado"].includes(vehicleSlug)
       ? "Build My Setup"
       : "Check app availability";
   requireIncludes(
@@ -1259,6 +1345,63 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
         errors.push(`${label} contains an unsupported Gladiator claim: ${universalClaim}.`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "chevrolet-colorado") {
+    requireIncludes(html, "2023-present", label);
+    requireIncludes(html, 'data-vehicle-context="chevrolet-colorado"', label);
+    requireIncludes(html, ">COLORADO 3RD GEN</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/chevrolet-colorado"',
+        label
+      );
+      requireIncludes(html, ">All Chevrolet Colorado Guides</a>", label);
+      requireIncludes(html, "Related Colorado guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "2015-2022",
+      "2nd Gen Colorado",
+      "second-generation Colorado",
+      "GMC Canyon",
+      "Chevrolet Silverado",
+      "Ford Ranger",
+      "Toyota Tacoma",
+      "Jeep Gladiator",
+      "Jeep Wrangler",
+      "Ford Bronco",
+      "Toyota 4Runner",
+      "KDSS",
+      "solid front axle"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const universalClaim of [
+      "every Colorado has DSSV",
+      "all Colorado trims have DSSV",
+      "same payload for every Colorado",
+      "same towing capacity for every Colorado",
+      "fits every 2023-present Colorado",
+      "fits all 2023-present Colorado",
+      "largest tire for every Colorado",
+      "every Colorado needs a lift",
+      "one lift height fits every Colorado"
+    ]) {
+      if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported Colorado claim: ${universalClaim}.`);
       }
     }
 
@@ -1791,6 +1934,128 @@ for (const guideRoute of gladiatorGuideRoutes) {
   }
 }
 
+const coloradoRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/chevrolet-colorado")
+);
+const coloradoRequiredTopics = [
+  "2023-present",
+  "wt",
+  "lt",
+  "trail boss",
+  "z71",
+  "zr2",
+  "zr2 bison",
+  "factory ride height",
+  "multimatic dssv",
+  "track width",
+  "locking",
+  "drive modes",
+  "payload",
+  "towing",
+  "tongue weight",
+  "independent front suspension",
+  "rear solid axle",
+  "rear leaf springs",
+  "upper control arms",
+  "tie rods",
+  "cv joints",
+  "caster",
+  "camber",
+  "toe",
+  "bump stops",
+  "jounce",
+  "wheel offset",
+  "backspacing",
+  "full suspension compression",
+  "under-bed spare",
+  "leveling",
+  "top spacer",
+  "preload spacer",
+  "add-a-leaf",
+  "differential-drop",
+  "bed rack",
+  "rooftop",
+  "solar",
+  "stage 4"
+];
+const coloradoClusterHtml = coloradoRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of coloradoRequiredTopics) {
+  if (!coloradoClusterHtml.includes(topic)) {
+    errors.push(`Chevrolet Colorado cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of coloradoRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const coloradoHubRoute = "/vehicles/chevrolet-colorado";
+const coloradoGuideRoutes = coloradoRoutes.filter(
+  (route) => route !== coloradoHubRoute
+);
+const coloradoHubHtml = readBuildFile(
+  join("vehicles", "chevrolet-colorado", "index.html")
+);
+
+if (!homeHtml.includes(`href="${coloradoHubRoute}"`)) {
+  errors.push("Chevrolet Colorado hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${coloradoHubRoute}"`)) {
+  errors.push("Chevrolet Colorado hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of coloradoGuideRoutes) {
+  if (!coloradoHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Chevrolet Colorado hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    coloradoHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="chevrolet-colorado"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Chevrolet Colorado hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/chevrolet-colorado"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Chevrolet Colorado guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/chevrolet-colorado\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Chevrolet Colorado guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -1804,7 +2069,8 @@ for (const page of pages) {
     ...tacomaGuideRoutes,
     ...wranglerGuideRoutes,
     ...broncoGuideRoutes,
-    ...gladiatorGuideRoutes
+    ...gladiatorGuideRoutes,
+    ...coloradoGuideRoutes
   ]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(
