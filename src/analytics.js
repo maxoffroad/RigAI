@@ -195,10 +195,16 @@ function bindConsentControls(documentLike, windowLike) {
       }
     };
 
+    verifyScroll();
     if (typeof windowLike.requestAnimationFrame === "function") {
-      windowLike.requestAnimationFrame(verifyScroll);
-    } else {
-      verifyScroll();
+      windowLike.requestAnimationFrame(() => {
+        verifyScroll();
+        windowLike.requestAnimationFrame(verifyScroll);
+      });
+    }
+    if (typeof windowLike.setTimeout === "function") {
+      windowLike.setTimeout(verifyScroll, 100);
+      windowLike.setTimeout(verifyScroll, 300);
     }
   };
 
@@ -233,8 +239,8 @@ function bindConsentControls(documentLike, windowLike) {
             windowLike
           )
         ) {
-          hideBanner();
           button.blur();
+          hideBanner();
         }
       });
     });

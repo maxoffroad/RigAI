@@ -388,7 +388,7 @@ export function extractMain(sourceHtml, sourceFile) {
 
 export function renderPage(page, mainHtml, { analytics } = {}) {
   const scripts = [
-    '<script type="module" src="/src/main.js?v=phase-5b"></script>',
+    '<script type="module" src="/src/main.js?v=phase-7b"></script>',
     ...(page.scripts || [])
   ];
   const uniqueScripts = [...new Set(scripts)].map((script) => `    ${script}`).join("\n");

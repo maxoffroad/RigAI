@@ -1181,13 +1181,13 @@ h3 {
   border-radius: 3px;
   padding: 0 18px;
   color: #fff;
-  background: #d96d2c;
+  background: #c95100;
   font-weight: 800;
 }
 
 .header-cta:hover,
 .header-cta:focus-visible {
-  background: var(--color-brand-hover);
+  background: #a94000;
 }
 
 .nav {
@@ -1264,7 +1264,7 @@ h3 {
 
 .button.primary {
   color: #fff;
-  background: #d96d2c;
+  background: #c95100;
   box-shadow: none;
 }
 
@@ -1734,7 +1734,7 @@ h3 {
 
 .segmented-labels .is-active {
   color: #fff;
-  background: #d96d2c;
+  background: #c95100;
 }
 
 .outcome-card,
@@ -2489,6 +2489,7 @@ h3 {
   padding: 18px;
   background: #1b1d21;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+  overflow-anchor: none;
 }
 
 .analytics-consent-copy {
@@ -2541,13 +2542,14 @@ h3 {
 }
 
 .consent-button-primary {
-  border-color: #d96d2c;
+  border-color: #c95100;
   color: #fff;
-  background: #d96d2c;
+  background: #c95100;
 }
 
 .consent-button-primary:hover {
-  background: #e77a37;
+  border-color: #a94000;
+  background: #a94000;
 }
 
 .language-label {

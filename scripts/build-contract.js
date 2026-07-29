@@ -67,6 +67,7 @@ export function inspectBuildOutput({ dist, pages, minimumFileCount = 18 }) {
     join("vehicles", "toyota-tacoma", "first-upgrades", "index.html"),
     join("vehicles", "toyota-tacoma", "suspension", "index.html"),
     join("vehicles", "toyota-tacoma", "tire-size", "index.html"),
+    join("vehicles", "toyota-tacoma", "lift-kit", "index.html"),
     join("vehicles", "toyota-tacoma", "overland-build", "index.html"),
     join("vehicles", "jeep-wrangler-jl", "index.html"),
     join("vehicles", "jeep-wrangler-jl", "first-upgrades", "index.html"),

@@ -23,6 +23,7 @@ const indexablePaths = [
   "/vehicles/toyota-tacoma/first-upgrades",
   "/vehicles/toyota-tacoma/suspension",
   "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/lift-kit",
   "/vehicles/toyota-tacoma/overland-build",
   "/vehicles/jeep-wrangler-jl",
   "/vehicles/jeep-wrangler-jl/first-upgrades",

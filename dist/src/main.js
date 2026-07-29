@@ -1,4 +1,4 @@
-import "./analytics.js";
+import "./analytics.js?v=phase-7b";
 
 function addVehiclePlanFallback(media) {
   if (!media.classList.contains("vehicle-hub-media")) return;

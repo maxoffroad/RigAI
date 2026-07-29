@@ -84,6 +84,11 @@ const related = {
     href: "/vehicles/toyota-tacoma/tire-size",
     text: "Evaluate wheel geometry, dynamic clearance, spare storage, braking, and gearing."
   },
+  lift: {
+    title: "Tacoma Lift Kit Guide",
+    href: "/vehicles/toyota-tacoma/lift-kit",
+    text: "Compare leveling and lift approaches by geometry, travel, tires, load, and daily use."
+  },
   overland: {
     title: "Tacoma Overland Build Guide",
     href: "/vehicles/toyota-tacoma/overland-build",
@@ -234,6 +239,12 @@ export const toyotaTacomaPages = [
           },
           {
             eyebrow: "Published guide",
+            title: "Tacoma Lift Kit Guide",
+            text: "Choose a lift approach around purpose, geometry, usable travel, tires, and real load.",
+            href: "/vehicles/toyota-tacoma/lift-kit"
+          },
+          {
+            eyebrow: "Published guide",
             title: "Tacoma Overland Build Guide",
             text: "Stage bed, shelter, storage, power, water, recovery, armor, and suspension decisions.",
             href: "/vehicles/toyota-tacoma/overland-build"
@@ -263,7 +274,7 @@ export const toyotaTacomaPages = [
         ]
       }
     ],
-    related: [related.first, related.suspension, related.tires, related.overland],
+    related: [related.first, related.suspension, related.tires, related.lift, related.overland],
     safety,
     sources: [sources.brochure, sources.newsroom, sources.manual]
   },
@@ -423,7 +434,7 @@ export const toyotaTacomaPages = [
         ]
       }
     ],
-    related: [related.hub, related.suspension, related.tires, related.overland],
+    related: [related.hub, related.suspension, related.tires, related.lift, related.overland],
     safety,
     sources: [sources.brochure, sources.newsroom, sources.manual]
   },
@@ -604,7 +615,7 @@ export const toyotaTacomaPages = [
         ]
       }
     ],
-    related: [related.hub, related.first, related.tires, related.overland],
+    related: [related.hub, related.first, related.tires, related.lift, related.overland],
     safety,
     sources: [sources.newsroom, sources.brochure, sources.manual, sources.trdPro]
   },
@@ -769,9 +780,191 @@ export const toyotaTacomaPages = [
         ]
       }
     ],
-    related: [related.hub, related.first, related.suspension, related.overland],
+    related: [related.hub, related.first, related.suspension, related.lift, related.overland],
     safety,
     sources: [sources.brochure, sources.newsroom, sources.manual]
+  },
+  {
+    key: "toyota-tacoma-lift-kit",
+    kind: "article",
+    route: "/vehicles/toyota-tacoma/lift-kit",
+    title: "Toyota Tacoma 3rd Gen Lift Kit Guide | RigAI",
+    description:
+      "Compare 2016-2023 Toyota Tacoma leveling and lift options by IFS geometry, suspension travel, tire clearance, rear load, alignment, and daily use.",
+    socialTitle: "Toyota Tacoma 3rd Gen Lift Kit Guide | RigAI",
+    socialDescription:
+      "Choose a Tacoma lift approach around purpose, usable travel, alignment, tires, payload, rear leaf springs, and road behavior.",
+    eyebrow: "2016-2023 Tacoma lift-kit planning",
+    h1: "Toyota Tacoma 3rd Gen Lift Kit Guide",
+    dek:
+      "Advertised height is only one part of a lift. Start with the exact truck, a defined clearance or load objective, and the geometry and travel the complete system must preserve.",
+    vehicle,
+    scope,
+    dates,
+    breadcrumbs: breadcrumbs("Lift kits"),
+    takeaways: [
+      "Measure current front and rear ride height before choosing a leveling or lift approach.",
+      "A spacer can change static height without automatically adding usable suspension travel or improving damping.",
+      "Verify alignment range, control-arm, CV-joint, steering, brake-line, ABS-wire, bump-stop, and shock travel through motion.",
+      "Choose rear leaf support for measured permanent load while preserving acceptable empty-bed behavior."
+    ],
+    toc: [
+      ["direct-answer", "How to choose a lift"],
+      ["approaches", "Lift approaches"],
+      ["use-cases", "Choose by use"],
+      ["geometry", "Geometry and travel"],
+      ["supporting-systems", "Supporting systems"],
+      ["checks", "Installation checks"],
+      ["mistakes", "Common mistakes"],
+      ["questions", "Common questions"]
+    ],
+    sections: [
+      {
+        type: "prose",
+        id: "direct-answer",
+        title: "Begin with purpose, measurements, and the exact Tacoma",
+        paragraphs: [
+          "Record model year, trim, cab, bed length, drivetrain, factory suspension, current ride height, tires, wheels, alignment, front accessories, permanent bed load, passengers, towing use, and prior modifications. Measure the truck on level ground in its normal operating condition.",
+          "A mild daily-driver level, a tire-clearance plan, a trail-focused suspension change, and a constant-load travel setup solve different problems. Choose the smallest complete change that serves the defined use without hiding load or fitment problems."
+        ],
+        contextualLink: related.suspension
+      },
+      {
+        type: "comparison",
+        id: "approaches",
+        title: "Compare common Tacoma lift approaches",
+        caption: "Component names do not guarantee the same travel, geometry, load support, or ride.",
+        headers: ["Approach", "What it changes", "Key checks"],
+        rows: [
+          ["Top spacer or leveling approach", "Front static height and stance without automatically changing spring rate or damper quality", "Exact assembly, droop, compression, top-out, CV and ball-joint angles, alignment, bump stops, and loaded rake"],
+          ["Preload adjustment where supported", "Spring preload and installed ride height, with possible ride and travel trade-offs", "Manufacturer adjustment range, spring and damper pairing, droop, damping, alignment, and normal load"],
+          ["Replacement front coilover", "Spring, damping, height, and travel as an application-specific assembly", "Model and trim fitment, control arms, CV joints, tie rods, sway bar, bump stops, lines, tires, and alignment"],
+          ["Rear add-a-leaf or leaf pack", "Rear spring support, progression, height, and empty or loaded behavior", "Measured constant load, empty-bed comfort, bushings, U-bolts, axle wrap, bump timing, shocks, and brake lines"],
+          ["Rear block where applicable", "Rear static height without automatically improving spring control", "Axle location, U-bolts, wrap, shock length, bump stops, load, towing, and manufacturer instructions"],
+          ["Complete suspension system", "Height, spring support, damping, geometry, bump control, and travel as a package", "Exact truck configuration, tires, permanent load, alignment, motion limits, road behavior, and maintenance"]
+        ]
+      },
+      {
+        type: "scenarios",
+        id: "use-cases",
+        title: "Choose lift strategy by real use",
+        items: [
+          {
+            title: "Daily driving with a mild level",
+            priority: "Predictable ride, adequate droop and compression, useful alignment, and normal loaded stance.",
+            wait: "Extra height that reduces ride quality or creates avoidable geometry demands.",
+            data: "Current rake, passengers, front accessories, bed load, tire goal, and commute."
+          },
+          {
+            title: "Weekend trails",
+            priority: "Controlled travel, protection, recovery, modest clearance, steering reliability, and road behavior.",
+            wait: "Maximum height before the actual obstacles and tire plan are known.",
+            data: "Terrain, tire dimensions, wheel position, normal load, recovery plan, and starting suspension."
+          },
+          {
+            title: "Larger tire objective",
+            priority: "Dynamic tire clearance, wheel geometry, steering sweep, compression, braking, gearing, and spare storage.",
+            wait: "Assuming a lift alone resolves body-mount, liner, bumper, or suspension contact.",
+            data: "Measured tire dimensions, offset, backspacing, caster, steering lock, load, and prior changes."
+          },
+          {
+            title: "Loaded travel truck",
+            priority: "Measured permanent weight, rear spring support, damping, axle load, braking, and stable handling.",
+            wait: "Spring selection before the rack, cap, tent, storage, water, power, spare, and tools are planned.",
+            data: "Front and rear scale weights, trip inventory, daily unloaded use, passengers, and trailer tongue load."
+          }
+        ]
+      },
+      {
+        type: "dependency",
+        id: "geometry",
+        title: "Height changes a connected motion system",
+        steps: [
+          ["Front ride height", "Control-arm, ball-joint, CV-joint, tie-rod, caster, camber, toe, droop, compression, and sway-bar relationships."],
+          ["Damper and spring position", "Top-out, bottom-out, bump-stop timing, spring retention, damping, and usable wheel travel."],
+          ["Tire and wheel package", "Steering sweep, body-mount and liner clearance, scrub behavior, braking, gearing, and spare packaging."],
+          ["Rear spring height", "Empty and loaded stance, axle wrap, bump timing, shock travel, brake-line limits, and towing response."],
+          ["Permanent load", "Spring compression, damping demand, axle load, center of gravity, braking, and remaining payload."]
+        ],
+        text:
+          "There is no universal supporting-parts list for an advertised lift height. The actual truck, measured change, component design, alignment, motion, tire path, load, and manufacturer instructions determine what is required."
+      },
+      {
+        type: "systems",
+        id: "supporting-systems",
+        title: "Supporting systems to inspect and verify",
+        items: [
+          ["Upper control arms", "Alignment range, ball-joint angle, droop, compression, tire clearance, strength, and exact application; replacement is not automatically required."],
+          ["CV joints and axles", "Operating angle, boot clearance, binding, plunge, steering, droop, compression, and service condition."],
+          ["Tie rods and steering", "Joint range, wheel offset, tire mass, steering lock, trail impacts, alignment, and clearance."],
+          ["Bump stops", "Tire and body clearance, shock protection, retained uptravel, mount compatibility, and load."],
+          ["Sway bars and links", "Link angle, joint range, interference, retained road behavior, and manufacturer instructions."],
+          ["Rear leaves, U-bolts, and shocks", "Spring support, axle location, wrap, bushings, shock length, damping, bump timing, brake lines, and empty-bed ride."],
+          ["Alignment", "Caster, camber, toe, steering-wheel position, adjustment range, return-to-center, braking, and tire wear."]
+        ]
+      },
+      {
+        type: "checklist",
+        id: "checks",
+        title: "Lift installation and verification checklist",
+        items: [
+          "Exact model year, trim, cab, bed, drivetrain, factory suspension, wheels, tires, towing equipment, and prior modifications",
+          "Measured front and rear ride height empty and at representative load",
+          "Control arms, ball joints, CV joints and boots, tie rods, sway bars, brake hoses, ABS wires, driveshafts, and bump stops through motion",
+          "Shock compression and droop limits, spring retention, rear U-bolts, leaf behavior, axle wrap, and mount clearance",
+          "Full-steering and controlled-compression tire clearance at suspension, body mount, liner, fender, bumper, mud flap, hoses, and wiring",
+          "Caster, camber, toe, steering-wheel position, adjustment range, and printed alignment results",
+          "Braking, return-to-center, lane changes, loaded stance, towing response, noises, and stability",
+          "Fastener torque, line routing, leaks, settling, tire wear, alignment, and post-installation reinspection"
+        ],
+        note:
+          "Follow the exact kit and vehicle instructions. Safety-critical work and alignment should be inspected by qualified professionals."
+      },
+      {
+        type: "mistakes",
+        id: "mistakes",
+        title: "Common Tacoma lift mistakes",
+        items: [
+          ["Buying only by advertised height", "Spring rate, damper travel, damping, geometry, load, bump control, steering, and installation define the complete system."],
+          ["Assuming a spacer adds travel", "Changing static position does not automatically increase damper stroke, droop, compression, or useful wheel travel."],
+          ["Treating tire fitment as solved", "Wheel position, caster, steering, compression, the body mount, liners, bumper, load, and actual tire dimensions still matter."],
+          ["Selecting rear springs from a future wish list", "Choose rear support from measured permanent and representative trip load while considering empty-bed use."],
+          ["Using height to hide overload", "A level stance does not increase manufacturer payload, axle, tire, hitch, or towing ratings."],
+          ["Skipping alignment and reinspection", "Verify alignment, torque, line routing, contact marks, settling, and tire wear after installation and initial use."]
+        ],
+        contextualLink: {
+          before: "Confirm tire and wheel constraints in the ",
+          label: "Tacoma tire size and fitment guide",
+          href: "/vehicles/toyota-tacoma/tire-size",
+          after: "."
+        }
+      },
+      {
+        type: "faq",
+        id: "questions",
+        title: "Tacoma lift-kit questions",
+        items: [
+          {
+            question: "Does every lifted Tacoma need upper control arms?",
+            answer:
+              "No universal rule applies. The need depends on the actual height change, alignment range, ball-joint angle, droop, tire clearance, component design, and manufacturer application."
+          },
+          {
+            question: "Does a lift guarantee larger tires will clear?",
+            answer:
+              "No. Dynamic tire fitment still depends on wheel geometry, caster, steering sweep, suspension travel, body mount, liners, bumper, load, and the tire's measured dimensions."
+          },
+          {
+            question: "Can rear lift parts increase payload?",
+            answer:
+              "No. Springs, leaves, blocks, or load-assist parts can change stance or control but do not raise the manufacturer's certified vehicle, axle, tire, hitch, or towing ratings."
+          }
+        ]
+      }
+    ],
+    related: [related.hub, related.first, related.suspension, related.tires, related.overland],
+    safety,
+    sources: [sources.brochure, sources.newsroom, sources.manual, sources.trdPro]
   },
   {
     key: "toyota-tacoma-overland-build",
@@ -922,7 +1115,7 @@ export const toyotaTacomaPages = [
         ]
       }
     ],
-    related: [related.hub, related.first, related.suspension, related.tires],
+    related: [related.hub, related.first, related.suspension, related.tires, related.lift],
     safety,
     sources: [sources.brochure, sources.newsroom, sources.manual]
   }

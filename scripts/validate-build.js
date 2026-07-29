@@ -89,10 +89,45 @@ for (const [label, values] of [
 const configuredTacomaRoutes = pages.filter((page) =>
   page.route.startsWith("/vehicles/toyota-tacoma")
 );
-if (configuredTacomaRoutes.length !== 5) {
+if (configuredTacomaRoutes.length !== 6) {
   errors.push(
-    `Expected exactly five configured Tacoma routes, found ${configuredTacomaRoutes.length}.`
+    `Expected exactly six configured Tacoma routes, found ${configuredTacomaRoutes.length}.`
   );
+}
+
+const requiredVehicleGuideSlugs = [
+  "first-upgrades",
+  "suspension",
+  "tire-size",
+  "lift-kit",
+  "overland-build"
+];
+const requiredVehicleSlugs = [
+  "toyota-4runner",
+  "toyota-tacoma",
+  "jeep-wrangler-jl",
+  "ford-bronco",
+  "jeep-gladiator",
+  "chevrolet-colorado",
+  "ford-ranger",
+  "ford-f150",
+  "toyota-tundra",
+  "nissan-frontier"
+];
+const configuredRouteSet = new Set(pages.map((page) => page.route));
+
+for (const vehicleSlug of requiredVehicleSlugs) {
+  const hubRoute = `/vehicles/${vehicleSlug}`;
+  if (!configuredRouteSet.has(hubRoute)) {
+    errors.push(`Required vehicle hub is missing: ${hubRoute}.`);
+  }
+
+  for (const guideSlug of requiredVehicleGuideSlugs) {
+    const guideRoute = `${hubRoute}/${guideSlug}`;
+    if (!configuredRouteSet.has(guideRoute)) {
+      errors.push(`Required vehicle guide is missing: ${guideRoute}.`);
+    }
+  }
 }
 
 const configuredWranglerRoutes = pages.filter((page) =>
@@ -229,6 +264,7 @@ const requiredFiles = [
   join("vehicles", "toyota-tacoma", "first-upgrades", "index.html"),
   join("vehicles", "toyota-tacoma", "suspension", "index.html"),
   join("vehicles", "toyota-tacoma", "tire-size", "index.html"),
+  join("vehicles", "toyota-tacoma", "lift-kit", "index.html"),
   join("vehicles", "toyota-tacoma", "overland-build", "index.html"),
   join("vehicles", "jeep-wrangler-jl", "index.html"),
   join("vehicles", "jeep-wrangler-jl", "first-upgrades", "index.html"),
@@ -336,6 +372,7 @@ for (const expectedHeader of [
   "Referrer-Policy: strict-origin-when-cross-origin",
   "Permissions-Policy: camera=(), microphone=(), geolocation=()",
   "X-Frame-Options: SAMEORIGIN",
+  "/images/*",
   "Cache-Control: public, max-age=86400"
 ]) {
   requireIncludes(headers, expectedHeader, "_headers");
@@ -534,7 +571,7 @@ for (const page of pages) {
   requireIncludes(html, 'class="nav-toggle"', label);
   requireIncludes(html, 'aria-expanded="false"', label);
   requireIncludes(html, 'data-nav-toggle', label);
-  requireIncludes(html, '<script type="module" src="/src/main.js?v=phase-5b"></script>', label);
+  requireIncludes(html, '<script type="module" src="/src/main.js?v=phase-7b"></script>', label);
 
   if (canonical !== `${site.domain}/` && canonical.endsWith("/")) {
     errors.push(`${label} canonical has an unexpected trailing slash.`);
@@ -1176,6 +1213,7 @@ const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
   "/vehicles/toyota-tacoma/suspension",
   "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/lift-kit",
   "/vehicles/toyota-tacoma/overland-build"
 ];
 const prohibitedWranglerGlobalRoutes = [
@@ -1297,6 +1335,7 @@ const vehicleRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
   "/vehicles/toyota-tacoma/suspension",
   "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/lift-kit",
   "/vehicles/toyota-tacoma/overland-build",
   "/vehicles/jeep-wrangler-jl",
   "/vehicles/jeep-wrangler-jl/first-upgrades",
@@ -1396,6 +1435,7 @@ const expectedPageLinks = {
     "/vehicles/toyota-tacoma/first-upgrades",
     "/vehicles/toyota-tacoma/suspension",
     "/vehicles/toyota-tacoma/tire-size",
+    "/vehicles/toyota-tacoma/lift-kit",
     "/vehicles/toyota-tacoma/overland-build",
     "/vehicles/toyota-4runner"
   ],
@@ -1403,25 +1443,36 @@ const expectedPageLinks = {
     "/vehicles/toyota-tacoma",
     "/vehicles/toyota-tacoma/suspension",
     "/vehicles/toyota-tacoma/tire-size",
+    "/vehicles/toyota-tacoma/lift-kit",
     "/vehicles/toyota-tacoma/overland-build"
   ],
   "/vehicles/toyota-tacoma/suspension": [
     "/vehicles/toyota-tacoma",
     "/vehicles/toyota-tacoma/first-upgrades",
     "/vehicles/toyota-tacoma/tire-size",
+    "/vehicles/toyota-tacoma/lift-kit",
     "/vehicles/toyota-tacoma/overland-build"
   ],
   "/vehicles/toyota-tacoma/tire-size": [
     "/vehicles/toyota-tacoma",
     "/vehicles/toyota-tacoma/first-upgrades",
     "/vehicles/toyota-tacoma/suspension",
+    "/vehicles/toyota-tacoma/lift-kit",
+    "/vehicles/toyota-tacoma/overland-build"
+  ],
+  "/vehicles/toyota-tacoma/lift-kit": [
+    "/vehicles/toyota-tacoma",
+    "/vehicles/toyota-tacoma/first-upgrades",
+    "/vehicles/toyota-tacoma/suspension",
+    "/vehicles/toyota-tacoma/tire-size",
     "/vehicles/toyota-tacoma/overland-build"
   ],
   "/vehicles/toyota-tacoma/overland-build": [
     "/vehicles/toyota-tacoma",
     "/vehicles/toyota-tacoma/first-upgrades",
     "/vehicles/toyota-tacoma/suspension",
-    "/vehicles/toyota-tacoma/tire-size"
+    "/vehicles/toyota-tacoma/tire-size",
+    "/vehicles/toyota-tacoma/lift-kit"
   ],
   "/vehicles/jeep-wrangler-jl": [
     "/vehicles/jeep-wrangler-jl/first-upgrades",
@@ -1766,6 +1817,7 @@ const newVehicleRoutes = new Set([
   "/vehicles/toyota-tacoma/first-upgrades",
   "/vehicles/toyota-tacoma/suspension",
   "/vehicles/toyota-tacoma/tire-size",
+  "/vehicles/toyota-tacoma/lift-kit",
   "/vehicles/toyota-tacoma/overland-build"
 ]);
 
@@ -3727,7 +3779,11 @@ const requiredEventAttributes = {
 };
 
 requireFile(join("src", "analytics.js"));
-requireIncludes(mainScript, 'import "./analytics.js";', "dist/src/main.js");
+requireIncludes(
+  mainScript,
+  'import "./analytics.js?v=phase-7b";',
+  "dist/src/main.js"
+);
 requireIncludes(
   analyticsSource,
   "windowLike.__RIGAI_ANALYTICS__.listenersBound = true;",
