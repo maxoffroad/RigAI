@@ -65,7 +65,13 @@ const indexablePaths = [
   "/vehicles/toyota-tundra/suspension",
   "/vehicles/toyota-tundra/tire-size",
   "/vehicles/toyota-tundra/lift-kit",
-  "/vehicles/toyota-tundra/overland-build"
+  "/vehicles/toyota-tundra/overland-build",
+  "/vehicles/nissan-frontier",
+  "/vehicles/nissan-frontier/first-upgrades",
+  "/vehicles/nissan-frontier/suspension",
+  "/vehicles/nissan-frontier/tire-size",
+  "/vehicles/nissan-frontier/lift-kit",
+  "/vehicles/nissan-frontier/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];

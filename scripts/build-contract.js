@@ -109,7 +109,13 @@ export function inspectBuildOutput({ dist, pages, minimumFileCount = 18 }) {
     join("vehicles", "toyota-tundra", "suspension", "index.html"),
     join("vehicles", "toyota-tundra", "tire-size", "index.html"),
     join("vehicles", "toyota-tundra", "lift-kit", "index.html"),
-    join("vehicles", "toyota-tundra", "overland-build", "index.html")
+    join("vehicles", "toyota-tundra", "overland-build", "index.html"),
+    join("vehicles", "nissan-frontier", "index.html"),
+    join("vehicles", "nissan-frontier", "first-upgrades", "index.html"),
+    join("vehicles", "nissan-frontier", "suspension", "index.html"),
+    join("vehicles", "nissan-frontier", "tire-size", "index.html"),
+    join("vehicles", "nissan-frontier", "lift-kit", "index.html"),
+    join("vehicles", "nissan-frontier", "overland-build", "index.html")
   ]);
 
   for (const page of pages) {

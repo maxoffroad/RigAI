@@ -7,6 +7,7 @@ import { chevroletColoradoPages } from "../../content/chevrolet-colorado.js";
 import { fordRangerPages } from "../../content/ford-ranger.js";
 import { fordF150Pages } from "../../content/ford-f150.js";
 import { toyotaTundraPages } from "../../content/toyota-tundra.js";
+import { nissanFrontierPages } from "../../content/nissan-frontier.js";
 
 const vehiclePages = [
   ...toyota4RunnerPages,
@@ -17,7 +18,8 @@ const vehiclePages = [
   ...chevroletColoradoPages,
   ...fordRangerPages,
   ...fordF150Pages,
-  ...toyotaTundraPages
+  ...toyotaTundraPages,
+  ...nissanFrontierPages
 ];
 
 function escapeHtml(value) {

@@ -102,6 +102,15 @@ if (configuredTundraRoutes.length !== 6) {
   );
 }
 
+const configuredFrontierRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/nissan-frontier")
+);
+if (configuredFrontierRoutes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Nissan Frontier routes, found ${configuredFrontierRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -605,6 +614,8 @@ requireIncludes(homeHtml, 'href="/vehicles/ford-f150"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="ford-f150"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/toyota-tundra"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="toyota-tundra"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/nissan-frontier"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="nissan-frontier"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -739,6 +750,22 @@ for (const expected of [
   requireIncludes(homepageTundraCard, expected, "homepage Toyota Tundra vehicle card");
 }
 
+const homepageFrontierCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/nissan-frontier"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="nissan-frontier"',
+  "Nissan Frontier",
+  "2022–present · 3rd Gen",
+  "Suspension, tire fitment, lift, payload, and overland guidance",
+  "View Frontier guides"
+]) {
+  requireIncludes(homepageFrontierCard, expected, "homepage Nissan Frontier vehicle card");
+}
+
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
 requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
@@ -752,6 +779,7 @@ requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/chevrolet-colorado"', "d
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-ranger"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-f150"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-tundra"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/nissan-frontier"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
@@ -761,6 +789,7 @@ requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="chevrolet-colorado"',
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-ranger"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-f150"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tundra"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="nissan-frontier"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -817,6 +846,13 @@ const prohibitedTundraGlobalRoutes = [
   "/vehicles/toyota-tundra/lift-kit",
   "/vehicles/toyota-tundra/overland-build"
 ];
+const prohibitedFrontierGlobalRoutes = [
+  "/vehicles/nissan-frontier/first-upgrades",
+  "/vehicles/nissan-frontier/suspension",
+  "/vehicles/nissan-frontier/tire-size",
+  "/vehicles/nissan-frontier/lift-kit",
+  "/vehicles/nissan-frontier/overland-build"
+];
 for (const guideRoute of [
   ...prohibitedTacomaGlobalRoutes,
   ...prohibitedWranglerGlobalRoutes,
@@ -825,7 +861,8 @@ for (const guideRoute of [
   ...prohibitedColoradoGlobalRoutes,
   ...prohibitedRangerGlobalRoutes,
   ...prohibitedF150GlobalRoutes,
-  ...prohibitedTundraGlobalRoutes
+  ...prohibitedTundraGlobalRoutes,
+  ...prohibitedFrontierGlobalRoutes
 ]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
     errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
@@ -921,7 +958,13 @@ const vehicleRoutes = [
   "/vehicles/toyota-tundra/suspension",
   "/vehicles/toyota-tundra/tire-size",
   "/vehicles/toyota-tundra/lift-kit",
-  "/vehicles/toyota-tundra/overland-build"
+  "/vehicles/toyota-tundra/overland-build",
+  "/vehicles/nissan-frontier",
+  "/vehicles/nissan-frontier/first-upgrades",
+  "/vehicles/nissan-frontier/suspension",
+  "/vehicles/nissan-frontier/tire-size",
+  "/vehicles/nissan-frontier/lift-kit",
+  "/vehicles/nissan-frontier/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -1290,6 +1333,47 @@ const expectedPageLinks = {
     "/vehicles/toyota-tundra/suspension",
     "/vehicles/toyota-tundra/tire-size",
     "/vehicles/toyota-tundra/lift-kit"
+  ],
+  "/vehicles/nissan-frontier": [
+    "/vehicles/nissan-frontier/first-upgrades",
+    "/vehicles/nissan-frontier/suspension",
+    "/vehicles/nissan-frontier/tire-size",
+    "/vehicles/nissan-frontier/lift-kit",
+    "/vehicles/nissan-frontier/overland-build"
+  ],
+  "/vehicles/nissan-frontier/first-upgrades": [
+    "/vehicles/nissan-frontier",
+    "/vehicles/nissan-frontier/suspension",
+    "/vehicles/nissan-frontier/tire-size",
+    "/vehicles/nissan-frontier/overland-build"
+  ],
+  "/vehicles/nissan-frontier/suspension": [
+    "/vehicles/nissan-frontier",
+    "/vehicles/nissan-frontier/first-upgrades",
+    "/vehicles/nissan-frontier/tire-size",
+    "/vehicles/nissan-frontier/lift-kit",
+    "/vehicles/nissan-frontier/overland-build"
+  ],
+  "/vehicles/nissan-frontier/tire-size": [
+    "/vehicles/nissan-frontier",
+    "/vehicles/nissan-frontier/first-upgrades",
+    "/vehicles/nissan-frontier/suspension",
+    "/vehicles/nissan-frontier/lift-kit",
+    "/vehicles/nissan-frontier/overland-build"
+  ],
+  "/vehicles/nissan-frontier/lift-kit": [
+    "/vehicles/nissan-frontier",
+    "/vehicles/nissan-frontier/first-upgrades",
+    "/vehicles/nissan-frontier/suspension",
+    "/vehicles/nissan-frontier/tire-size",
+    "/vehicles/nissan-frontier/overland-build"
+  ],
+  "/vehicles/nissan-frontier/overland-build": [
+    "/vehicles/nissan-frontier",
+    "/vehicles/nissan-frontier/first-upgrades",
+    "/vehicles/nissan-frontier/suspension",
+    "/vehicles/nissan-frontier/tire-size",
+    "/vehicles/nissan-frontier/lift-kit"
   ]
 };
 
@@ -1328,11 +1412,12 @@ for (const route of vehicleRoutes) {
     "chevrolet-colorado": "Verify model year, trim, drivetrain, suspension package",
     "ford-ranger": "Verify model year, trim, engine, drivetrain, FX4 or Raptor configuration",
     "ford-f150": "Verify model year, trim, cab, bed length, engine, drivetrain",
-    "toyota-tundra": "Verify model year, grade, cab, bed length, drivetrain, powertrain"
+    "toyota-tundra": "Verify model year, grade, cab, bed length, drivetrain, powertrain",
+    "nissan-frontier": "Verify model year, trim, cab, bed length, drivetrain, factory suspension"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger", "ford-f150", "toyota-tundra"].includes(vehicleSlug)
+    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger", "ford-f150", "toyota-tundra", "nissan-frontier"].includes(vehicleSlug)
       ? "Build My Setup"
       : "Check app availability";
   requireIncludes(
@@ -1854,6 +1939,71 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(unsupportedClaim.toLowerCase())) {
         errors.push(`${label} contains an unsupported Tundra claim: ${unsupportedClaim}.`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "nissan-frontier") {
+    requireIncludes(html, "2022-present", label);
+    requireIncludes(html, 'data-vehicle-context="nissan-frontier"', label);
+    requireIncludes(html, ">Frontier</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/nissan-frontier"',
+        label
+      );
+      requireIncludes(html, ">All Nissan Frontier Guides</a>", label);
+      requireIncludes(html, "Related Frontier guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "2005-2021",
+      "2005–2021",
+      "D40 Frontier",
+      "Nissan Titan",
+      "Toyota Tacoma",
+      "Chevrolet Colorado",
+      "Ford Ranger",
+      "Jeep Gladiator",
+      "Toyota Tundra",
+      "Toyota 4Runner",
+      "KDSS",
+      "solid front axle"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const unsupportedClaim of [
+      "every Frontier has PRO-4X suspension",
+      "all Frontiers have PRO-4X suspension",
+      "every Frontier has Bilstein",
+      "all Frontiers have Bilstein",
+      "every Frontier has an electronic locking rear differential",
+      "all Frontiers have an electronic locking rear differential",
+      "every Frontier has all-terrain tires",
+      "all Frontiers have all-terrain tires",
+      "every Frontier has skid plates",
+      "all Frontiers have skid plates",
+      "PRO-X and PRO-4X are identical",
+      "same payload for every Frontier",
+      "same towing capacity for every Frontier",
+      "fits every 2022-present Frontier",
+      "fits all 2022-present Frontier",
+      "largest tire for every Frontier",
+      "every Frontier needs a lift",
+      "one lift height fits every Frontier"
+    ]) {
+      if (html.toLowerCase().includes(unsupportedClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported Frontier claim: ${unsupportedClaim}.`);
       }
     }
 
@@ -2882,6 +3032,138 @@ for (const guideRoute of tundraGuideRoutes) {
   }
 }
 
+const frontierRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/nissan-frontier")
+);
+const frontierRequiredTopics = [
+  "2022-present",
+  "third-generation",
+  "s trim",
+  "sv",
+  "pro-x",
+  "pro-4x",
+  "king cab",
+  "crew cab",
+  "standard bed",
+  "long bed",
+  "4x2",
+  "4x4",
+  "bilstein",
+  "electronic locking rear differential",
+  "all-terrain tires",
+  "skid plates",
+  "off-road mode",
+  "double-wishbone",
+  "solid rear axle",
+  "multi-leaf",
+  "payload label",
+  "tongue weight",
+  "recovery",
+  "tow hooks",
+  "differential protection",
+  "rock protection",
+  "coilover",
+  "control arms",
+  "tie rods",
+  "cv angle",
+  "caster",
+  "camber",
+  "toe",
+  "bump stops",
+  "wheel width",
+  "offset",
+  "backspacing",
+  "full suspension compression",
+  "under-bed spare",
+  "top spacer",
+  "preload spacer",
+  "rear block",
+  "add-a-leaf",
+  "replacement leaf pack",
+  "bed rack",
+  "rooftop tent",
+  "solar",
+  "rear axle",
+  "stage 4"
+];
+const frontierClusterHtml = frontierRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of frontierRequiredTopics) {
+  if (!frontierClusterHtml.includes(topic)) {
+    errors.push(`Nissan Frontier cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of frontierRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const frontierHubRoute = "/vehicles/nissan-frontier";
+const frontierGuideRoutes = frontierRoutes.filter(
+  (route) => route !== frontierHubRoute
+);
+const frontierHubHtml = readBuildFile(
+  join("vehicles", "nissan-frontier", "index.html")
+);
+
+if (!homeHtml.includes(`href="${frontierHubRoute}"`)) {
+  errors.push("Nissan Frontier hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${frontierHubRoute}"`)) {
+  errors.push("Nissan Frontier hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of frontierGuideRoutes) {
+  if (!frontierHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Nissan Frontier hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    frontierHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="nissan-frontier"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Nissan Frontier hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/nissan-frontier"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Nissan Frontier guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/nissan-frontier\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Nissan Frontier guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -2899,7 +3181,8 @@ for (const page of pages) {
     ...coloradoGuideRoutes,
     ...rangerGuideRoutes,
     ...f150GuideRoutes,
-    ...tundraGuideRoutes
+    ...tundraGuideRoutes,
+    ...frontierGuideRoutes
   ]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(

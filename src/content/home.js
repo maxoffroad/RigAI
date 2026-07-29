@@ -220,6 +220,16 @@ export const vehicles = [
     href: "/vehicles/toyota-tundra",
     slug: "toyota-tundra",
     ctaLabel: "View Tundra guides"
+  },
+  {
+    name: "Nissan Frontier",
+    scope: "2022–present · 3rd Gen",
+    description: "Suspension, tire fitment, lift, payload, and overland guidance for the third-generation Nissan Frontier.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/nissan-frontier",
+    slug: "nissan-frontier",
+    ctaLabel: "View Frontier guides"
   }
 ];
 
