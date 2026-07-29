@@ -210,6 +210,16 @@ export const vehicles = [
     href: "/vehicles/ford-f150",
     slug: "ford-f150",
     ctaLabel: "View F-150 guides"
+  },
+  {
+    name: "Toyota Tundra",
+    scope: "2022–present · 3rd Gen",
+    description: "Suspension, tire fitment, lift, payload, towing, and overland guidance for the third-generation Toyota Tundra.",
+    status: "Detailed guide available",
+    state: "guide",
+    href: "/vehicles/toyota-tundra",
+    slug: "toyota-tundra",
+    ctaLabel: "View Tundra guides"
   }
 ];
 

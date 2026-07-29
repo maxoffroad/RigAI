@@ -93,6 +93,15 @@ if (configuredF150Routes.length !== 6) {
   );
 }
 
+const configuredTundraRoutes = pages.filter((page) =>
+  page.route.startsWith("/vehicles/toyota-tundra")
+);
+if (configuredTundraRoutes.length !== 6) {
+  errors.push(
+    `Expected exactly six configured Toyota Tundra routes, found ${configuredTundraRoutes.length}.`
+  );
+}
+
 const pageTemplateSource = readFileSync(join(root, "scripts", "page-template.js"), "utf8");
 for (const centralizedDateField of [
   "datePublished: page.content.dates.published",
@@ -594,6 +603,8 @@ requireIncludes(homeHtml, 'href="/vehicles/ford-ranger"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="ford-ranger"', "dist/index.html");
 requireIncludes(homeHtml, 'href="/vehicles/ford-f150"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="ford-f150"', "dist/index.html");
+requireIncludes(homeHtml, 'href="/vehicles/toyota-tundra"', "dist/index.html");
+requireIncludes(homeHtml, 'data-vehicle-slug="toyota-tundra"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
 requireIncludes(
@@ -712,6 +723,22 @@ for (const expected of [
   requireIncludes(homepageF150Card, expected, "homepage Ford F-150 vehicle card");
 }
 
+const homepageTundraCard =
+  homeHtml.match(
+    /<a class="vehicle-card vehicle-card--visual is-published" href="\/vehicles\/toyota-tundra"[^>]*>[\s\S]*?<\/a>/
+  )?.[0] || "";
+for (const expected of [
+  'data-analytics-event="vehicle_guide_click"',
+  'data-analytics-location="homepage_vehicle_card"',
+  'data-vehicle-slug="toyota-tundra"',
+  "Toyota Tundra",
+  "2022–present · 3rd Gen",
+  "Suspension, tire fitment, lift, payload, towing, and overland guidance",
+  "View Tundra guides"
+]) {
+  requireIncludes(homepageTundraCard, expected, "homepage Toyota Tundra vehicle card");
+}
+
 const vehiclesDirectoryHtml = readBuildFile(join("vehicles", "index.html"));
 requireIncludes(vehiclesDirectoryHtml, "<title>Off-Road Vehicle Upgrade Guides | RigAI</title>", "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, '<link rel="canonical" href="https://rigai-offroad.com/vehicles" />', "dist/vehicles/index.html");
@@ -724,6 +751,7 @@ requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/jeep-gladiator"', "dist/
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/chevrolet-colorado"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-ranger"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/ford-f150"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'href="/vehicles/toyota-tundra"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-analytics-location="vehicles_directory_card"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tacoma"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-wrangler-jl"', "dist/vehicles/index.html");
@@ -732,6 +760,7 @@ requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="jeep-gladiator"', "di
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="chevrolet-colorado"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-ranger"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-f150"', "dist/vehicles/index.html");
+requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tundra"', "dist/vehicles/index.html");
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -781,6 +810,13 @@ const prohibitedF150GlobalRoutes = [
   "/vehicles/ford-f150/lift-kit",
   "/vehicles/ford-f150/overland-build"
 ];
+const prohibitedTundraGlobalRoutes = [
+  "/vehicles/toyota-tundra/first-upgrades",
+  "/vehicles/toyota-tundra/suspension",
+  "/vehicles/toyota-tundra/tire-size",
+  "/vehicles/toyota-tundra/lift-kit",
+  "/vehicles/toyota-tundra/overland-build"
+];
 for (const guideRoute of [
   ...prohibitedTacomaGlobalRoutes,
   ...prohibitedWranglerGlobalRoutes,
@@ -788,7 +824,8 @@ for (const guideRoute of [
   ...prohibitedGladiatorGlobalRoutes,
   ...prohibitedColoradoGlobalRoutes,
   ...prohibitedRangerGlobalRoutes,
-  ...prohibitedF150GlobalRoutes
+  ...prohibitedF150GlobalRoutes,
+  ...prohibitedTundraGlobalRoutes
 ]) {
   if (homeHtml.includes(`href="${guideRoute}"`)) {
     errors.push(`Homepage must not list individual vehicle guide: ${guideRoute}.`);
@@ -878,7 +915,13 @@ const vehicleRoutes = [
   "/vehicles/ford-f150/suspension",
   "/vehicles/ford-f150/tire-size",
   "/vehicles/ford-f150/lift-kit",
-  "/vehicles/ford-f150/overland-build"
+  "/vehicles/ford-f150/overland-build",
+  "/vehicles/toyota-tundra",
+  "/vehicles/toyota-tundra/first-upgrades",
+  "/vehicles/toyota-tundra/suspension",
+  "/vehicles/toyota-tundra/tire-size",
+  "/vehicles/toyota-tundra/lift-kit",
+  "/vehicles/toyota-tundra/overland-build"
 ];
 
 const futureVehicleRoutes = [];
@@ -1206,6 +1249,47 @@ const expectedPageLinks = {
     "/vehicles/ford-f150/suspension",
     "/vehicles/ford-f150/tire-size",
     "/vehicles/ford-f150/lift-kit"
+  ],
+  "/vehicles/toyota-tundra": [
+    "/vehicles/toyota-tundra/first-upgrades",
+    "/vehicles/toyota-tundra/suspension",
+    "/vehicles/toyota-tundra/tire-size",
+    "/vehicles/toyota-tundra/lift-kit",
+    "/vehicles/toyota-tundra/overland-build"
+  ],
+  "/vehicles/toyota-tundra/first-upgrades": [
+    "/vehicles/toyota-tundra",
+    "/vehicles/toyota-tundra/suspension",
+    "/vehicles/toyota-tundra/tire-size",
+    "/vehicles/toyota-tundra/overland-build"
+  ],
+  "/vehicles/toyota-tundra/suspension": [
+    "/vehicles/toyota-tundra",
+    "/vehicles/toyota-tundra/first-upgrades",
+    "/vehicles/toyota-tundra/tire-size",
+    "/vehicles/toyota-tundra/lift-kit",
+    "/vehicles/toyota-tundra/overland-build"
+  ],
+  "/vehicles/toyota-tundra/tire-size": [
+    "/vehicles/toyota-tundra",
+    "/vehicles/toyota-tundra/first-upgrades",
+    "/vehicles/toyota-tundra/suspension",
+    "/vehicles/toyota-tundra/lift-kit",
+    "/vehicles/toyota-tundra/overland-build"
+  ],
+  "/vehicles/toyota-tundra/lift-kit": [
+    "/vehicles/toyota-tundra",
+    "/vehicles/toyota-tundra/first-upgrades",
+    "/vehicles/toyota-tundra/suspension",
+    "/vehicles/toyota-tundra/tire-size",
+    "/vehicles/toyota-tundra/overland-build"
+  ],
+  "/vehicles/toyota-tundra/overland-build": [
+    "/vehicles/toyota-tundra",
+    "/vehicles/toyota-tundra/first-upgrades",
+    "/vehicles/toyota-tundra/suspension",
+    "/vehicles/toyota-tundra/tire-size",
+    "/vehicles/toyota-tundra/lift-kit"
   ]
 };
 
@@ -1243,11 +1327,12 @@ for (const route of vehicleRoutes) {
     "jeep-gladiator": "Verify model year, trim, engine, transmission, axles",
     "chevrolet-colorado": "Verify model year, trim, drivetrain, suspension package",
     "ford-ranger": "Verify model year, trim, engine, drivetrain, FX4 or Raptor configuration",
-    "ford-f150": "Verify model year, trim, cab, bed length, engine, drivetrain"
+    "ford-f150": "Verify model year, trim, cab, bed length, engine, drivetrain",
+    "toyota-tundra": "Verify model year, grade, cab, bed length, drivetrain, powertrain"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
   const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger", "ford-f150"].includes(vehicleSlug)
+    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger", "ford-f150", "toyota-tundra"].includes(vehicleSlug)
       ? "Build My Setup"
       : "Check app availability";
   requireIncludes(
@@ -1700,6 +1785,75 @@ for (const route of vehicleRoutes) {
     ]) {
       if (html.toLowerCase().includes(universalClaim.toLowerCase())) {
         errors.push(`${label} contains an unsupported F-150 claim: ${universalClaim}.`);
+      }
+    }
+
+    if (/lorem ipsum|placeholder content|todo:/i.test(html)) {
+      errors.push(`${label} contains placeholder content.`);
+    }
+  }
+
+  if (vehicleSlug === "toyota-tundra") {
+    requireIncludes(html, "2022-present", label);
+    requireIncludes(html, 'data-vehicle-context="toyota-tundra"', label);
+    requireIncludes(html, ">Tundra</span>", label);
+    requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
+
+    if (page.structuredData === "article") {
+      requireIncludes(
+        html,
+        'class="article-back-link" href="/vehicles/toyota-tundra"',
+        label
+      );
+      requireIncludes(html, ">All Toyota Tundra Guides</a>", label);
+      requireIncludes(html, "Related Tundra guides", label);
+    }
+
+    for (const outOfScopePhrase of [
+      "2007-2021",
+      "2007–2021",
+      "Toyota Sequoia",
+      "Toyota Land Cruiser",
+      "Toyota Tacoma",
+      "Ford F-150",
+      "Ford Ranger",
+      "Chevrolet Colorado",
+      "Jeep Gladiator",
+      "Jeep Wrangler",
+      "Toyota 4Runner",
+      "KDSS",
+      "solid front axle"
+    ]) {
+      if (html.toLowerCase().includes(outOfScopePhrase.toLowerCase())) {
+        errors.push(`${label} contains out-of-scope vehicle content: ${outOfScopePhrase}.`);
+      }
+    }
+
+    for (const unsupportedClaim of [
+      "2022 Tundra Trailhunter",
+      "2023 Tundra Trailhunter",
+      "2024 Tundra Trailhunter",
+      "2025 Tundra Trailhunter",
+      "2026 Tundra Trailhunter",
+      "every Tundra has FOX",
+      "all Tundras have FOX",
+      "every Tundra has adaptive suspension",
+      "all Tundras have adaptive suspension",
+      "every Tundra has rear air suspension",
+      "all Tundras have rear air suspension",
+      "every Tundra has i-FORCE MAX",
+      "all Tundras have i-FORCE MAX",
+      "the third-generation Tundra uses rear leaf springs",
+      "same payload for every Tundra",
+      "same towing capacity for every Tundra",
+      "fits every 2022-present Tundra",
+      "fits all 2022-present Tundra",
+      "largest tire for every Tundra",
+      "every Tundra needs a lift",
+      "one lift height fits every Tundra"
+    ]) {
+      if (html.toLowerCase().includes(unsupportedClaim.toLowerCase())) {
+        errors.push(`${label} contains an unsupported Tundra claim: ${unsupportedClaim}.`);
       }
     }
 
@@ -2605,6 +2759,129 @@ for (const guideRoute of f150GuideRoutes) {
   }
 }
 
+const tundraRoutes = vehicleRoutes.filter((route) =>
+  route.startsWith("/vehicles/toyota-tundra")
+);
+const tundraRequiredTopics = [
+  "2022-present",
+  "third-generation",
+  "double cab",
+  "crewmax",
+  "i-force max",
+  "trd off-road",
+  "trd pro",
+  "2027 trailhunter",
+  "adaptive variable suspension",
+  "rear load-leveling air suspension",
+  "double-wishbone",
+  "solid rear axle",
+  "multi-link",
+  "coil springs",
+  "fox",
+  "bilstein",
+  "payload label",
+  "tongue weight",
+  "recovery",
+  "skid plates",
+  "coilover",
+  "control arms",
+  "tie rods",
+  "cv angle",
+  "caster",
+  "camber",
+  "toe",
+  "bump stops",
+  "wheel width",
+  "offset",
+  "steering lock",
+  "full-compression",
+  "under-bed",
+  "top spacer",
+  "preload spacer",
+  "bed rack",
+  "camper",
+  "rooftop tent",
+  "rear axle",
+  "stage 4"
+];
+const tundraClusterHtml = tundraRoutes
+  .map((route) => readBuildFile(join(route.replace(/^\//, ""), "index.html")))
+  .join("\n")
+  .toLowerCase();
+
+for (const topic of tundraRequiredTopics) {
+  if (!tundraClusterHtml.includes(topic)) {
+    errors.push(`Toyota Tundra cluster is missing required topic: ${topic}.`);
+  }
+}
+
+for (const route of tundraRoutes) {
+  const incomingLinks = pages.reduce((count, page) => {
+    const html = readBuildFile(pageOutputPath(page));
+    return count + (html.includes(`href="${route}"`) ? 1 : 0);
+  }, 0);
+  if (incomingLinks === 0) {
+    errors.push(`${route} is an orphan page.`);
+  }
+}
+
+const tundraHubRoute = "/vehicles/toyota-tundra";
+const tundraGuideRoutes = tundraRoutes.filter(
+  (route) => route !== tundraHubRoute
+);
+const tundraHubHtml = readBuildFile(
+  join("vehicles", "toyota-tundra", "index.html")
+);
+
+if (!homeHtml.includes(`href="${tundraHubRoute}"`)) {
+  errors.push("Toyota Tundra hub is not linked from the homepage.");
+}
+if (!vehiclesDirectoryHtml.includes(`href="${tundraHubRoute}"`)) {
+  errors.push("Toyota Tundra hub is not linked from /vehicles.");
+}
+
+for (const guideRoute of tundraGuideRoutes) {
+  if (!tundraHubHtml.includes(`href="${guideRoute}"`)) {
+    errors.push(`Toyota Tundra hub does not link to ${guideRoute}.`);
+  }
+  const guideCard =
+    tundraHubHtml.match(
+      new RegExp(
+        `<a class="related-guide-card is-published" href="${guideRoute.replaceAll("/", "\\/")}"[^>]*>[\\s\\S]*?<\\/a>`
+      )
+    )?.[0] || "";
+  for (const expected of [
+    'data-analytics-event="guide_click"',
+    'data-analytics-location="article_featured"',
+    'data-vehicle-slug="toyota-tundra"',
+    "<h3>",
+    "<p>",
+    "<strong>Read guide</strong>"
+  ]) {
+    requireIncludes(guideCard, expected, `Toyota Tundra hub card for ${guideRoute}`);
+  }
+
+  const guideHtml = readBuildFile(
+    join(guideRoute.replace(/^\//, ""), "index.html")
+  );
+  if (
+    !guideHtml.includes(
+      'class="article-back-link" href="/vehicles/toyota-tundra"'
+    )
+  ) {
+    errors.push(`${guideRoute} does not visibly link back to all Toyota Tundra guides.`);
+  }
+
+  const relatedGuideLinks = [
+    ...guideHtml.matchAll(
+      /<a class="related-guide-card is-published" href="(\/vehicles\/toyota-tundra\/[^"]+)"/g
+    )
+  ].map((match) => match[1]);
+  if (new Set(relatedGuideLinks).size < 2) {
+    errors.push(`${guideRoute} must link to at least two related Toyota Tundra guides.`);
+  }
+}
+
 for (const page of pages) {
   const html = readBuildFile(pageOutputPath(page));
   requireIncludes(
@@ -2621,7 +2898,8 @@ for (const page of pages) {
     ...gladiatorGuideRoutes,
     ...coloradoGuideRoutes,
     ...rangerGuideRoutes,
-    ...f150GuideRoutes
+    ...f150GuideRoutes,
+    ...tundraGuideRoutes
   ]) {
     if (footer.includes(`href="${guideRoute}"`)) {
       errors.push(

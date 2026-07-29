@@ -59,7 +59,13 @@ const indexablePaths = [
   "/vehicles/ford-f150/suspension",
   "/vehicles/ford-f150/tire-size",
   "/vehicles/ford-f150/lift-kit",
-  "/vehicles/ford-f150/overland-build"
+  "/vehicles/ford-f150/overland-build",
+  "/vehicles/toyota-tundra",
+  "/vehicles/toyota-tundra/first-upgrades",
+  "/vehicles/toyota-tundra/suspension",
+  "/vehicles/toyota-tundra/tire-size",
+  "/vehicles/toyota-tundra/lift-kit",
+  "/vehicles/toyota-tundra/overland-build"
 ];
 const vehiclePaths = indexablePaths.filter((path) => path.startsWith("/vehicles/"));
 const excludedSitemapPaths = ["/design-system", "/404", "/404.html"];
