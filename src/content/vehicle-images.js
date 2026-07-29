@@ -5,14 +5,14 @@ export const vehicleImages = {
       alt: "Stock 2024 Toyota 4Runner driving over a rocky trail",
       width: 1000,
       height: 600,
-      objectPosition: "50% 52%"
+      objectPosition: "50% 48%"
     },
     hero: {
       src: "/images/vehicles/toyota-4runner.webp",
       alt: "Stock 2024 Toyota 4Runner driving over a rocky trail",
       width: 1000,
       height: 600,
-      objectPosition: "50% 52%"
+      objectPosition: "50% 50%"
     },
     source: {
       publisher: "Toyota USA Newsroom",
@@ -27,21 +27,21 @@ export const vehicleImages = {
   "toyota-tacoma": {
     directory: {
       src: "/images/vehicles/toyota-tacoma.webp",
-      alt: "Stock third-generation Toyota Tacoma driving on a mountain road",
+      alt: "Stock third-generation Toyota Tacoma TRD Pro viewed from the front side",
       width: 1400,
       height: 840,
-      objectPosition: "56% 52%"
+      objectPosition: "52% 48%"
     },
     hero: {
       src: "/images/vehicles/toyota-tacoma.webp",
-      alt: "Stock third-generation Toyota Tacoma driving on a mountain road",
+      alt: "Stock third-generation Toyota Tacoma TRD Pro viewed from the front side",
       width: 1400,
       height: 840,
-      objectPosition: "56% 52%"
+      objectPosition: "52% 50%"
     },
     source: {
       publisher: "Toyota USA Newsroom",
-      pageUrl: "https://pressroom.toyota.com/album/2023-toyota-tacoma/",
+      pageUrl: "https://pressroom.toyota.com/image/2023_tacoma_trdpro_solaroctane_001/",
       licenseName: "Toyota newsroom editorial-use terms",
       licenseUrl: "https://pressroom.toyota.com/album/2023-toyota-tacoma/",
       author: "Toyota Motor Sales, U.S.A.",
@@ -52,50 +52,50 @@ export const vehicleImages = {
   "jeep-wrangler-jl": {
     directory: {
       src: "/images/vehicles/jeep-wrangler-jl.webp",
-      alt: "Stock black Jeep Wrangler JL two-door viewed from the side",
-      width: 1400,
-      height: 1142,
-      objectPosition: "50% 52%"
+      alt: "Stock Jeep Wrangler Unlimited JL 4xe viewed from the front side",
+      width: 1280,
+      height: 758,
+      objectPosition: "48% 52%"
     },
     hero: {
       src: "/images/vehicles/jeep-wrangler-jl.webp",
-      alt: "Stock black Jeep Wrangler JL two-door viewed from the side",
-      width: 1400,
-      height: 1142,
-      objectPosition: "50% 52%"
+      alt: "Stock Jeep Wrangler Unlimited JL 4xe viewed from the front side",
+      width: 1280,
+      height: 758,
+      objectPosition: "48% 50%"
     },
     source: {
       publisher: "Wikimedia Commons",
-      pageUrl: "https://commons.wikimedia.org/wiki/File:Jeep_Wrangler_(JL)_090254.jpg",
-      licenseName: "CC0 1.0",
-      licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
-      author: "Trop86",
-      usageBasis: "The photographer released the original under CC0 1.0.",
+      pageUrl: "https://commons.wikimedia.org/wiki/File:Jeep_Wrangler_Unlimited_(JL)_PHEV_IMG_5808.jpg",
+      licenseName: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+      author: "Alexander Migl",
+      usageBasis: "Used under CC BY-SA 4.0 with attribution; resized and converted to WebP under the same license.",
       retrievedOn: "2026-07-29"
     }
   },
   "ford-bronco": {
     directory: {
       src: "/images/vehicles/ford-bronco.webp",
-      alt: "Stock sixth-generation Ford Bronco driving in Washington, DC",
+      alt: "Stock sixth-generation Ford Bronco viewed from the front side",
       width: 1400,
-      height: 1120,
-      objectPosition: "50% 46%"
+      height: 1041,
+      objectPosition: "48% 56%"
     },
     hero: {
       src: "/images/vehicles/ford-bronco.webp",
-      alt: "Stock sixth-generation Ford Bronco driving in Washington, DC",
+      alt: "Stock sixth-generation Ford Bronco viewed from the front side",
       width: 1400,
-      height: 1120,
-      objectPosition: "50% 46%"
+      height: 1041,
+      objectPosition: "48% 52%"
     },
     source: {
       publisher: "Wikimedia Commons",
-      pageUrl: "https://commons.wikimedia.org/wiki/File:Ford_Bronco_(U725)_Washington_DC_Metro_Area,_USA.jpg",
-      licenseName: "CC BY 4.0",
-      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
-      author: "OWS Photography",
-      usageBasis: "Used under CC BY 4.0 with attribution; resized and converted to WebP.",
+      pageUrl: "https://commons.wikimedia.org/wiki/File:Ford_Bronco_(6th_generation)_1X7A6831.jpg",
+      licenseName: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+      author: "Alexander-93",
+      usageBasis: "Used under CC BY-SA 4.0 with attribution; resized and converted to WebP under the same license.",
       retrievedOn: "2026-07-29"
     }
   },
@@ -105,14 +105,14 @@ export const vehicleImages = {
       alt: "Stock Jeep Gladiator JT Rubicon viewed from the front",
       width: 1400,
       height: 851,
-      objectPosition: "52% 51%"
+      objectPosition: "50% 52%"
     },
     hero: {
       src: "/images/vehicles/jeep-gladiator.webp",
       alt: "Stock Jeep Gladiator JT Rubicon viewed from the front",
       width: 1400,
       height: 851,
-      objectPosition: "52% 51%"
+      objectPosition: "52% 50%"
     },
     source: {
       publisher: "Wikimedia Commons",
@@ -130,14 +130,14 @@ export const vehicleImages = {
       alt: "Stock third-generation Chevrolet Colorado ZR2 viewed from the front",
       width: 1400,
       height: 787,
-      objectPosition: "50% 51%"
+      objectPosition: "50% 54%"
     },
     hero: {
       src: "/images/vehicles/chevrolet-colorado.webp",
       alt: "Stock third-generation Chevrolet Colorado ZR2 viewed from the front",
       width: 1400,
       height: 787,
-      objectPosition: "50% 51%"
+      objectPosition: "50% 50%"
     },
     source: {
       publisher: "Wikimedia Commons",
@@ -152,25 +152,25 @@ export const vehicleImages = {
   "ford-ranger": {
     directory: {
       src: "/images/vehicles/ford-ranger.webp",
-      alt: "Stock current-generation Ford Ranger Raptor viewed from the front",
+      alt: "Stock current-generation Ford Ranger viewed from the rear",
       width: 1400,
-      height: 759,
-      objectPosition: "50% 50%"
+      height: 1219,
+      objectPosition: "50% 66%"
     },
     hero: {
       src: "/images/vehicles/ford-ranger.webp",
-      alt: "Stock current-generation Ford Ranger Raptor viewed from the front",
+      alt: "Stock current-generation Ford Ranger viewed from the rear",
       width: 1400,
-      height: 759,
-      objectPosition: "50% 50%"
+      height: 1219,
+      objectPosition: "50% 61%"
     },
     source: {
       publisher: "Wikimedia Commons",
-      pageUrl: "https://commons.wikimedia.org/wiki/File:Ford_Ranger_Raptor_(P703)_1X7A6776.jpg",
-      licenseName: "CC BY-SA 4.0",
-      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
-      author: "Alexander-93",
-      usageBasis: "Used under CC BY-SA 4.0 with attribution; resized and converted to WebP under the same license.",
+      pageUrl: "https://commons.wikimedia.org/wiki/File:Ford_Ranger_113729.jpg",
+      licenseName: "CC0 1.0",
+      licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
+      author: "Trop86",
+      usageBasis: "Released under CC0 1.0; resized and converted to WebP.",
       retrievedOn: "2026-07-29"
     }
   },
@@ -180,14 +180,14 @@ export const vehicleImages = {
       alt: "Stock fourteenth-generation Ford F-150 Tremor viewed from the rear side",
       width: 1400,
       height: 1039,
-      objectPosition: "54% 50%"
+      objectPosition: "54% 56%"
     },
     hero: {
       src: "/images/vehicles/ford-f150.webp",
       alt: "Stock fourteenth-generation Ford F-150 Tremor viewed from the rear side",
       width: 1400,
       height: 1039,
-      objectPosition: "54% 50%"
+      objectPosition: "54% 52%"
     },
     source: {
       publisher: "Wikimedia Commons",
@@ -205,14 +205,14 @@ export const vehicleImages = {
       alt: "Stock third-generation Toyota Tundra 1794 Edition driving on a road",
       width: 1400,
       height: 840,
-      objectPosition: "50% 51%"
+      objectPosition: "50% 54%"
     },
     hero: {
       src: "/images/vehicles/toyota-tundra.webp",
       alt: "Stock third-generation Toyota Tundra 1794 Edition driving on a road",
       width: 1400,
       height: 840,
-      objectPosition: "50% 51%"
+      objectPosition: "50% 50%"
     },
     source: {
       publisher: "Toyota USA Newsroom",
@@ -230,14 +230,14 @@ export const vehicleImages = {
       alt: "Stock third-generation Nissan Frontier crew cab viewed from the front",
       width: 1400,
       height: 771,
-      objectPosition: "50% 51%"
+      objectPosition: "50% 54%"
     },
     hero: {
       src: "/images/vehicles/nissan-frontier.webp",
       alt: "Stock third-generation Nissan Frontier crew cab viewed from the front",
       width: 1400,
       height: 771,
-      objectPosition: "50% 51%"
+      objectPosition: "50% 50%"
     },
     source: {
       publisher: "Wikimedia Commons",

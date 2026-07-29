@@ -62,9 +62,8 @@ function renderVehicleHeroVisual(page, vehicle) {
     return renderPlanVisual(vehicle);
   }
 
-  return `<figure class="article-hero-media" data-vehicle-media>
+  return `<figure class="article-hero-media vehicle-hub-media" data-vehicle-media data-fallback-label="${escapeHtml(vehicle.heroLabel)}">
             <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high" data-vehicle-image style="object-position: ${escapeHtml(image.objectPosition)}" />
-            ${renderPlanVisual(vehicle, " article-hero-fallback")}
             <figcaption>Photo: <a href="${source.pageUrl}" rel="noopener noreferrer">${escapeHtml(source.author)}</a> / <a href="${source.licenseUrl}" rel="license noopener noreferrer">${escapeHtml(source.licenseName)}</a></figcaption>
           </figure>`;
 }
@@ -352,8 +351,8 @@ export function renderVehicleArticle(page) {
   return `<main id="main-content" class="vehicle-article-page">
       <div class="article-shell">
         ${renderBreadcrumbs(page.breadcrumbs)}${renderVehicleBackLink(page)}
-        <header class="article-header">
-          <div>
+        <header class="article-header${page.kind === "vehicleHub" ? " vehicle-hub-hero" : ""}">
+          <div${page.kind === "vehicleHub" ? ' class="vehicle-hub-copy"' : ""}>
             <p class="eyebrow">${escapeHtml(page.eyebrow)}</p>
             <h1>${escapeHtml(page.h1)}</h1>
             <p class="article-dek">${escapeHtml(page.dek)}</p>

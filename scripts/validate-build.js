@@ -422,6 +422,9 @@ for (const slug of expectedVehicleImageSlugs) {
     ) {
       errors.push(`${slug} ${placement} image metadata is incomplete.`);
     }
+    if (!/^\d{1,3}% \d{1,3}%$/.test(image.objectPosition)) {
+      errors.push(`${slug} ${placement} image needs an explicit two-axis objectPosition.`);
+    }
   }
 
   const relativePath = entry.directory.src.replace(/^\//, "");
@@ -472,6 +475,20 @@ for (const slug of expectedVehicleImageSlugs) {
   }
   if (!vehicleImageSourceDoc.includes(entry.directory.src)) {
     errors.push(`${slug} is missing from the vehicle image source register.`);
+  }
+}
+
+for (const rejectedSource of [
+  "2023_Toyota_Tacoma_Chrome_SX_Package_001",
+  "Jeep_Wrangler_(JL)_090254",
+  "Ford_Bronco_(U725)_Washington_DC_Metro_Area",
+  "Ford_Ranger_Raptor_(P703)_1X7A6776"
+]) {
+  if (
+    JSON.stringify(vehicleImages).includes(rejectedSource) ||
+    vehicleImageSourceDoc.includes(rejectedSource)
+  ) {
+    errors.push(`Rejected crop source remains configured: ${rejectedSource}.`);
   }
 }
 
@@ -644,6 +661,20 @@ const publishedVehicleCardRule =
   )?.[1] || "";
 const vehicleDirectoryRule =
   stylesheet.match(/\.vehicle-directory-grid\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleDirectoryCardRule =
+  stylesheet.match(
+    /\.vehicle-directory-grid \.vehicle-card--visual\s*\{([\s\S]*?)\}/
+  )?.[1] || "";
+const vehiclePhotoRule =
+  stylesheet.match(/\.vehicle-media--photo img\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleContentLayerRule =
+  stylesheet.match(
+    /\.vehicle-card--visual > :not\(\.vehicle-media\)\s*\{([\s\S]*?)\}/
+  )?.[1] || "";
+const vehicleHubHeroRule =
+  stylesheet.match(/\.vehicle-hub-hero\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleHubMediaRule =
+  stylesheet.match(/\.vehicle-hub-media\s*\{([\s\S]*?)\}/)?.[1] || "";
 const mobileVehicleRules =
   stylesheet.match(/@media \(max-width:\s*620px\)\s*\{([\s\S]*)$/)?.[1] || "";
 
@@ -661,6 +692,42 @@ if (
   errors.push("Vehicle directory must use two equal desktop columns.");
 }
 if (
+  !/height:\s*360px/.test(vehicleDirectoryCardRule) ||
+  !/min-height:\s*360px/.test(vehicleDirectoryCardRule) ||
+  !/max-height:\s*360px/.test(vehicleDirectoryCardRule)
+) {
+  errors.push("Vehicle directory cards must keep a stable 360px desktop height.");
+}
+if (
+  !/position:\s*absolute/.test(vehiclePhotoRule) ||
+  !/inset:\s*0/.test(vehiclePhotoRule) ||
+  !/object-fit:\s*cover/.test(vehiclePhotoRule)
+) {
+  errors.push("Vehicle directory photos must remain an absolute cover layer.");
+}
+if (
+  !/position:\s*relative/.test(vehicleContentLayerRule) ||
+  !/z-index:\s*2/.test(vehicleContentLayerRule)
+) {
+  errors.push("Vehicle card content must remain above the media and contrast layers.");
+}
+if (
+  !/grid-template-columns:\s*minmax\(0,\s*1\.65fr\)\s*minmax\(280px,\s*0\.85fr\)/.test(
+    vehicleHubHeroRule
+  ) ||
+  /100vw|margin-(?:left|right):\s*-|transform:\s*translate/.test(vehicleHubHeroRule)
+) {
+  errors.push("Vehicle hub hero must use the compact contained two-column grid.");
+}
+if (
+  !/max-width:\s*400px/.test(vehicleHubMediaRule) ||
+  !/max-height:\s*300px/.test(vehicleHubMediaRule) ||
+  !/aspect-ratio:\s*4\s*\/\s*3/.test(vehicleHubMediaRule) ||
+  !/justify-self:\s*end/.test(vehicleHubMediaRule)
+) {
+  errors.push("Vehicle hub media must keep the compact 400px by 4:3 constraint.");
+}
+if (
   !/\.vehicle-directory-grid\s*\{[\s\S]*?grid-template-columns:\s*1fr/.test(
     mobileVehicleRules
   ) ||
@@ -670,6 +737,13 @@ if (
   )
 ) {
   errors.push("Vehicle cards must collapse to one column on mobile.");
+}
+if (
+  !/\.vehicle-hub-media\s*\{[\s\S]*?max-width:\s*none[\s\S]*?aspect-ratio:\s*16\s*\/\s*10/.test(
+    mobileVehicleRules
+  )
+) {
+  errors.push("Vehicle hub media must use the full-width 16:10 mobile layout.");
 }
 
 const homeComponentSource = readFileSync(
@@ -1655,7 +1729,12 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
   requireIncludes(html, 'class="related-guides"', label);
   if (page.structuredData === "vehicleHub") {
-    requireIncludes(html, 'class="article-hero-media" data-vehicle-media', label);
+    requireIncludes(html, 'class="article-header vehicle-hub-hero"', label);
+    requireIncludes(
+      html,
+      'class="article-hero-media vehicle-hub-media" data-vehicle-media',
+      label
+    );
     requireIncludes(
       html,
       `<img src="${vehicleImage.hero.src}" alt="${vehicleImage.hero.alt}" width="${vehicleImage.hero.width}" height="${vehicleImage.hero.height}" loading="eager" decoding="async" fetchpriority="high"`,
@@ -1666,6 +1745,12 @@ for (const route of vehicleRoutes) {
 
     if ((html.match(/\bdata-vehicle-image\b/g) || []).length !== 1) {
       errors.push(`${label} must contain exactly one local vehicle hero image.`);
+    }
+    if (
+      html.includes('class="article-hero-visual article-hero-fallback"') ||
+      (html.match(/\barticle-hero-visual\b/g) || []).length !== 0
+    ) {
+      errors.push(`${label} must not render the VEHICLE PLAN fallback beside a valid image.`);
     }
     if (/<img\b[^>]*src="https?:\/\//i.test(html)) {
       errors.push(`${label} must not load a remote vehicle hero image.`);
@@ -1742,10 +1827,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "toyota-tacoma") {
     requireIncludes(html, "2016-2023", label);
     requireIncludes(html, 'data-vehicle-context="toyota-tacoma"', label);
-    requireIncludes(html, ">TACOMA</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">TACOMA</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/toyota-tacoma"',
@@ -1787,10 +1872,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "jeep-wrangler-jl") {
     requireIncludes(html, "2018-present", label);
     requireIncludes(html, 'data-vehicle-context="jeep-wrangler-jl"', label);
-    requireIncludes(html, ">WRANGLER JL</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">WRANGLER JL</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/jeep-wrangler-jl"',
@@ -1838,10 +1923,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "ford-bronco") {
     requireIncludes(html, "2021-present", label);
     requireIncludes(html, 'data-vehicle-context="ford-bronco"', label);
-    requireIncludes(html, ">BRONCO</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">BRONCO</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/ford-bronco"',
@@ -1889,10 +1974,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "jeep-gladiator") {
     requireIncludes(html, "2020-present", label);
     requireIncludes(html, 'data-vehicle-context="jeep-gladiator"', label);
-    requireIncludes(html, ">GLADIATOR JT</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">GLADIATOR JT</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/jeep-gladiator"',
@@ -1941,10 +2026,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "chevrolet-colorado") {
     requireIncludes(html, "2023-present", label);
     requireIncludes(html, 'data-vehicle-context="chevrolet-colorado"', label);
-    requireIncludes(html, ">COLORADO 3RD GEN</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">COLORADO 3RD GEN</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/chevrolet-colorado"',
@@ -1998,10 +2083,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "ford-ranger") {
     requireIncludes(html, "2024-present", label);
     requireIncludes(html, 'data-vehicle-context="ford-ranger"', label);
-    requireIncludes(html, ">RANGER US</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">RANGER US</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/ford-ranger"',
@@ -2060,10 +2145,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "ford-f150") {
     requireIncludes(html, "2021-present", label);
     requireIncludes(html, 'data-vehicle-context="ford-f150"', label);
-    requireIncludes(html, ">F-150</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">F-150</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/ford-f150"',
@@ -2125,10 +2210,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "toyota-tundra") {
     requireIncludes(html, "2022-present", label);
     requireIncludes(html, 'data-vehicle-context="toyota-tundra"', label);
-    requireIncludes(html, ">Tundra</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">Tundra</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/toyota-tundra"',
@@ -2194,10 +2279,10 @@ for (const route of vehicleRoutes) {
   if (vehicleSlug === "nissan-frontier") {
     requireIncludes(html, "2022-present", label);
     requireIncludes(html, 'data-vehicle-context="nissan-frontier"', label);
-    requireIncludes(html, ">Frontier</span>", label);
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
+      requireIncludes(html, ">Frontier</span>", label);
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/nissan-frontier"',
