@@ -8,12 +8,68 @@ import {
   measurementIdPattern,
   placeholderMeasurementIdPattern
 } from "../config/analytics.js";
+import {
+  getVehicleImage,
+  vehicleImages
+} from "../src/content/vehicle-images.js";
 
 const root = process.cwd();
 const dist = join(root, "dist");
 const errors = [];
 const articleDateTimePattern =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/;
+
+function socialImageForPage(page) {
+  if (page.structuredData === "vehicleHub") {
+    const vehicleSlug =
+      page.content?.vehicle?.slug ||
+      page.route.match(/^\/vehicles\/([^/]+)$/)?.[1];
+    const image = getVehicleImage(vehicleSlug)?.hero;
+    if (image) {
+      return {
+        path: image.src,
+        width: image.width,
+        height: image.height,
+        alt: image.alt
+      };
+    }
+  }
+
+  return site.socialImage;
+}
+
+function readWebpDimensions(buffer) {
+  if (
+    buffer.toString("ascii", 0, 4) !== "RIFF" ||
+    buffer.toString("ascii", 8, 12) !== "WEBP"
+  ) {
+    return null;
+  }
+
+  const chunk = buffer.toString("ascii", 12, 16);
+  const offset = 20;
+  if (chunk === "VP8X") {
+    return {
+      width: 1 + buffer.readUIntLE(offset + 4, 3),
+      height: 1 + buffer.readUIntLE(offset + 7, 3)
+    };
+  }
+  if (chunk === "VP8 ") {
+    return {
+      width: buffer.readUInt16LE(offset + 6) & 0x3fff,
+      height: buffer.readUInt16LE(offset + 8) & 0x3fff
+    };
+  }
+  if (chunk === "VP8L") {
+    const bits = buffer.readUInt32LE(offset + 1);
+    return {
+      width: (bits & 0x3fff) + 1,
+      height: ((bits >> 14) & 0x3fff) + 1
+    };
+  }
+
+  return null;
+}
 
 const buildContract = inspectBuildOutput({ dist, pages });
 errors.push(...buildContract.errors);
@@ -182,6 +238,12 @@ const requiredFiles = [
   join("vehicles", "jeep-wrangler-jl", "overland-build", "index.html")
 ];
 
+requiredFiles.push(
+  ...Object.values(vehicleImages).map((entry) =>
+    entry.directory.src.replace(/^\//, "")
+  )
+);
+
 for (const file of requiredFiles) {
   requireFile(file);
 }
@@ -296,6 +358,123 @@ if (existsSync(imagePath)) {
   }
 }
 
+const expectedVehicleImageSlugs = [
+  "toyota-4runner",
+  "toyota-tacoma",
+  "jeep-wrangler-jl",
+  "ford-bronco",
+  "jeep-gladiator",
+  "chevrolet-colorado",
+  "ford-ranger",
+  "ford-f150",
+  "toyota-tundra",
+  "nissan-frontier"
+];
+const configuredVehicleImageSlugs = Object.keys(vehicleImages);
+
+if (
+  configuredVehicleImageSlugs.length !== expectedVehicleImageSlugs.length ||
+  !expectedVehicleImageSlugs.every((slug) =>
+    configuredVehicleImageSlugs.includes(slug)
+  )
+) {
+  errors.push("Vehicle image registry must contain exactly the ten published vehicle hubs.");
+}
+
+const vehicleImageSourceDocPath = join(
+  root,
+  "docs",
+  "vehicle-image-sources.md"
+);
+const vehicleImageSourceDoc = existsSync(vehicleImageSourceDocPath)
+  ? readFileSync(vehicleImageSourceDocPath, "utf8")
+  : "";
+
+if (!vehicleImageSourceDoc) {
+  errors.push("Missing docs/vehicle-image-sources.md.");
+}
+
+for (const slug of expectedVehicleImageSlugs) {
+  const entry = getVehicleImage(slug);
+  if (!entry?.directory || !entry?.hero || !entry?.source) {
+    errors.push(`Vehicle image registry is incomplete for ${slug}.`);
+    continue;
+  }
+
+  for (const [placement, image] of [
+    ["directory", entry.directory],
+    ["hero", entry.hero]
+  ]) {
+    if (
+      !image.src.startsWith("/images/vehicles/") ||
+      !image.src.endsWith(".webp") ||
+      /^https?:/i.test(image.src)
+    ) {
+      errors.push(`${slug} ${placement} image must use a local WebP path.`);
+    }
+    if (!image.alt || image.alt.length < 20) {
+      errors.push(`${slug} ${placement} image is missing meaningful alt text.`);
+    }
+    if (
+      !Number.isInteger(image.width) ||
+      !Number.isInteger(image.height) ||
+      !image.objectPosition
+    ) {
+      errors.push(`${slug} ${placement} image metadata is incomplete.`);
+    }
+  }
+
+  const relativePath = entry.directory.src.replace(/^\//, "");
+  const publicPath = join(root, "public", relativePath);
+  const builtPath = join(dist, relativePath);
+  for (const [label, filePath] of [
+    ["source", publicPath],
+    ["build", builtPath]
+  ]) {
+    if (!existsSync(filePath)) {
+      errors.push(`${slug} ${label} image file is missing.`);
+      continue;
+    }
+
+    const file = readFileSync(filePath);
+    const dimensions = readWebpDimensions(file);
+    if (
+      !dimensions ||
+      dimensions.width !== entry.directory.width ||
+      dimensions.height !== entry.directory.height
+    ) {
+      errors.push(`${slug} ${label} WebP dimensions do not match the registry.`);
+    }
+    if (file.length > 300_000) {
+      errors.push(`${slug} ${label} WebP exceeds the 300 KB delivery budget.`);
+    }
+  }
+
+  for (const field of [
+    "publisher",
+    "pageUrl",
+    "licenseName",
+    "licenseUrl",
+    "author",
+    "usageBasis",
+    "retrievedOn"
+  ]) {
+    if (!entry.source[field]) {
+      errors.push(`${slug} source metadata is missing ${field}.`);
+    }
+  }
+
+  if (
+    !entry.source.pageUrl.startsWith("https://") ||
+    !entry.source.licenseUrl.startsWith("https://")
+  ) {
+    errors.push(`${slug} source and license URLs must use HTTPS.`);
+  }
+  if (!vehicleImageSourceDoc.includes(entry.directory.src)) {
+    errors.push(`${slug} is missing from the vehicle image source register.`);
+  }
+}
+
 const allTitles = new Map();
 const allDescriptions = new Map();
 
@@ -303,7 +482,8 @@ for (const page of pages) {
   const outputPath = pageOutputPath(page);
   const html = readBuildFile(outputPath);
   const canonical = `${site.domain}${page.route === "/" ? "/" : page.route}`;
-  const imageUrl = `${site.domain}${site.socialImage.path}`;
+  const socialImage = socialImageForPage(page);
+  const imageUrl = `${site.domain}${socialImage.path}`;
   const label = `dist/${outputPath.replaceAll("\\", "/")}`;
 
   requireIncludes(html, `<title>${page.title}</title>`, label);
@@ -311,6 +491,21 @@ for (const page of pages) {
   requireIncludes(html, `<link rel="canonical" href="${canonical}" />`, label);
   requireIncludes(html, `<meta property="og:url" content="${canonical}" />`, label);
   requireIncludes(html, `<meta property="og:image" content="${imageUrl}" />`, label);
+  requireIncludes(
+    html,
+    `<meta property="og:image:width" content="${socialImage.width}" />`,
+    label
+  );
+  requireIncludes(
+    html,
+    `<meta property="og:image:height" content="${socialImage.height}" />`,
+    label
+  );
+  requireIncludes(
+    html,
+    `<meta property="og:image:alt" content="${socialImage.alt}" />`,
+    label
+  );
   requireIncludes(html, '<meta name="twitter:card" content="summary_large_image" />', label);
   requireIncludes(html, `<meta name="twitter:image" content="${imageUrl}" />`, label);
   requireIncludes(html, '<a class="skip-link" href="#main-content">Skip to main content</a>', label);
@@ -790,6 +985,35 @@ requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-ranger"', "dist/
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="ford-f150"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="toyota-tundra"', "dist/vehicles/index.html");
 requireIncludes(vehiclesDirectoryHtml, 'data-vehicle-slug="nissan-frontier"', "dist/vehicles/index.html");
+requireIncludes(
+  vehiclesDirectoryHtml,
+  "<summary>Vehicle image credits</summary>",
+  "dist/vehicles/index.html"
+);
+
+for (const slug of expectedVehicleImageSlugs) {
+  const image = getVehicleImage(slug).directory;
+  requireIncludes(
+    vehiclesDirectoryHtml,
+    `<img src="${image.src}" alt="${image.alt}" width="${image.width}" height="${image.height}"`,
+    "dist/vehicles/index.html"
+  );
+}
+
+const directoryVehicleImageCount = (
+  vehiclesDirectoryHtml.match(/\bdata-vehicle-image\b/g) || []
+).length;
+if (directoryVehicleImageCount !== expectedVehicleImageSlugs.length) {
+  errors.push(
+    `Vehicle directory contains ${directoryVehicleImageCount} vehicle images, expected ${expectedVehicleImageSlugs.length}.`
+  );
+}
+if (/<img\b[^>]*src="https?:\/\//i.test(vehiclesDirectoryHtml)) {
+  errors.push("Vehicle directory must not load remote images.");
+}
+if (homeHtml.includes("/images/vehicles/")) {
+  errors.push("Shared vehicle images must not be added to the homepage in Phase 7A.");
+}
 
 const prohibitedTacomaGlobalRoutes = [
   "/vehicles/toyota-tacoma/first-upgrades",
@@ -1397,6 +1621,7 @@ for (const route of vehicleRoutes) {
   const label = `dist/${relativeOutput.replaceAll("\\", "/")}`;
   const page = pages.find((item) => item.route === route);
   const vehicleSlug = page.content.vehicle?.slug || "toyota-4runner";
+  const vehicleImage = getVehicleImage(vehicleSlug);
 
   requireIncludes(html, '<html lang="en">', label);
   requireIncludes(html, '<nav class="breadcrumb article-breadcrumb" aria-label="Breadcrumb">', label);
@@ -1429,6 +1654,25 @@ for (const route of vehicleRoutes) {
   requireIncludes(html, "RigAI Editorial Team", label);
   requireIncludes(html, `Last reviewed:</strong> ${page.content.dates.reviewedLabel}`, label);
   requireIncludes(html, 'class="related-guides"', label);
+  if (page.structuredData === "vehicleHub") {
+    requireIncludes(html, 'class="article-hero-media" data-vehicle-media', label);
+    requireIncludes(
+      html,
+      `<img src="${vehicleImage.hero.src}" alt="${vehicleImage.hero.alt}" width="${vehicleImage.hero.width}" height="${vehicleImage.hero.height}" loading="eager" decoding="async" fetchpriority="high"`,
+      label
+    );
+    requireIncludes(html, `Photo: <a href="${vehicleImage.source.pageUrl}"`, label);
+    requireIncludes(html, `href="${vehicleImage.source.licenseUrl}" rel="license`, label);
+
+    if ((html.match(/\bdata-vehicle-image\b/g) || []).length !== 1) {
+      errors.push(`${label} must contain exactly one local vehicle hero image.`);
+    }
+    if (/<img\b[^>]*src="https?:\/\//i.test(html)) {
+      errors.push(`${label} must not load a remote vehicle hero image.`);
+    }
+  } else if (html.includes("/images/vehicles/")) {
+    errors.push(`${label} guide article must keep the existing non-photo hero.`);
+  }
   if (page.structuredData === "article") {
     requireIncludes(
       html,
@@ -2063,6 +2307,22 @@ for (const route of vehicleRoutes) {
           Date.parse(primary.dateModified) < Date.parse(primary.datePublished)
         ) {
           errors.push(`${label} JSON-LD dateModified must not be earlier than datePublished.`);
+        }
+      } else if (page.structuredData === "vehicleHub") {
+        const vehicleSlug =
+          page.content?.vehicle?.slug ||
+          page.route.match(/^\/vehicles\/([^/]+)$/)?.[1];
+        const image = getVehicleImage(vehicleSlug)?.hero;
+        const expectedImageUrl = `${site.domain}${image?.src}`;
+
+        if (
+          primary.image?.["@type"] !== "ImageObject" ||
+          primary.image?.url !== expectedImageUrl ||
+          primary.image?.width !== image?.width ||
+          primary.image?.height !== image?.height ||
+          primary.image?.caption !== image?.alt
+        ) {
+          errors.push(`${label} JSON-LD must use the local vehicle hero ImageObject.`);
         }
       }
     }

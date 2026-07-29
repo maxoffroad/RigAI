@@ -8,7 +8,12 @@ function escapeHtml(value) {
 
 export function renderVehicleCard(
   vehicle,
-  { index = 0, analyticsLocation, showDescription = false } = {}
+  {
+    index = 0,
+    analyticsLocation,
+    showDescription = false,
+    showImage = false
+  } = {}
 ) {
   const scope = vehicle.scope
     ? `<span class="vehicle-card-scope">${escapeHtml(vehicle.scope)}</span>`
@@ -22,7 +27,14 @@ export function renderVehicleCard(
       : vehicle.state === "limited"
         ? " warning"
         : "";
-  const content = `<div class="vehicle-media" aria-hidden="true" data-variant="${index + 1}"></div>
+  const image = showImage ? vehicle.images?.directory : null;
+  const media = image
+    ? `<div class="vehicle-media vehicle-media--photo" data-vehicle-media>
+            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" width="${image.width}" height="${image.height}" loading="${index < 2 ? "eager" : "lazy"}" decoding="async"${index === 0 ? ' fetchpriority="high"' : ""} data-vehicle-image style="object-position: ${escapeHtml(image.objectPosition)}" />
+            <span class="vehicle-media-fallback" aria-hidden="true">${escapeHtml(vehicle.name)}</span>
+          </div>`
+    : `<div class="vehicle-media" aria-hidden="true" data-variant="${index + 1}"></div>`;
+  const content = `${media}
           <h3>${escapeHtml(vehicle.name)}</h3>
           ${scope}${description}<span class="status-label${statusClass}">${escapeHtml(vehicle.status)}</span>`;
 

@@ -1,4 +1,5 @@
 import { site } from "./site-config.js";
+import { getVehicleImage } from "../src/content/vehicle-images.js";
 
 function escapeHtml(value) {
   return String(value)
@@ -10,6 +11,26 @@ function escapeHtml(value) {
 
 function absoluteUrl(route) {
   return `${site.domain}${route === "/" ? "/" : route}`;
+}
+
+function socialImageForPage(page) {
+  if (page.structuredData === "vehicleHub") {
+    const vehicleSlug =
+      page.content?.vehicle?.slug ||
+      page.route.match(/^\/vehicles\/([^/]+)$/)?.[1];
+    const image = getVehicleImage(vehicleSlug)?.hero;
+
+    if (image) {
+      return {
+        path: image.src,
+        width: image.width,
+        height: image.height,
+        alt: image.alt
+      };
+    }
+  }
+
+  return site.socialImage;
 }
 
 function renderLinks(links) {
@@ -191,6 +212,8 @@ function renderStructuredData(page) {
     page.structuredData === "article"
   ) {
     const canonical = absoluteUrl(page.route);
+    const socialImage = socialImageForPage(page);
+    const imageUrl = `${site.domain}${socialImage.path}`;
     const graph = [
       {
         "@type": page.structuredData === "article" ? "Article" : "WebPage",
@@ -217,7 +240,15 @@ function renderStructuredData(page) {
         },
         datePublished: page.content.dates.published,
         dateModified: page.content.dates.modified,
-        image: `${site.domain}${site.socialImage.path}`,
+        image: page.structuredData === "vehicleHub"
+          ? {
+              "@type": "ImageObject",
+              url: imageUrl,
+              width: socialImage.width,
+              height: socialImage.height,
+              caption: socialImage.alt
+            }
+          : imageUrl,
         breadcrumb: {
           "@id": `${canonical}#breadcrumb`
         }
@@ -294,7 +325,8 @@ function renderStructuredData(page) {
 
 function renderHead(page, analytics) {
   const canonical = absoluteUrl(page.route);
-  const imageUrl = `${site.domain}${site.socialImage.path}`;
+  const socialImage = socialImageForPage(page);
+  const imageUrl = `${site.domain}${socialImage.path}`;
   const meta = [
     '<meta charset="UTF-8" />',
     '<meta name="viewport" content="width=device-width, initial-scale=1.0" />',
@@ -306,14 +338,14 @@ function renderHead(page, analytics) {
     `<meta property="og:type" content="${page.openGraphType || "website"}" />`,
     `<meta property="og:url" content="${canonical}" />`,
     `<meta property="og:image" content="${imageUrl}" />`,
-    `<meta property="og:image:width" content="${site.socialImage.width}" />`,
-    `<meta property="og:image:height" content="${site.socialImage.height}" />`,
-    `<meta property="og:image:alt" content="${escapeHtml(site.socialImage.alt)}" />`,
+    `<meta property="og:image:width" content="${socialImage.width}" />`,
+    `<meta property="og:image:height" content="${socialImage.height}" />`,
+    `<meta property="og:image:alt" content="${escapeHtml(socialImage.alt)}" />`,
     '<meta name="twitter:card" content="summary_large_image" />',
     `<meta name="twitter:title" content="${escapeHtml(page.socialTitle || page.title)}" />`,
     `<meta name="twitter:description" content="${escapeHtml(page.socialDescription || page.description)}" />`,
     `<meta name="twitter:image" content="${imageUrl}" />`,
-    `<meta name="twitter:image:alt" content="${escapeHtml(site.socialImage.alt)}" />`,
+    `<meta name="twitter:image:alt" content="${escapeHtml(socialImage.alt)}" />`,
     ...(page.structuredData === "article"
       ? [
           `<meta property="article:published_time" content="${page.content.dates.published}" />`,

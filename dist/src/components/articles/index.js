@@ -8,6 +8,7 @@ import { fordRangerPages } from "../../content/ford-ranger.js";
 import { fordF150Pages } from "../../content/ford-f150.js";
 import { toyotaTundraPages } from "../../content/toyota-tundra.js";
 import { nissanFrontierPages } from "../../content/nissan-frontier.js";
+import { getVehicleImage } from "../../content/vehicle-images.js";
 
 const vehiclePages = [
   ...toyota4RunnerPages,
@@ -39,6 +40,33 @@ function vehicleMeta(page) {
     heroLabel: "4RUNNER",
     planInputs: "generation, trim, drivetrain, KDSS status, driving profile, budget, installed equipment, and planned load"
   };
+}
+
+function renderPlanVisual(vehicle, extraClass = "") {
+  return `<div class="article-hero-visual${extraClass}" aria-hidden="true">
+            <span>${escapeHtml(vehicle.heroLabel)}</span>
+            <div class="system-lines"><i></i><i></i><i></i><i></i></div>
+            <strong>Vehicle plan</strong>
+          </div>`;
+}
+
+function renderVehicleHeroVisual(page, vehicle) {
+  if (page.kind !== "vehicleHub") {
+    return renderPlanVisual(vehicle);
+  }
+
+  const images = getVehicleImage(vehicle.slug);
+  const image = images?.hero;
+  const source = images?.source;
+  if (!image || !source) {
+    return renderPlanVisual(vehicle);
+  }
+
+  return `<figure class="article-hero-media" data-vehicle-media>
+            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high" data-vehicle-image style="object-position: ${escapeHtml(image.objectPosition)}" />
+            ${renderPlanVisual(vehicle, " article-hero-fallback")}
+            <figcaption>Photo: <a href="${source.pageUrl}" rel="noopener noreferrer">${escapeHtml(source.author)}</a> / <a href="${source.licenseUrl}" rel="license noopener noreferrer">${escapeHtml(source.licenseName)}</a></figcaption>
+          </figure>`;
 }
 
 function renderVehicleBackLink(page) {
@@ -336,11 +364,7 @@ export function renderVehicleArticle(page) {
               <span>${readingTime} min read</span>` : ""}
             </div>
           </div>
-          <div class="article-hero-visual" aria-hidden="true">
-            <span>${escapeHtml(vehicle.heroLabel)}</span>
-            <div class="system-lines"><i></i><i></i><i></i><i></i></div>
-            <strong>Vehicle plan</strong>
-          </div>
+          ${renderVehicleHeroVisual(page, vehicle)}
         </header>
         ${renderScope(page.scope)}
         ${renderTakeaways(page.takeaways)}

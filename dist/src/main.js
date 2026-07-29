@@ -1,5 +1,16 @@
 import "./analytics.js";
 
+document.addEventListener(
+  "error",
+  (event) => {
+    if (!(event.target instanceof HTMLImageElement)) return;
+    if (!event.target.matches("[data-vehicle-image]")) return;
+
+    event.target.closest("[data-vehicle-media]")?.classList.add("is-image-missing");
+  },
+  true
+);
+
 const header = document.querySelector("[data-header]");
 const navToggle = document.querySelector("[data-nav-toggle]");
 const nav = document.querySelector("[data-nav]");

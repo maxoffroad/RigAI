@@ -1,4 +1,5 @@
 import { vehicles } from "../../content/home.js";
+import { getVehicleImage } from "../../content/vehicle-images.js";
 import { renderVehicleCard } from "./card.js";
 
 function renderBreadcrumbs() {
@@ -11,7 +12,19 @@ function renderBreadcrumbs() {
 }
 
 export function renderVehiclesDirectory() {
-  const publishedVehicles = vehicles.filter((vehicle) => vehicle.href);
+  const publishedVehicles = vehicles
+    .filter((vehicle) => vehicle.href)
+    .map((vehicle) => ({
+      ...vehicle,
+      images: getVehicleImage(vehicle.slug)
+    }));
+  const imageCredits = publishedVehicles
+    .map((vehicle) => {
+      const source = vehicle.images?.source;
+      if (!source) return "";
+      return `<li><strong>${vehicle.name}:</strong> ${source.author}, <a href="${source.pageUrl}" rel="noopener noreferrer">${source.publisher}</a>, <a href="${source.licenseUrl}" rel="license noopener noreferrer">${source.licenseName}</a>.</li>`;
+    })
+    .join("");
 
   return `<main id="main-content" class="vehicles-directory-page">
       <div class="article-shell">
@@ -29,11 +42,16 @@ export function renderVehiclesDirectory() {
                 renderVehicleCard(vehicle, {
                   index,
                   analyticsLocation: "vehicles_directory_card",
-                  showDescription: true
+                  showDescription: true,
+                  showImage: true
                 })
               )
               .join("")}
           </div>
+          <details class="vehicle-image-credits">
+            <summary>Vehicle image credits</summary>
+            <ul>${imageCredits}</ul>
+          </details>
         </section>
       </div>
     </main>`;
