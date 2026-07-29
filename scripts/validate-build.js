@@ -378,6 +378,14 @@ for (const expectedHeader of [
   requireIncludes(headers, expectedHeader, "_headers");
 }
 
+const globalHeadersBlock =
+  headers.match(/^\/\*\r?\n((?:[ \t].*(?:\r?\n|$))*)/m)?.[1] || "";
+if (/Cache-Control:/i.test(globalHeadersBlock)) {
+  errors.push(
+    "_headers must not set Cache-Control in the global /* block because Cloudflare merges it with asset-specific cache rules."
+  );
+}
+
 const imagePath = join(dist, "assets", "rigai-og-image.png");
 if (existsSync(imagePath)) {
   const image = readFileSync(imagePath);
