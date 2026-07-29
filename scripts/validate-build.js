@@ -730,8 +730,8 @@ if (
   !/inset:\s*0/.test(vehicleOverlayRule) ||
   !/z-index:\s*1/.test(vehicleOverlayRule) ||
   !/pointer-events:\s*none/.test(vehicleOverlayRule) ||
-  !/linear-gradient\([\s\S]*?to right/.test(vehicleOverlayRule) ||
-  !/linear-gradient\([\s\S]*?to top/.test(vehicleOverlayRule) ||
+  !/linear-gradient\([\s\S]*?90deg/.test(vehicleOverlayRule) ||
+  !/linear-gradient\([\s\S]*?0deg/.test(vehicleOverlayRule) ||
   /opacity:|filter:|mix-blend-mode:|backdrop-filter:|z-index:\s*-/.test(
     vehicleOverlayRule
   )
@@ -750,18 +750,21 @@ if (
 }
 if (
   !/position:\s*absolute/.test(vehicleDirectoryContentRule) ||
-  !/background:\s*rgba/.test(vehicleDirectoryContentRule) ||
-  !/linear-gradient/.test(vehicleDirectoryContentRule) ||
-  !/rgba\(9,\s*11,\s*10,\s*0\.82\)/.test(vehicleDirectoryContentRule) ||
-  !/max-width:\s*calc\(100%\s*-\s*56px\)/.test(vehicleDirectoryContentRule)
+  !/max-width:\s*560px/.test(vehicleDirectoryContentRule) ||
+  !/padding:\s*0/.test(vehicleDirectoryContentRule) ||
+  !/border:\s*0/.test(vehicleDirectoryContentRule) ||
+  !/background:\s*transparent/.test(vehicleDirectoryContentRule) ||
+  /linear-gradient|rgba\(/.test(vehicleDirectoryContentRule)
 ) {
-  errors.push("Vehicle directory content must use a contained cross-browser scrim.");
+  errors.push("Vehicle directory content must not render as a nested panel.");
 }
 if (
-  !/color:\s*#f7f3e9/.test(vehicleTitleRule) ||
-  !/color:\s*rgba\(245,\s*242,\s*233,\s*0\.88\)/.test(
+  !/color:\s*#f7f4ec/.test(vehicleTitleRule) ||
+  !/color:\s*rgba\(247,\s*244,\s*236,\s*0\.84\)/.test(
     vehicleDescriptionRule
   ) ||
+  !/width:\s*auto/.test(vehicleStatusRule) ||
+  !/max-width:\s*max-content/.test(vehicleStatusRule) ||
   !/opacity:\s*1/.test(vehicleStatusRule) ||
   !/color:\s*#ff842b/.test(vehicleCtaRule)
 ) {

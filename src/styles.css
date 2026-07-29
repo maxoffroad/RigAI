@@ -2102,18 +2102,18 @@ h3 {
   background: rgba(7, 9, 8, 0.42);
   background:
     linear-gradient(
-      to right,
-      rgba(7, 9, 8, 0.94) 0%,
-      rgba(7, 9, 8, 0.82) 34%,
-      rgba(7, 9, 8, 0.46) 62%,
-      rgba(7, 9, 8, 0.12) 100%
+      90deg,
+      rgba(8, 10, 9, 0.86) 0%,
+      rgba(8, 10, 9, 0.66) 34%,
+      rgba(8, 10, 9, 0.22) 68%,
+      rgba(8, 10, 9, 0.04) 100%
     ),
     linear-gradient(
-      to top,
-      rgba(7, 9, 8, 0.98) 0%,
-      rgba(7, 9, 8, 0.82) 35%,
-      rgba(7, 9, 8, 0.34) 68%,
-      rgba(7, 9, 8, 0.08) 100%
+      0deg,
+      rgba(8, 10, 9, 0.96) 0%,
+      rgba(8, 10, 9, 0.7) 34%,
+      rgba(8, 10, 9, 0.18) 72%,
+      rgba(8, 10, 9, 0.02) 100%
     );
 }
 
@@ -2131,55 +2131,60 @@ h3 {
 }
 
 .vehicle-card--visual:hover .vehicle-media--photo img {
-  transform: scale(1.02);
+  transform: scale(1.025);
 }
 
 .vehicle-card__title {
-  color: #f7f3e9;
+  color: #f7f4ec;
   font-weight: 700;
-  text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.9),
-    0 2px 10px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .vehicle-card-scope {
   position: relative;
   min-width: 0;
-  margin-top: 6px;
-  color: #ff8a32;
+  margin-top: 8px;
+  color: #ff8433;
   font-family: var(--font-family-mono);
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1.4;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
 }
 
 .vehicle-card-description {
   position: relative;
   min-width: 0;
-  margin: 9px 0 12px;
-  color: rgba(245, 242, 233, 0.88);
+  max-width: 500px;
+  margin: 10px 0 14px;
+  color: rgba(247, 244, 236, 0.84);
   font-size: 0.82rem;
-  line-height: 1.5;
+  line-height: 1.45;
   overflow-wrap: anywhere;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85);
 }
 
 .vehicle-card__status {
   position: relative;
   z-index: 2;
-  width: 100%;
+  width: auto;
+  max-width: max-content;
+  min-height: 0;
+  padding: 6px 11px;
+  border-radius: 999px;
   border-color: rgba(255, 255, 255, 0.24);
   color: #f7f3e9;
   background: rgba(28, 31, 29, 0.94);
+  font-size: 0.82rem;
   font-weight: 700;
+  line-height: 1;
   opacity: 1;
 }
 
 .vehicle-card__status.success {
   border-color: rgba(101, 188, 113, 0.78);
-  color: #f3fff5;
-  background: rgba(29, 63, 37, 0.92);
+  color: #eaffed;
+  background: rgba(35, 77, 45, 0.88);
 }
 
 .vehicle-card__status.warning {
@@ -2189,15 +2194,28 @@ h3 {
 }
 
 .vehicle-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   color: #ff842b;
   font-weight: 700;
+  text-decoration: none;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
+.vehicle-card__cta::after {
+  content: "\2192";
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
 .vehicle-card__cta:hover {
-  color: #ffa05f;
+  color: #ffa164;
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.vehicle-card--visual:hover .vehicle-card__cta::after {
+  transform: translateX(3px);
 }
 
 .vehicle-card--visual:focus-visible {
@@ -2873,24 +2891,28 @@ h3 {
 
 .vehicle-directory-grid .vehicle-card__content {
   position: absolute;
-  left: 28px;
-  bottom: 28px;
+  right: clamp(22px, 3vw, 32px);
+  bottom: clamp(22px, 3vw, 30px);
+  left: clamp(22px, 3vw, 32px);
   box-sizing: border-box;
-  width: min(82%, 520px);
-  max-width: calc(100% - 56px);
-  padding: 16px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  background: rgba(9, 11, 10, 0.84);
-  background: linear-gradient(
-    135deg,
-    rgba(9, 11, 10, 0.92),
-    rgba(9, 11, 10, 0.82)
-  );
+  width: auto;
+  max-width: 560px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .vehicle-directory-grid .vehicle-card-description {
-  max-width: 420px;
+  max-width: 500px;
+}
+
+.vehicle-directory-grid .vehicle-media--photo img {
+  filter: brightness(0.86) saturate(0.94);
+}
+
+.vehicle-directory-grid .vehicle-card.is-published .vehicle-card__cta {
+  margin-top: 12px;
 }
 
 .vehicle-image-credits {
@@ -3797,12 +3819,12 @@ h3 {
   }
 
   .vehicle-directory-grid .vehicle-card__content {
-    right: 14px;
-    bottom: 14px;
-    left: 14px;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
     width: auto;
     max-width: none;
-    padding: 14px 16px;
+    padding: 0;
   }
 
   .vehicle-directory-grid .vehicle-card__description {
