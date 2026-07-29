@@ -667,10 +667,24 @@ const vehicleDirectoryCardRule =
   )?.[1] || "";
 const vehiclePhotoRule =
   stylesheet.match(/\.vehicle-media--photo img\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleMediaRule =
+  stylesheet.match(/\.vehicle-media\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleOverlayRule =
+  stylesheet.match(/\.vehicle-card__overlay\s*\{([\s\S]*?)\}/)?.[1] || "";
 const vehicleContentLayerRule =
+  stylesheet.match(/\.vehicle-card__content\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleDirectoryContentRule =
   stylesheet.match(
-    /\.vehicle-card--visual > :not\(\.vehicle-media\)\s*\{([\s\S]*?)\}/
+    /\.vehicle-directory-grid \.vehicle-card__content\s*\{([\s\S]*?)\}/
   )?.[1] || "";
+const vehicleTitleRule =
+  stylesheet.match(/\.vehicle-card__title\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleDescriptionRule =
+  stylesheet.match(/\.vehicle-card-description\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleStatusRule =
+  stylesheet.match(/\.vehicle-card__status\s*\{([\s\S]*?)\}/)?.[1] || "";
+const vehicleCtaRule =
+  stylesheet.match(/\.vehicle-card__cta\s*\{([\s\S]*?)\}/)?.[1] || "";
 const vehicleHubHeroRule =
   stylesheet.match(/\.vehicle-hub-hero\s*\{([\s\S]*?)\}/)?.[1] || "";
 const vehicleHubMediaRule =
@@ -678,8 +692,12 @@ const vehicleHubMediaRule =
 const mobileVehicleRules =
   stylesheet.match(/@media \(max-width:\s*620px\)\s*\{([\s\S]*)$/)?.[1] || "";
 
-if (!/min-width:\s*0/.test(vehicleCardRule)) {
-  errors.push("Shared vehicle cards must set min-width: 0 to prevent overflow.");
+if (
+  !/min-width:\s*0/.test(vehicleCardRule) ||
+  !/isolation:\s*isolate/.test(vehicleCardRule) ||
+  /z-index:\s*-|filter:|mix-blend-mode:|backdrop-filter:/.test(vehicleCardRule)
+) {
+  errors.push("Shared vehicle cards must use an isolated, non-filtered stacking context.");
 }
 if (!/min-height:\s*330px/.test(publishedVehicleCardRule)) {
   errors.push("Published homepage vehicle cards must share an aligned height.");
@@ -706,10 +724,48 @@ if (
   errors.push("Vehicle directory photos must remain an absolute cover layer.");
 }
 if (
+  !/z-index:\s*0/.test(vehicleMediaRule) ||
+  /z-index:\s*-/.test(vehicleMediaRule) ||
+  !/position:\s*absolute/.test(vehicleOverlayRule) ||
+  !/inset:\s*0/.test(vehicleOverlayRule) ||
+  !/z-index:\s*1/.test(vehicleOverlayRule) ||
+  !/pointer-events:\s*none/.test(vehicleOverlayRule) ||
+  !/linear-gradient\([\s\S]*?to right/.test(vehicleOverlayRule) ||
+  !/linear-gradient\([\s\S]*?to top/.test(vehicleOverlayRule) ||
+  /opacity:|filter:|mix-blend-mode:|backdrop-filter:|z-index:\s*-/.test(
+    vehicleOverlayRule
+  )
+) {
+  errors.push("Vehicle cards must use one cross-browser overlay layer at z-index 1.");
+}
+if (
   !/position:\s*relative/.test(vehicleContentLayerRule) ||
-  !/z-index:\s*2/.test(vehicleContentLayerRule)
+  !/z-index:\s*2/.test(vehicleContentLayerRule) ||
+  !/opacity:\s*1/.test(vehicleContentLayerRule) ||
+  !/filter:\s*none/.test(vehicleContentLayerRule) ||
+  !/mix-blend-mode:\s*normal/.test(vehicleContentLayerRule) ||
+  /z-index:\s*-|backdrop-filter:/.test(vehicleContentLayerRule)
 ) {
   errors.push("Vehicle card content must remain above the media and contrast layers.");
+}
+if (
+  !/position:\s*absolute/.test(vehicleDirectoryContentRule) ||
+  !/background:\s*rgba/.test(vehicleDirectoryContentRule) ||
+  !/linear-gradient/.test(vehicleDirectoryContentRule) ||
+  !/rgba\(9,\s*11,\s*10,\s*0\.82\)/.test(vehicleDirectoryContentRule) ||
+  !/max-width:\s*calc\(100%\s*-\s*56px\)/.test(vehicleDirectoryContentRule)
+) {
+  errors.push("Vehicle directory content must use a contained cross-browser scrim.");
+}
+if (
+  !/color:\s*#f7f3e9/.test(vehicleTitleRule) ||
+  !/color:\s*rgba\(245,\s*242,\s*233,\s*0\.88\)/.test(
+    vehicleDescriptionRule
+  ) ||
+  !/opacity:\s*1/.test(vehicleStatusRule) ||
+  !/color:\s*#ff842b/.test(vehicleCtaRule)
+) {
+  errors.push("Vehicle card text and controls must retain high-contrast colors.");
 }
 if (
   !/grid-template-columns:\s*minmax\(0,\s*1\.65fr\)\s*minmax\(280px,\s*0\.85fr\)/.test(
@@ -754,6 +810,26 @@ const vehicleDirectorySource = readFileSync(
   join(root, "src", "components", "vehicles", "index.js"),
   "utf8"
 );
+const vehicleCardSource = readFileSync(
+  join(root, "src", "components", "vehicles", "card.js"),
+  "utf8"
+);
+for (const requiredClass of [
+  "vehicle-media",
+  "vehicle-card__overlay",
+  "vehicle-card__content",
+  "vehicle-card__status",
+  "vehicle-card__cta"
+]) {
+  if (!vehicleCardSource.includes(requiredClass)) {
+    errors.push(`Shared vehicle card is missing ${requiredClass}.`);
+  }
+}
+if (
+  (vehicleCardSource.match(/class="vehicle-card__overlay"/g) || []).length !== 1
+) {
+  errors.push("Shared vehicle card must define exactly one readability overlay.");
+}
 for (const [label, source] of [
   ["homepage", homeComponentSource],
   ["vehicles directory", vehicleDirectorySource]
@@ -886,7 +962,11 @@ requireIncludes(homeHtml, 'data-vehicle-slug="toyota-tundra"', "dist/index.html"
 requireIncludes(homeHtml, 'href="/vehicles/nissan-frontier"', "dist/index.html");
 requireIncludes(homeHtml, 'data-vehicle-slug="nissan-frontier"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-location="homepage_vehicle_card"', "dist/index.html");
-requireIncludes(homeHtml, '<span class="vehicle-card-scope">2016–2023 · 3rd Gen</span>', "dist/index.html");
+requireIncludes(
+  homeHtml,
+  '<span class="vehicle-card-scope vehicle-card__meta">2016–2023 · 3rd Gen</span>',
+  "dist/index.html"
+);
 requireIncludes(
   homeHtml,
   "Pickup-specific planning for payload, bed load, tires, suspension, and trail use.",
