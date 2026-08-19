@@ -940,12 +940,12 @@ for (const expected of [
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
-  "Coming soon on Google Play"
+  "Get it on Google Play"
 ]) {
   requireIncludes(homeHtml, expected, "dist/index.html");
 }
 
-for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "play.google.com", "© 2024", "localhost", "example.com"]) {
+for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "© 2024", "localhost", "example.com"]) {
   if (homeHtml.includes(forbidden)) {
     errors.push(`Homepage contains forbidden or unavailable destination: ${forbidden}`);
   }
@@ -953,6 +953,9 @@ for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "play.go
 
 requireIncludes(homeHtml, '<a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>', "dist/index.html");
 requireIncludes(homeHtml, '<span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>', "dist/index.html");
+requireIncludes(homeHtml, 'href="https://play.google.com/store/apps/details?id=com.maxkz.rigai" target="_blank" rel="noopener noreferrer"', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="hero" data-store="google_play">Get it on Google Play</a>', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="final_cta" data-store="google_play">Get it on Google Play</a>', "dist/index.html");
 
 const homepageBuildCtas = [
   ...homeHtml.matchAll(

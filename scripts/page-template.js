@@ -1,6 +1,8 @@
 import { site } from "./site-config.js";
 import { getVehicleImage } from "../src/content/vehicle-images.js";
 
+const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.maxkz.rigai";
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -149,6 +151,10 @@ function renderConsentUi(analytics) {
 
 function renderFooter(page, analytics) {
   const currentYear = new Date().getFullYear();
+  const isLegalPage = ["privacy", "terms", "affiliate-disclosure"].includes(page.key);
+  const googlePlayLink = isLegalPage
+    ? ""
+    : `\n          <a href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" data-analytics-event="app_store_click" data-analytics-location="footer_product" data-store="google_play">Google Play</a>`;
   const analyticsSettings = analytics?.enabled
     ? '\n          <button class="analytics-settings" type="button" data-analytics-settings>Analytics settings</button>'
     : "";
@@ -166,7 +172,7 @@ function renderFooter(page, analytics) {
           <h2>Product</h2>
           <a href="/#how-it-works">How It Works</a>
           <a href="/vehicles">Vehicles</a>
-          <a href="/#guides">Guides</a>
+          <a href="/#guides">Guides</a>${googlePlayLink}
           <a href="/about">About</a>
         </nav>
         <nav class="footer-column" aria-label="Support links">

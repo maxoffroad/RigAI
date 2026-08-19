@@ -14,6 +14,8 @@ import {
 } from "../../content/home.js";
 import { renderVehicleCard } from "../vehicles/card.js";
 
+const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.maxkz.rigai";
+
 function listItems(items, className = "clean-list") {
   return `<ul class="${className}">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
 }
@@ -35,6 +37,7 @@ function hero() {
         <div class="hero-actions">
           <a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>
           <a class="button secondary" href="#example-build" data-analytics-event="example_build_click" data-analytics-location="hero">See an Example Build</a>
+          <a class="button google-play" href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Get RigAI on Google Play" data-analytics-event="app_store_click" data-analytics-location="hero" data-store="google_play">Get it on Google Play</a>
         </div>
       </div>
       <aside class="home-hero-visual" aria-label="Example RigAI plan preview">
@@ -320,7 +323,7 @@ function finalCta() {
         <p>Start with your vehicle, terrain and budget. RigAI will help you choose the right upgrades in the right order.</p>
         <div class="hero-actions">
           <span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>
-          <span class="button secondary is-static" aria-disabled="true">Coming soon on Google Play</span>
+          <a class="button google-play" href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Get RigAI on Google Play" data-analytics-event="app_store_click" data-analytics-location="final_cta" data-store="google_play">Get it on Google Play</a>
         </div>
       </div>
       <aside class="final-plan-card">
