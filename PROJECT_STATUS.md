@@ -247,16 +247,14 @@ Page view behavior:
 
 Outbound and CTA tracking:
 - Delegated click tracking exists in `src/analytics.js`.
-- Current Google Play CTA event name is `app_store_click`.
-- Current event properties include `store`, `cta_location`, and `page_path`.
+- Current Google Play CTA event name is `google_play_click`.
+- Current event properties include `placement` and `language`.
 - Current Google Play CTA locations include `hero`, `final_cta`, and
   `footer_product`.
 
-Analytics gap:
-- The preferred future event name `google_play_click` is not currently used.
-- If implemented, use low-risk properties such as:
-  - `placement = hero / footer / final_cta`
-  - `language = en / ru` where relevant
+Google Play CTA properties:
+- `placement = hero / final_cta / footer_product`
+- `language = en / ru` from existing `lang` state, not IP or browser geography
 
 UTM support:
 - GA4 can attribute inbound traffic using standard UTM parameters.
@@ -355,8 +353,7 @@ Current measurement capability:
 - Site visitors: AVAILABLE after analytics consent; consent-gated.
 - Source/medium: AVAILABLE through GA4 for consented traffic and standard UTMs.
 - Page views: AVAILABLE after analytics consent.
-- Google Play clicks: PARTIAL, tracked as `app_store_click`, not
-  `google_play_click`.
+- Google Play clicks: AVAILABLE as `google_play_click` after analytics consent.
 - CTA placement: AVAILABLE through current `data-analytics-location` values.
 - Conversion to Play Store: PARTIAL; outbound click can be measured, install
   conversion requires Google Play / app analytics correlation outside this site.
@@ -443,8 +440,6 @@ P0:
 - None currently verified.
 
 P1:
-- Google Play click tracking does not use the preferred `google_play_click`
-  event name. Current implementation uses `app_store_click`.
 - Local builds disable GA4 unless `GA4_MEASUREMENT_ID` is present; this is
   intentional but important to remember during verification.
 
@@ -463,8 +458,6 @@ P3:
 - Consider Content Security Policy hardening later.
 - Consider font optimization or self-hosting if performance work becomes a
   priority.
-- Consider standardizing future CTA event properties as `placement` and
-  `language`.
 
 ## Starting a new Codex session
 

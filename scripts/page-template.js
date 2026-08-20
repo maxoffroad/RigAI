@@ -154,7 +154,7 @@ function renderFooter(page, analytics) {
   const isLegalPage = ["privacy", "terms", "affiliate-disclosure"].includes(page.key);
   const googlePlayLink = isLegalPage
     ? ""
-    : `\n          <a href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" data-analytics-event="app_store_click" data-analytics-location="footer_product" data-store="google_play">Google Play</a>`;
+    : `\n          <a href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" data-analytics-event="google_play_click" data-analytics-location="footer_product">Google Play</a>`;
   const analyticsSettings = analytics?.enabled
     ? '\n          <button class="analytics-settings" type="button" data-analytics-settings>Analytics settings</button>'
     : "";

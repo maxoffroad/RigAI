@@ -27,6 +27,9 @@ const windowLike = {
   }
 };
 const documentLike = {
+  documentElement: {
+    lang: "en"
+  },
   location: {
     pathname: "/vehicles/toyota-4runner/suspension",
     search: "?utm_source=test",
@@ -44,11 +47,29 @@ const element = {
     analyticsLocation: "article_cta"
   }
 };
+const googlePlayHeroElement = {
+  dataset: {
+    analyticsLocation: "hero"
+  },
+  closest: () => null
+};
 
 const params = eventParameters(element, "build_setup_click", documentLike);
 
 if (trackEvent("build_setup_click", params, windowLike) || calls.length !== 0) {
   throw new Error("Analytics events must be blocked while consent is denied.");
+}
+
+const deniedGooglePlayParams = eventParameters(
+  googlePlayHeroElement,
+  "google_play_click",
+  documentLike
+);
+if (
+  trackEvent("google_play_click", deniedGooglePlayParams, windowLike) ||
+  calls.length !== 0
+) {
+  throw new Error("Google Play clicks must be blocked while consent is denied.");
 }
 
 if (sendPageView(documentLike, windowLike)) {
@@ -78,6 +99,81 @@ if (pageViewCalls().length !== 1) {
 
 if (!trackEvent("build_setup_click", params, windowLike)) {
   throw new Error("Expected a consented CTA event.");
+}
+
+for (const placement of ["hero", "final_cta", "footer_product"]) {
+  const playElement = {
+    dataset: {
+      analyticsLocation: placement
+    },
+    closest: () => null
+  };
+  const playParams = eventParameters(
+    playElement,
+    "google_play_click",
+    {
+      documentElement: { lang: "en" },
+      location: { pathname: "/" },
+      body: { dataset: { pageType: "home" } }
+    }
+  );
+  if (
+    JSON.stringify(playParams) !==
+    JSON.stringify({
+      placement,
+      language: "en"
+    })
+  ) {
+    throw new Error(`${placement} Google Play analytics payload is invalid.`);
+  }
+
+  const playCallsBefore = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "google_play_click"
+  ).length;
+  if (!trackEvent("google_play_click", playParams, windowLike)) {
+    throw new Error(`${placement} Google Play event was not sent.`);
+  }
+  const playCalls = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "google_play_click"
+  );
+  if (
+    playCalls.length !== playCallsBefore + 1 ||
+    JSON.stringify(playCalls.at(-1)[2]) !== JSON.stringify(playParams)
+  ) {
+    throw new Error(`${placement} Google Play click must send exactly one event.`);
+  }
+}
+
+const russianGooglePlayParams = eventParameters(
+  {
+    dataset: {
+      analyticsLocation: "footer_product"
+    },
+    closest: (selector) =>
+      selector === "[lang]"
+        ? {
+            getAttribute: (name) => (name === "lang" ? "ru" : null)
+          }
+        : null
+  },
+  "google_play_click",
+  {
+    documentElement: { lang: "en" },
+    location: { pathname: "/privacy" },
+    body: { dataset: {} }
+  }
+);
+
+if (
+  JSON.stringify(russianGooglePlayParams) !==
+  JSON.stringify({
+    placement: "footer_product",
+    language: "ru"
+  })
+) {
+  throw new Error("Russian Google Play analytics payload is invalid.");
 }
 
 const buildSetupCall = calls.find(
@@ -820,6 +916,44 @@ if (
   throw new Error("Delegated CTA event parameters are invalid.");
 }
 
+const delegatedPlayElement = {
+  dataset: {
+    analyticsEvent: "google_play_click",
+    analyticsLocation: "footer_product"
+  },
+  closest: () => null,
+  matches: () => false
+};
+delegatedDocument.documentElement = { lang: "en" };
+delegatedClickListener?.({
+  target: {
+    closest: (selector) =>
+      selector === "[data-analytics-event]" ? delegatedPlayElement : null
+  },
+  preventDefault: () => {
+    throw new Error("Google Play analytics must not prevent navigation.");
+  }
+});
+
+const delegatedPlayCalls = delegatedCalls.filter(
+  ([command, eventName]) =>
+    command === "event" && eventName === "google_play_click"
+);
+
+if (delegatedPlayCalls.length !== 1) {
+  throw new Error("One delegated Google Play click must produce exactly one google_play_click.");
+}
+
+if (
+  JSON.stringify(delegatedPlayCalls[0][2]) !==
+  JSON.stringify({
+    placement: "footer_product",
+    language: "en"
+  })
+) {
+  throw new Error("Delegated Google Play event parameters are invalid.");
+}
+
 console.log(
-  "Analytics test passed: consent, scroll safety, and one delegated CTA event verified."
+  "Analytics test passed: consent, scroll safety, and delegated CTA events verified."
 );

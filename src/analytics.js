@@ -12,7 +12,7 @@ const EVENT_PARAMETERS = Object.freeze({
     "page_path"
   ],
   guide_click: ["guide_slug", "vehicle_slug", "link_location", "page_path"],
-  app_store_click: ["store", "cta_location", "page_path"],
+  google_play_click: ["placement", "language"],
   affiliate_click: [
     "merchant",
     "product_category",
@@ -29,7 +29,7 @@ const DATASET_KEYS = Object.freeze({
   vehicle_slug: "vehicleSlug",
   guide_slug: "guideSlug",
   link_location: "analyticsLocation",
-  store: "store",
+  placement: "analyticsLocation",
   merchant: "merchant",
   product_category: "productCategory",
   faq_id: "faqId",
@@ -62,6 +62,21 @@ function destinationDomain(element) {
   }
 }
 
+function normalizedLanguage(value) {
+  const language = cleanValue(value)?.toLowerCase();
+  return language?.startsWith("ru") ? "ru" : "en";
+}
+
+function elementLanguage(element, documentLike) {
+  const explicitLanguage = element.dataset.analyticsLanguage;
+  if (explicitLanguage) return normalizedLanguage(explicitLanguage);
+
+  const closestLanguage = element.closest?.("[lang]")?.getAttribute?.("lang");
+  if (closestLanguage) return normalizedLanguage(closestLanguage);
+
+  return normalizedLanguage(documentLike.documentElement?.lang || "en");
+}
+
 export function eventParameters(element, eventName, documentLike = document) {
   const allowedParameters = EVENT_PARAMETERS[eventName];
   if (!allowedParameters) return {};
@@ -76,6 +91,8 @@ export function eventParameters(element, eventName, documentLike = document) {
       value = normalizedPagePath(documentLike.location || globalThis.location);
     } else if (parameter === "destination_domain") {
       value = destinationDomain(element);
+    } else if (parameter === "language") {
+      value = elementLanguage(element, documentLike);
     } else {
       const datasetKey = DATASET_KEYS[parameter];
       value = element.dataset[datasetKey] ?? bodyData[datasetKey];

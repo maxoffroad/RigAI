@@ -954,8 +954,8 @@ for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "© 2024
 requireIncludes(homeHtml, '<a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>', "dist/index.html");
 requireIncludes(homeHtml, '<span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>', "dist/index.html");
 requireIncludes(homeHtml, 'href="https://play.google.com/store/apps/details?id=com.maxkz.rigai" target="_blank" rel="noopener noreferrer"', "dist/index.html");
-requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="hero" data-store="google_play">Get it on Google Play</a>', "dist/index.html");
-requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="final_cta" data-store="google_play">Get it on Google Play</a>', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="hero">Get it on Google Play</a>', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="final_cta">Get it on Google Play</a>', "dist/index.html");
 
 const homepageBuildCtas = [
   ...homeHtml.matchAll(
@@ -3751,6 +3751,26 @@ if (vehicleGuideParameterBlock.includes('"link_location"')) {
   errors.push("vehicle_guide_click still contains stale link_location.");
 }
 
+const googlePlayParameterBlock =
+  analyticsSource.match(/google_play_click:\s*\[([\s\S]*?)\]/)?.[1] || "";
+for (const requiredParameter of [
+  '"placement"',
+  '"language"'
+]) {
+  if (!googlePlayParameterBlock.includes(requiredParameter)) {
+    errors.push(`google_play_click is missing ${requiredParameter}.`);
+  }
+}
+for (const staleParameter of [
+  '"store"',
+  '"cta_location"',
+  '"page_path"'
+]) {
+  if (googlePlayParameterBlock.includes(staleParameter)) {
+    errors.push(`google_play_click contains stale parameter ${staleParameter}.`);
+  }
+}
+
 for (const staleParameter of [
   '"page_path"',
   '"vehicle_context"',
@@ -3765,7 +3785,7 @@ const allowedAnalyticsEvents = new Set([
   "example_build_click",
   "vehicle_guide_click",
   "guide_click",
-  "app_store_click",
+  "google_play_click",
   "affiliate_click",
   "faq_open",
   "outbound_link_click"
@@ -3779,7 +3799,7 @@ const requiredEventAttributes = {
     "data-guide-slug",
     "data-vehicle-slug"
   ],
-  app_store_click: ["data-analytics-location", "data-store"],
+  google_play_click: ["data-analytics-location"],
   affiliate_click: [
     "data-analytics-location",
     "data-merchant",
@@ -4000,8 +4020,8 @@ for (const page of pages) {
       errors.push(`${label} contains UTM parameters on an internal link: ${href}.`);
     }
 
-    if (/play\.google\.com/i.test(href) && !markup.includes('data-analytics-event="app_store_click"')) {
-      errors.push(`${label} Google Play link is missing app_store_click analytics.`);
+    if (/play\.google\.com/i.test(href) && !markup.includes('data-analytics-event="google_play_click"')) {
+      errors.push(`${label} Google Play link is missing google_play_click analytics.`);
     }
 
     if (/amazon\./i.test(href) && !markup.includes('data-analytics-event="affiliate_click"')) {
