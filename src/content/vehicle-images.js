@@ -251,6 +251,45 @@ export const vehicleImages = {
   }
 };
 
+export const vehicleGuideHeroImageRequirements = {
+  "/vehicles/toyota-tacoma/lift-kit": {
+    topic:
+      "Toyota Tacoma with a realistic mild or moderate suspension lift and all-terrain tires, preferably in a three-quarter or side view.",
+    alt: "Lifted Toyota Tacoma with all-terrain tires",
+    preferredFileName: "toyota-tacoma-lift-kit.webp"
+  },
+  "/vehicles/toyota-4runner/kdss": {
+    topic:
+      "Toyota 4Runner demonstrating suspension articulation on uneven terrain.",
+    alt: "Toyota 4Runner suspension articulation on uneven terrain",
+    preferredFileName: "toyota-4runner-kdss.webp"
+  },
+  "/vehicles/toyota-4runner/tire-size": {
+    topic:
+      "Toyota 4Runner with a clear view of tire and wheel clearance around the fender.",
+    alt: "Toyota 4Runner tire and wheel clearance",
+    preferredFileName: "toyota-4runner-tire-size.webp"
+  },
+  "/vehicles/toyota-4runner/suspension": {
+    topic:
+      "Toyota 4Runner on uneven terrain with suspension movement clearly visible.",
+    alt: "Toyota 4Runner suspension movement on uneven terrain",
+    preferredFileName: "toyota-4runner-suspension.webp"
+  },
+  "/vehicles/toyota-4runner/overland-build": {
+    topic:
+      "Toyota 4Runner configured for realistic overland travel with cargo or roof storage.",
+    alt: "Toyota 4Runner overland build with cargo storage",
+    preferredFileName: "toyota-4runner-overland-build.webp"
+  }
+};
+
+export const vehicleGuideHeroImages = {};
+
 export function getVehicleImage(slug) {
   return vehicleImages[slug] || null;
+}
+
+export function getVehicleGuideHeroImage(route) {
+  return vehicleGuideHeroImages[route] || null;
 }

@@ -1,7 +1,6 @@
 import "./analytics.js?v=phase-7b";
 
 function addVehiclePlanFallback(media) {
-  if (!media.classList.contains("vehicle-hub-media")) return;
   if (media.querySelector(".article-hero-fallback")) return;
 
   const fallback = document.createElement("div");

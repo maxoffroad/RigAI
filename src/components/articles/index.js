@@ -8,7 +8,10 @@ import { fordRangerPages } from "../../content/ford-ranger.js";
 import { fordF150Pages } from "../../content/ford-f150.js";
 import { toyotaTundraPages } from "../../content/toyota-tundra.js";
 import { nissanFrontierPages } from "../../content/nissan-frontier.js";
-import { getVehicleImage } from "../../content/vehicle-images.js";
+import {
+  getVehicleGuideHeroImage,
+  getVehicleImage
+} from "../../content/vehicle-images.js";
 
 const vehiclePages = [
   ...toyota4RunnerPages,
@@ -52,20 +55,26 @@ function renderPlanVisual(vehicle, extraClass = "") {
 }
 
 function renderVehicleHeroVisual(page, vehicle) {
-  if (page.kind !== "vehicleHub") {
+  const guideHeroImage = page.heroImage || getVehicleGuideHeroImage(page.route);
+  if (page.kind !== "vehicleHub" && !guideHeroImage) {
     return renderPlanVisual(vehicle);
   }
 
-  const images = getVehicleImage(vehicle.slug);
-  const image = images?.hero;
-  const source = images?.source;
-  if (!image || !source) {
+  const images = page.kind === "vehicleHub" ? getVehicleImage(vehicle.slug) : null;
+  const image = page.kind === "vehicleHub" ? images?.hero : guideHeroImage;
+  const source = page.kind === "vehicleHub" ? images?.source : guideHeroImage?.source;
+  if (!image?.src || !image?.alt || !image?.width || !image?.height) {
     return renderPlanVisual(vehicle);
   }
 
-  return `<figure class="article-hero-media vehicle-hub-media" data-vehicle-media data-fallback-label="${escapeHtml(vehicle.heroLabel)}">
+  const mediaClass = page.kind === "vehicleHub" ? "vehicle-hub-media" : "vehicle-guide-media";
+  const sourceCaption = source
+    ? `<figcaption>Photo: <a href="${source.pageUrl}" rel="noopener noreferrer">${escapeHtml(source.author)}</a> / <a href="${source.licenseUrl}" rel="license noopener noreferrer">${escapeHtml(source.licenseName)}</a></figcaption>`
+    : "";
+
+  return `<figure class="article-hero-media ${mediaClass}" data-vehicle-media data-fallback-label="${escapeHtml(vehicle.heroLabel)}">
             <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high" data-vehicle-image style="object-position: ${escapeHtml(image.objectPosition)}" />
-            <figcaption>Photo: <a href="${source.pageUrl}" rel="noopener noreferrer">${escapeHtml(source.author)}</a> / <a href="${source.licenseUrl}" rel="license noopener noreferrer">${escapeHtml(source.licenseName)}</a></figcaption>
+            ${sourceCaption}
           </figure>`;
 }
 

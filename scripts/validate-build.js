@@ -9,7 +9,10 @@ import {
   placeholderMeasurementIdPattern
 } from "../config/analytics.js";
 import {
+  getVehicleGuideHeroImage,
   getVehicleImage,
+  vehicleGuideHeroImageRequirements,
+  vehicleGuideHeroImages,
   vehicleImages
 } from "../src/content/vehicle-images.js";
 
@@ -44,6 +47,29 @@ function socialImageForPage(page) {
   }
 
   return site.socialImage;
+}
+
+function validateLocalHeroImage(image, label) {
+  if (
+    !image.src.startsWith("/images/vehicles/") ||
+    !image.src.endsWith(".webp") ||
+    /^https?:/i.test(image.src)
+  ) {
+    errors.push(`${label} must use a local WebP path.`);
+  }
+  if (!image.alt || image.alt.length < 20) {
+    errors.push(`${label} is missing meaningful alt text.`);
+  }
+  if (
+    !Number.isInteger(image.width) ||
+    !Number.isInteger(image.height) ||
+    !image.objectPosition
+  ) {
+    errors.push(`${label} metadata is incomplete.`);
+  }
+  if (!/^\d{1,3}% \d{1,3}%$/.test(image.objectPosition || "")) {
+    errors.push(`${label} needs an explicit two-axis objectPosition.`);
+  }
 }
 
 function readWebpDimensions(buffer) {
@@ -458,26 +484,7 @@ for (const slug of expectedVehicleImageSlugs) {
     ["directory", entry.directory],
     ["hero", entry.hero]
   ]) {
-    if (
-      !image.src.startsWith("/images/vehicles/") ||
-      !image.src.endsWith(".webp") ||
-      /^https?:/i.test(image.src)
-    ) {
-      errors.push(`${slug} ${placement} image must use a local WebP path.`);
-    }
-    if (!image.alt || image.alt.length < 20) {
-      errors.push(`${slug} ${placement} image is missing meaningful alt text.`);
-    }
-    if (
-      !Number.isInteger(image.width) ||
-      !Number.isInteger(image.height) ||
-      !image.objectPosition
-    ) {
-      errors.push(`${slug} ${placement} image metadata is incomplete.`);
-    }
-    if (!/^\d{1,3}% \d{1,3}%$/.test(image.objectPosition)) {
-      errors.push(`${slug} ${placement} image needs an explicit two-axis objectPosition.`);
-    }
+    validateLocalHeroImage(image, `${slug} ${placement} image`);
   }
 
   const relativePath = entry.directory.src.replace(/^\//, "");
@@ -529,6 +536,26 @@ for (const slug of expectedVehicleImageSlugs) {
   if (!vehicleImageSourceDoc.includes(entry.directory.src)) {
     errors.push(`${slug} is missing from the vehicle image source register.`);
   }
+}
+
+const expectedGuideHeroRoutes = [
+  "/vehicles/toyota-tacoma/lift-kit",
+  "/vehicles/toyota-4runner/kdss",
+  "/vehicles/toyota-4runner/tire-size",
+  "/vehicles/toyota-4runner/suspension",
+  "/vehicles/toyota-4runner/overland-build"
+];
+for (const route of expectedGuideHeroRoutes) {
+  const requirement = vehicleGuideHeroImageRequirements[route];
+  if (!requirement?.topic || !requirement?.alt || !requirement?.preferredFileName) {
+    errors.push(`${route} is missing a contextual guide hero image requirement.`);
+  }
+}
+for (const [route, image] of Object.entries(vehicleGuideHeroImages)) {
+  if (!vehicleGuideHeroImageRequirements[route]) {
+    errors.push(`${route} has a guide hero image but no documented image requirement.`);
+  }
+  validateLocalHeroImage(image, `${route} guide hero image`);
 }
 
 for (const rejectedSource of [
@@ -1913,8 +1940,28 @@ for (const route of vehicleRoutes) {
     if (/<img\b[^>]*src="https?:\/\//i.test(html)) {
       errors.push(`${label} must not load a remote vehicle hero image.`);
     }
-  } else if (html.includes("/images/vehicles/")) {
-    errors.push(`${label} guide article must keep the existing non-photo hero.`);
+  } else {
+    const guideHeroImage = getVehicleGuideHeroImage(route);
+    if (guideHeroImage) {
+      requireIncludes(
+        html,
+        'class="article-hero-media vehicle-guide-media" data-vehicle-media',
+        label
+      );
+      requireIncludes(
+        html,
+        `<img src="${guideHeroImage.src}" alt="${guideHeroImage.alt}" width="${guideHeroImage.width}" height="${guideHeroImage.height}" loading="eager" decoding="async" fetchpriority="high"`,
+        label
+      );
+      if ((html.match(/\bdata-vehicle-image\b/g) || []).length !== 1) {
+        errors.push(`${label} must contain exactly one local guide hero image.`);
+      }
+      if (/<img\b[^>]*src="https?:\/\//i.test(html)) {
+        errors.push(`${label} must not load a remote guide hero image.`);
+      }
+    } else if (html.includes("/images/vehicles/")) {
+      errors.push(`${label} guide article must keep the existing non-photo hero until a guide image is configured.`);
+    }
   }
   if (page.structuredData === "article") {
     requireIncludes(
