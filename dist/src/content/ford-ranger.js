@@ -1,7 +1,7 @@
 const dates = {
   published: "2026-07-28T22:00:00+05:00",
-  modified: "2026-07-28T22:00:00+05:00",
-  reviewedLabel: "July 28, 2026"
+  modified: "2026-08-31T12:00:00+05:00",
+  reviewedLabel: "August 31, 2026"
 };
 
 const vehicle = {
@@ -10,7 +10,7 @@ const vehicle = {
   shortName: "Ranger",
   guidesLabel: "Ford Ranger",
   heroLabel: "RANGER US",
-  ctaLabel: "Build My Setup",
+  ctaLabel: "Build My Ranger Setup",
   planInputs:
     "model year, XL, XLT, Lariat or Raptor trim, drivetrain, engine, FX4 equipment, factory suspension, axle and differential equipment, wheels and tires, towing package, payload label, current modifications, permanent bed load, trailer tongue weight, driving profile, and planned trip load"
 };
@@ -106,16 +106,16 @@ export const fordRangerPages = [
     key: "ford-ranger",
     kind: "vehicleHub",
     route: "/vehicles/ford-ranger",
-    title: "Ford Ranger Off-Road Upgrade Guide | RigAI",
+    title: "Ford Ranger Suspension & Off-Road Setup Guide | RigAI",
     description:
-      "Plan 2024-present US Ford Ranger upgrades around trim, FX4 or Raptor equipment, suspension, tires, lift, payload, towing, and overland use.",
-    socialTitle: "Ford Ranger Off-Road Upgrade Guide | RigAI",
+      "Plan a 2024-present US Ford Ranger off-road setup around suspension, lift, tires, FX4 or Raptor equipment, payload, towing, and overland use.",
+    socialTitle: "Ford Ranger Suspension & Off-Road Setup Guide | RigAI",
     socialDescription:
-      "A current US Ranger planning hub for daily use, trails, work, payload, towing, suspension, tires, lift, and overland equipment.",
+      "A current US Ranger planning hub for suspension, lift, tires, payload, towing, daily driving, trails, work, and overland equipment.",
     eyebrow: "2024-present US Ford Ranger planning guide",
-    h1: "Ford Ranger Off-Road Upgrade Guide",
+    h1: "Ford Ranger Suspension & Off-Road Setup Guide",
     dek:
-      "Plan the whole pickup. Trim, drivetrain, engine, FX4 equipment, factory suspension, tires, bed load, payload, towing, daily driving, and trail goals all change the right upgrade order.",
+      "Compare suspension, lift, tires, payload, towing, and trail priorities for the current US Ranger based on trim, FX4 or Raptor equipment, bed load, and daily use.",
     vehicle,
     scope,
     dates,

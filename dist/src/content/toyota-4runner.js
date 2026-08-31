@@ -2,8 +2,8 @@ import { phase4BPages } from "./toyota-4runner-phase-4b.js";
 
 export const phase4ADates = {
   published: "2026-07-23T12:00:00+05:00",
-  modified: "2026-07-23T12:00:00+05:00",
-  reviewedLabel: "July 23, 2026"
+  modified: "2026-08-31T12:00:00+05:00",
+  reviewedLabel: "August 31, 2026"
 };
 
 const commonScope = {
@@ -61,16 +61,16 @@ export const toyota4RunnerPages = [
     key: "toyota-4runner",
     kind: "vehicleHub",
     route: "/vehicles/toyota-4runner",
-    title: "Toyota 4Runner Off-Road Upgrade Guide | RigAI",
+    title: "Toyota 4Runner Off-Road Setup & Suspension Guide | RigAI",
     description:
-      "Plan Toyota 4Runner off-road upgrades in a practical order based on use, condition, load, recovery needs, protection, and suspension dependencies.",
-    socialTitle: "Toyota 4Runner Off-Road Upgrade Guide | RigAI",
+      "Plan a Toyota 4Runner off-road setup around suspension, lift, tires, recovery, protection, daily driving, trail use, payload, and budget.",
+    socialTitle: "Toyota 4Runner Off-Road Setup & Suspension Guide | RigAI",
     socialDescription:
-      "A practical Toyota 4Runner upgrade-planning guide for daily driving, trails, overland travel, and more demanding use.",
+      "A practical Toyota 4Runner planning guide for suspension, lift, tires, recovery, daily driving, trails, and overland travel.",
     eyebrow: "Toyota 4Runner planning guide",
-    h1: "Toyota 4Runner Off-Road Upgrade Guide",
+    h1: "Toyota 4Runner Off-Road Setup & Suspension Guide",
     dek:
-      "Build around how you use your 4Runner, not around a random parts list. This guide explains the decisions and dependencies that shape a useful upgrade plan.",
+      "Compare suspension, lift, tires, recovery, and protection decisions for your 4Runner based on daily driving, trail use, load, KDSS status, and budget.",
     scope: commonScope,
     dates: phase4ADates,
     breadcrumbs: [
@@ -300,16 +300,16 @@ export const toyota4RunnerPages = [
     key: "toyota-4runner-suspension",
     kind: "article",
     route: "/vehicles/toyota-4runner/suspension",
-    title: "Toyota 4Runner Suspension Guide: How to Choose a Setup | RigAI",
+    title: "Best Suspension Setup for Toyota 4Runner | RigAI",
     description:
-      "Learn how to choose Toyota 4Runner suspension by use case, condition, added load, damping needs, geometry, KDSS status, and fitment checks.",
-    socialTitle: "Toyota 4Runner Suspension Guide | RigAI",
+      "Find the right Toyota 4Runner suspension setup for daily driving, trails, overlanding, lift height, added load, KDSS status, and budget.",
+    socialTitle: "Best Suspension Setup for Toyota 4Runner | RigAI",
     socialDescription:
       "A practical 5th Gen 4Runner suspension guide covering stock vs upgraded setups, load, damping, geometry, KDSS, and purchase checks.",
     eyebrow: "5th Gen suspension planning",
-    h1: "Toyota 4Runner Suspension Guide",
+    h1: "Toyota 4Runner Suspension Setup Guide",
     dek:
-      "Choose suspension by the job it must do. Ride height is only one input; condition, load, damping, geometry, alignment, tires, and KDSS status shape the complete decision.",
+      "Compare 4Runner suspension setups by daily comfort, trail control, overland load, lift height, geometry, alignment, tires, and KDSS status.",
     scope: commonScope,
     dates: phase4ADates,
     breadcrumbs: [

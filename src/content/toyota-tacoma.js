@@ -1,7 +1,7 @@
 const dates = {
   published: "2026-07-27T12:00:00+05:00",
-  modified: "2026-07-27T12:00:00+05:00",
-  reviewedLabel: "July 27, 2026"
+  modified: "2026-08-31T12:00:00+05:00",
+  reviewedLabel: "August 31, 2026"
 };
 
 const vehicle = {
@@ -10,7 +10,7 @@ const vehicle = {
   shortName: "Tacoma",
   guidesLabel: "Toyota Tacoma",
   heroLabel: "TACOMA",
-  ctaLabel: "Build My Setup",
+  ctaLabel: "Build My Tacoma Setup",
   planInputs:
     "model year, trim, cab, bed length, drivetrain, driving profile, budget, installed equipment, payload, and planned load"
 };
@@ -101,16 +101,16 @@ export const toyotaTacomaPages = [
     key: "toyota-tacoma",
     kind: "vehicleHub",
     route: "/vehicles/toyota-tacoma",
-    title: "Toyota Tacoma 3rd Gen Off-Road Upgrade Guide | RigAI",
+    title: "Toyota Tacoma Off-Road Setup & Suspension Guide | RigAI",
     description:
-      "Plan 2016-2023 Toyota Tacoma off-road upgrades around daily use, trails, payload, bed load, tires, recovery, protection, and suspension.",
-    socialTitle: "Toyota Tacoma 3rd Gen Upgrade Guide | RigAI",
+      "Plan a 2016-2023 Toyota Tacoma off-road setup around suspension, lift, tires, payload, bed load, recovery, daily driving, and trail use.",
+    socialTitle: "Toyota Tacoma Off-Road Setup & Suspension Guide | RigAI",
     socialDescription:
-      "A practical upgrade-planning guide for the 2016-2023 Toyota Tacoma, from daily driving to trails, work, and overland travel.",
+      "Plan a 2016-2023 Tacoma setup around suspension, lift, tires, payload, daily driving, trails, work, and overland travel.",
     eyebrow: "2016-2023 Toyota Tacoma planning guide",
-    h1: "Toyota Tacoma 3rd Gen Off-Road Upgrade Guide",
+    h1: "Toyota Tacoma Off-Road Setup & Suspension Guide",
     dek:
-      "Build a useful truck around the way you drive, carry cargo, and use the bed. Start with condition and real load before choosing tires, armor, racks, or suspension.",
+      "Compare suspension, lift, tires, recovery, and bed-load decisions for a 2016-2023 Tacoma based on daily driving, trails, payload, and budget.",
     vehicle,
     scope,
     dates,
@@ -788,16 +788,16 @@ export const toyotaTacomaPages = [
     key: "toyota-tacoma-lift-kit",
     kind: "article",
     route: "/vehicles/toyota-tacoma/lift-kit",
-    title: "Toyota Tacoma 3rd Gen Lift Kit Guide | RigAI",
+    title: "Toyota Tacoma Lift Kit & Suspension Setup Guide | RigAI",
     description:
-      "Compare 2016-2023 Toyota Tacoma leveling and lift options by IFS geometry, suspension travel, tire clearance, rear load, alignment, and daily use.",
-    socialTitle: "Toyota Tacoma 3rd Gen Lift Kit Guide | RigAI",
+      "Compare 2016-2023 Toyota Tacoma lift kits, leveling options, coilovers, rear leaf support, tire clearance, alignment, payload, and daily use.",
+    socialTitle: "Toyota Tacoma Lift Kit & Suspension Setup Guide | RigAI",
     socialDescription:
-      "Choose a Tacoma lift approach around purpose, usable travel, alignment, tires, payload, rear leaf springs, and road behavior.",
+      "Choose a Tacoma lift setup around purpose, usable travel, alignment, tires, payload, rear leaf springs, and road behavior.",
     eyebrow: "2016-2023 Tacoma lift-kit planning",
-    h1: "Toyota Tacoma 3rd Gen Lift Kit Guide",
+    h1: "Toyota Tacoma Lift Kit & Suspension Setup Guide",
     dek:
-      "Advertised height is only one part of a lift. Start with the exact truck, a defined clearance or load objective, and the geometry and travel the complete system must preserve.",
+      "Choose a Tacoma lift kit around the result you need: daily-driver leveling, larger-tire clearance, loaded travel, towing stance, or trail control.",
     vehicle,
     scope,
     dates,

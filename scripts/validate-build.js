@@ -19,6 +19,14 @@ const errors = [];
 const articleDateTimePattern =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/;
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
 function socialImageForPage(page) {
   if (page.structuredData === "vehicleHub") {
     const vehicleSlug =
@@ -548,8 +556,8 @@ for (const page of pages) {
   const imageUrl = `${site.domain}${socialImage.path}`;
   const label = `dist/${outputPath.replaceAll("\\", "/")}`;
 
-  requireIncludes(html, `<title>${page.title}</title>`, label);
-  requireIncludes(html, `<meta name="description" content="${page.description}" />`, label);
+  requireIncludes(html, `<title>${escapeHtml(page.title)}</title>`, label);
+  requireIncludes(html, `<meta name="description" content="${escapeHtml(page.description)}" />`, label);
   requireIncludes(html, `<link rel="canonical" href="${canonical}" />`, label);
   requireIncludes(html, `<meta property="og:url" content="${canonical}" />`, label);
   requireIncludes(html, `<meta property="og:image" content="${imageUrl}" />`, label);
@@ -1861,10 +1869,14 @@ for (const route of vehicleRoutes) {
     "nissan-frontier": "Verify model year, trim, cab, bed length, drivetrain, factory suspension"
   }[vehicleSlug] || "Always verify model year, trim, drivetrain, KDSS status";
   requireIncludes(html, expectedSafetyText, label);
-  const expectedCtaLabel =
-    ["toyota-tacoma", "jeep-wrangler-jl", "ford-bronco", "jeep-gladiator", "chevrolet-colorado", "ford-ranger", "ford-f150", "toyota-tundra", "nissan-frontier"].includes(vehicleSlug)
-      ? "Build My Setup"
-      : "Check app availability";
+  const expectedCtaLabel = {
+    "toyota-4runner": "Build My 4Runner Setup",
+    "toyota-tacoma": "Build My Tacoma Setup",
+    "ford-bronco": "Build My Bronco Setup",
+    "ford-ranger": "Build My Ranger Setup",
+    "ford-f150": "Build My F-150 Setup",
+    "nissan-frontier": "Build My Frontier Setup"
+  }[vehicleSlug] || "Build My Setup";
   requireIncludes(
     html,
     `href="/#download" data-analytics-event="build_setup_click" data-analytics-location="article_cta" data-destination-type="internal_section">${expectedCtaLabel}</a>`,

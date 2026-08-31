@@ -38,6 +38,7 @@ function vehicleMeta(page) {
     shortName: "4Runner",
     guidesLabel: "Toyota 4Runner",
     heroLabel: "4RUNNER",
+    ctaLabel: "Build My 4Runner Setup",
     planInputs: "generation, trim, drivetrain, KDSS status, driving profile, budget, installed equipment, and planned load"
   };
 }

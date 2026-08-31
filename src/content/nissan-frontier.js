@@ -1,7 +1,7 @@
 const dates = {
   published: "2026-07-29T12:00:00+05:00",
-  modified: "2026-07-29T12:00:00+05:00",
-  reviewedLabel: "July 29, 2026"
+  modified: "2026-08-31T12:00:00+05:00",
+  reviewedLabel: "August 31, 2026"
 };
 
 const vehicle = {
@@ -10,7 +10,7 @@ const vehicle = {
   shortName: "Frontier",
   guidesLabel: "Nissan Frontier",
   heroLabel: "Frontier",
-  ctaLabel: "Build My Setup",
+  ctaLabel: "Build My Frontier Setup",
   planInputs:
     "model year, S trim, SV, PRO-X or PRO-4X, King Cab or Crew Cab, standard bed or long bed, 4x2 or 4x4 drivetrain, factory suspension, wheels and tires, payload label, towing equipment, permanent accessories, passengers, cargo, trailer tongue weight, terrain, and current modifications"
 };
@@ -129,16 +129,16 @@ export const nissanFrontierPages = [
     key: "nissan-frontier",
     kind: "vehicleHub",
     route: "/vehicles/nissan-frontier",
-    title: "Nissan Frontier Off-Road Upgrade Guide | RigAI",
+    title: "Nissan Frontier Suspension & Off-Road Setup Guide | RigAI",
     description:
-      "Plan 2022-present Nissan Frontier upgrades around S, SV, PRO-X, PRO-4X, suspension, tires, lift, payload, towing, and overland use.",
-    socialTitle: "Nissan Frontier Off-Road Upgrade Guide | RigAI",
+      "Plan a 2022-present Nissan Frontier off-road setup around suspension, lift, tires, PRO-X, PRO-4X, payload, towing, and overland use.",
+    socialTitle: "Nissan Frontier Suspension & Off-Road Setup Guide | RigAI",
     socialDescription:
-      "A third-generation Frontier planning hub for daily use, trails, towing, suspension, tires, lift, payload, and overland equipment.",
+      "A third-generation Frontier planning hub for suspension, lift, tires, payload, towing, daily driving, trails, and overland equipment.",
     eyebrow: "2022-present US Nissan Frontier planning guide",
-    h1: "Nissan Frontier Off-Road Upgrade Guide",
+    h1: "Nissan Frontier Suspension & Off-Road Setup Guide",
     dek:
-      "Plan the midsize pickup as one system. Trim, cab, bed, drivetrain, factory equipment, payload, towing, daily driving, and trail goals change the right upgrade order.",
+      "Compare suspension, lift, tires, payload, towing, and trail priorities for your Frontier based on trim, cab, bed, PRO-4X equipment, daily use, and load.",
     vehicle,
     scope,
     dates,

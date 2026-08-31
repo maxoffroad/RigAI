@@ -1,7 +1,7 @@
 const dates = {
   published: "2026-07-28T15:00:00+05:00",
-  modified: "2026-07-28T15:00:00+05:00",
-  reviewedLabel: "July 28, 2026"
+  modified: "2026-08-31T12:00:00+05:00",
+  reviewedLabel: "August 31, 2026"
 };
 
 const vehicle = {
@@ -10,7 +10,7 @@ const vehicle = {
   shortName: "Bronco",
   guidesLabel: "Ford Bronco",
   heroLabel: "BRONCO",
-  ctaLabel: "Build My Setup",
+  ctaLabel: "Build My Bronco Setup",
   planInputs:
     "model year, door count, trim, engine, transmission, axle and transfer-case equipment, Sasquatch status, HOSS version, factory tires and fenders, driving profile, payload, installed equipment, and planned load"
 };
@@ -101,16 +101,16 @@ export const fordBroncoPages = [
     key: "ford-bronco",
     kind: "vehicleHub",
     route: "/vehicles/ford-bronco",
-    title: "Ford Bronco Off-Road Upgrade Guide | RigAI",
+    title: "Ford Bronco Suspension & Off-Road Setup Guide | RigAI",
     description:
-      "Plan 2021-present Ford Bronco upgrades around 2-door or 4-door configuration, Sasquatch status, HOSS suspension, tires, recovery, and trail use.",
-    socialTitle: "Ford Bronco Off-Road Upgrade Guide | RigAI",
+      "Plan a 2021-present Ford Bronco off-road setup around suspension, lift, tires, Sasquatch status, HOSS hardware, recovery, and trail use.",
+    socialTitle: "Ford Bronco Suspension & Off-Road Setup Guide | RigAI",
     socialDescription:
-      "A practical sixth-generation Ford Bronco planning hub for tires, suspension, lift, protection, recovery, and overland travel.",
+      "A practical sixth-generation Ford Bronco planning hub for suspension, lift, tires, protection, recovery, daily driving, and overland travel.",
     eyebrow: "2021-present Ford Bronco planning guide",
-    h1: "Ford Bronco Off-Road Upgrade Guide",
+    h1: "Ford Bronco Suspension & Off-Road Setup Guide",
     dek:
-      "Start with the exact Bronco. Door count, trim, engine, transmission, factory package, HOSS version, axles, tires, fenders, daily use, and trail goals all change a useful upgrade order.",
+      "Compare suspension, lift, tires, recovery, and trail priorities for your Bronco based on door count, trim, Sasquatch status, HOSS hardware, daily use, and payload.",
     vehicle,
     scope,
     dates,

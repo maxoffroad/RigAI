@@ -1,7 +1,7 @@
 const dates = {
   published: "2026-07-28T22:30:00+05:00",
-  modified: "2026-07-28T22:30:00+05:00",
-  reviewedLabel: "July 28, 2026"
+  modified: "2026-08-31T12:00:00+05:00",
+  reviewedLabel: "August 31, 2026"
 };
 
 const vehicle = {
@@ -10,7 +10,7 @@ const vehicle = {
   shortName: "F-150",
   guidesLabel: "Ford F-150",
   heroLabel: "F-150",
-  ctaLabel: "Build My Setup",
+  ctaLabel: "Build My F-150 Setup",
   planInputs:
     "model year, cab, bed length, trim, engine, drivetrain, FX4, Tremor, Raptor or Raptor R configuration, axle ratio, factory suspension, wheels and tires, payload label, towing equipment, current modifications, permanent bed load, trailer tongue weight, driving profile, and trip load"
 };
@@ -188,16 +188,16 @@ export const fordF150Pages = [
     key: "ford-f150",
     kind: "vehicleHub",
     route: "/vehicles/ford-f150",
-    title: "Ford F-150 Off-Road Upgrade Guide | RigAI",
+    title: "Ford F-150 Suspension & Off-Road Setup Guide | RigAI",
     description:
-      "Plan 2021-present Ford F-150 off-road upgrades around FX4, Tremor, Raptor, suspension, tires, lift, payload, towing, and overland use.",
-    socialTitle: "Ford F-150 Off-Road Upgrade Guide | RigAI",
+      "Plan a 2021-present Ford F-150 off-road setup around suspension, lift, tires, FX4, Tremor, Raptor, payload, towing, and overland use.",
+    socialTitle: "Ford F-150 Suspension & Off-Road Setup Guide | RigAI",
     socialDescription:
-      "A modern F-150 planning hub for daily use, trails, towing, suspension, tires, lift, payload, and overland equipment.",
+      "A modern F-150 planning hub for suspension, lift, tires, payload, towing, daily use, trails, and overland equipment.",
     eyebrow: "2021-present US Ford F-150 planning guide",
-    h1: "Ford F-150 Off-Road Upgrade Guide",
+    h1: "Ford F-150 Suspension & Off-Road Setup Guide",
     dek:
-      "Plan the full-size truck as a system. Cab, bed, engine, axle, FX4, Tremor, Raptor equipment, payload, towing, daily driving, and trail goals all change the right upgrade order.",
+      "Compare suspension, lift, tires, payload, towing, and trail priorities for your F-150 based on cab, bed, engine, FX4, Tremor, Raptor equipment, and daily use.",
     vehicle,
     scope,
     dates,

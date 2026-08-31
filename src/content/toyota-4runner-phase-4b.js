@@ -1,7 +1,7 @@
 export const phase4BDates = {
   published: "2026-07-23T12:00:00+05:00",
-  modified: "2026-07-23T12:00:00+05:00",
-  reviewedLabel: "July 23, 2026"
+  modified: "2026-08-31T12:00:00+05:00",
+  reviewedLabel: "August 31, 2026"
 };
 
 const scope = {
@@ -67,16 +67,16 @@ export const phase4BPages = [
     key: "toyota-4runner-kdss",
     kind: "article",
     route: "/vehicles/toyota-4runner/kdss",
-    title: "Toyota 4Runner KDSS Guide: Suspension and Lift Considerations | RigAI",
+    title: "Toyota 4Runner KDSS Suspension & Lift Guide | RigAI",
     description:
-      "Understand Toyota 4Runner KDSS, how to identify it, and what to verify when planning suspension, lift, load, alignment, and installation.",
-    socialTitle: "Toyota 4Runner KDSS Guide | RigAI",
+      "Plan Toyota 4Runner KDSS suspension and lift choices by fitment, sway-bar behavior, load, alignment, installer requirements, and daily use.",
+    socialTitle: "Toyota 4Runner KDSS Suspension & Lift Guide | RigAI",
     socialDescription:
       "A practical 5th Gen 4Runner KDSS guide for suspension and lift planning, fitment checks, load, alignment, and installer questions.",
     eyebrow: "5th Gen KDSS planning",
-    h1: "Toyota 4Runner KDSS Guide",
+    h1: "Toyota 4Runner KDSS Suspension & Lift Guide",
     dek:
-      "KDSS changes how the 4Runner's stabilizer bars respond on road and off road. Confirm whether the exact vehicle has it before choosing suspension or lift components.",
+      "KDSS changes the suspension and sway-bar planning path. Confirm the exact system before choosing lift height, springs, shocks, alignment parts, or installer support.",
     scope,
     dates: phase4BDates,
     breadcrumbs: [
@@ -247,16 +247,16 @@ export const phase4BPages = [
     key: "toyota-4runner-lift-kit",
     kind: "article",
     route: "/vehicles/toyota-4runner/lift-kit",
-    title: "Toyota 4Runner Lift Kit Guide: Height, Geometry and Trade-Offs | RigAI",
+    title: "Toyota 4Runner Lift Kit & Suspension Setup Guide | RigAI",
     description:
-      "Choose a Toyota 4Runner lift objective using terrain, load, geometry, alignment, KDSS, tire clearance, and daily-driving trade-offs.",
-    socialTitle: "Toyota 4Runner Lift Kit Guide | RigAI",
+      "Compare Toyota 4Runner lift kits and suspension setup choices by terrain, load, geometry, alignment, KDSS, tire clearance, and daily driving.",
+    socialTitle: "Toyota 4Runner Lift Kit & Suspension Setup Guide | RigAI",
     socialDescription:
       "Plan a 5th Gen 4Runner lift around real clearance needs, final load, geometry, tire fitment, and daily use.",
     eyebrow: "5th Gen lift planning",
-    h1: "Toyota 4Runner Lift Kit Guide",
+    h1: "Toyota 4Runner Lift Kit & Suspension Setup Guide",
     dek:
-      "Choose lift around the job, final load, and geometry. Advertised height alone does not describe control, travel, alignment, or tire clearance.",
+      "Choose a 4Runner lift setup around the job it needs to do: daily-driver stance, larger tires, overland load, trail control, KDSS fitment, or geometry correction.",
     scope,
     dates: phase4BDates,
     breadcrumbs: [
@@ -454,16 +454,16 @@ export const phase4BPages = [
     key: "toyota-4runner-tire-size",
     kind: "article",
     route: "/vehicles/toyota-4runner/tire-size",
-    title: "Toyota 4Runner Tire Size Guide: Clearance, Fitment and Trade-Offs | RigAI",
+    title: "Toyota 4Runner Tire Size & Fitment Guide | RigAI",
     description:
-      "Choose Toyota 4Runner tire size by placard data, wheel compatibility, load rating, measured dimensions, clearance, and driving trade-offs.",
-    socialTitle: "Toyota 4Runner Tire Size Guide | RigAI",
+      "Choose a Toyota 4Runner tire size by wheel fitment, load rating, measured tire dimensions, lift, KDSS, clearance, spare storage, and daily driving.",
+    socialTitle: "Toyota 4Runner Tire Size & Fitment Guide | RigAI",
     socialDescription:
       "A careful 5th Gen 4Runner tire-size framework covering the placard baseline, real dimensions, wheels, clearance, and larger-tire trade-offs.",
     eyebrow: "5th Gen tire planning",
-    h1: "Toyota 4Runner Tire Size Guide",
+    h1: "Toyota 4Runner Tire Size & Fitment Guide",
     dek:
-      "Start with the exact vehicle's placard and documentation. Then compare the tire model's real specifications, wheel compatibility, load capacity, clearance, and road behavior.",
+      "Compare tire size, wheel fitment, lift, load rating, spare storage, and real clearance before choosing all-terrain tires for a daily-driven or trail-focused 4Runner.",
     scope,
     dates: phase4BDates,
     breadcrumbs: [
