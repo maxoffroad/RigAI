@@ -556,6 +556,31 @@ for (const [route, image] of Object.entries(vehicleGuideHeroImages)) {
     errors.push(`${route} has a guide hero image but no documented image requirement.`);
   }
   validateLocalHeroImage(image, `${route} guide hero image`);
+  const relativePath = image.src.replace(/^\//, "");
+  const publicPath = join(root, "public", relativePath);
+  const builtPath = join(dist, relativePath);
+  for (const [label, filePath] of [
+    ["source", publicPath],
+    ["build", builtPath]
+  ]) {
+    if (!existsSync(filePath)) {
+      errors.push(`${route} ${label} guide hero image file is missing.`);
+      continue;
+    }
+
+    const file = readFileSync(filePath);
+    const dimensions = readWebpDimensions(file);
+    if (
+      !dimensions ||
+      dimensions.width !== image.width ||
+      dimensions.height !== image.height
+    ) {
+      errors.push(`${route} ${label} guide hero WebP dimensions do not match the registry.`);
+    }
+    if (file.length > 300_000) {
+      errors.push(`${route} ${label} guide hero WebP exceeds the 300 KB delivery budget.`);
+    }
+  }
 }
 
 for (const rejectedSource of [
@@ -2035,7 +2060,9 @@ for (const route of vehicleRoutes) {
     requireIncludes(html, 'href="/vehicles">Vehicles</a>', label);
 
     if (page.structuredData === "article") {
-      requireIncludes(html, ">TACOMA</span>", label);
+      if (!getVehicleGuideHeroImage(route)) {
+        requireIncludes(html, ">TACOMA</span>", label);
+      }
       requireIncludes(
         html,
         'class="article-back-link" href="/vehicles/toyota-tacoma"',

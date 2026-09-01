@@ -255,19 +255,19 @@ export const vehicleGuideHeroImageRequirements = {
   "/vehicles/toyota-tacoma/lift-kit": {
     topic:
       "Toyota Tacoma with a realistic mild or moderate suspension lift and all-terrain tires, preferably in a three-quarter or side view.",
-    alt: "Lifted Toyota Tacoma with all-terrain tires",
+    alt: "Lifted Toyota Tacoma with suspension setup visualization",
     preferredFileName: "toyota-tacoma-lift-kit.webp"
   },
   "/vehicles/toyota-4runner/kdss": {
     topic:
       "Toyota 4Runner demonstrating suspension articulation on uneven terrain.",
-    alt: "Toyota 4Runner suspension articulation on uneven terrain",
+    alt: "Toyota 4Runner suspension articulation and KDSS visualization",
     preferredFileName: "toyota-4runner-kdss.webp"
   },
   "/vehicles/toyota-4runner/tire-size": {
     topic:
       "Toyota 4Runner with a clear view of tire and wheel clearance around the fender.",
-    alt: "Toyota 4Runner tire and wheel clearance",
+    alt: "Toyota 4Runner tire and wheel clearance visualization",
     preferredFileName: "toyota-4runner-tire-size.webp"
   },
   "/vehicles/toyota-4runner/suspension": {
@@ -284,7 +284,43 @@ export const vehicleGuideHeroImageRequirements = {
   }
 };
 
-export const vehicleGuideHeroImages = {};
+export const vehicleGuideHeroImages = {
+  "/vehicles/toyota-tacoma/lift-kit": {
+    src: "/images/vehicles/toyota-tacoma-lift-kit.webp",
+    alt: "Lifted Toyota Tacoma with suspension setup visualization",
+    width: 1254,
+    height: 1254,
+    objectPosition: "50% 50%"
+  },
+  "/vehicles/toyota-4runner/kdss": {
+    src: "/images/vehicles/toyota-4runner-kdss.webp",
+    alt: "Toyota 4Runner suspension articulation and KDSS visualization",
+    width: 1254,
+    height: 1254,
+    objectPosition: "50% 50%"
+  },
+  "/vehicles/toyota-4runner/tire-size": {
+    src: "/images/vehicles/toyota-4runner-tire-size.webp",
+    alt: "Toyota 4Runner tire and wheel clearance visualization",
+    width: 1254,
+    height: 1254,
+    objectPosition: "50% 50%"
+  },
+  "/vehicles/toyota-4runner/suspension": {
+    src: "/images/vehicles/toyota-4runner-suspension.webp",
+    alt: "Toyota 4Runner suspension setup on uneven terrain",
+    width: 1254,
+    height: 1254,
+    objectPosition: "50% 50%"
+  },
+  "/vehicles/toyota-4runner/overland-build": {
+    src: "/images/vehicles/toyota-4runner-overland-build.webp",
+    alt: "Toyota 4Runner configured for overland travel",
+    width: 1254,
+    height: 1254,
+    objectPosition: "50% 50%"
+  }
+};
 
 export function getVehicleImage(slug) {
   return vehicleImages[slug] || null;

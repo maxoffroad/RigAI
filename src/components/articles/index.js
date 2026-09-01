@@ -73,8 +73,8 @@ function renderVehicleHeroVisual(page, vehicle) {
     : "";
 
   return `<figure class="article-hero-media ${mediaClass}" data-vehicle-media data-fallback-label="${escapeHtml(vehicle.heroLabel)}">
-            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high" data-vehicle-image style="object-position: ${escapeHtml(image.objectPosition)}" />
-            ${sourceCaption}
+            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" width="${image.width}" height="${image.height}" loading="eager" decoding="async" fetchpriority="high" data-vehicle-image style="object-position: ${escapeHtml(image.objectPosition)}" />${sourceCaption ? `
+            ${sourceCaption}` : ""}
           </figure>`;
 }
 
