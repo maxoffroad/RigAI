@@ -368,7 +368,7 @@ function renderHead(page, analytics) {
     '<link rel="preconnect" href="https://fonts.googleapis.com" />',
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />',
     '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />',
-    '<link rel="stylesheet" href="/src/styles.css?v=hero-cta-1" />',
+    '<link rel="stylesheet" href="/src/styles.css?v=store-badges-4" />',
     page.structuredData ? renderStructuredData(page) : "",
     renderGoogleTag(analytics)
   ].filter(Boolean);

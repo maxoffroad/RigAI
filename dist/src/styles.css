@@ -460,11 +460,12 @@ h3 {
   display: inline-flex;
   flex: 0 0 auto;
   width: auto;
-  height: auto;
+  height: 48px;
   min-width: 0;
-  min-height: 0;
+  min-height: 48px;
   max-width: none;
   align-items: center;
+  justify-content: center;
   border: 0;
   padding: 0;
   background: transparent;
@@ -479,7 +480,16 @@ h3 {
 }
 
 .button.google-play img {
-  height: 56px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 70px;
+  transform: translate(-50%, -50%);
+}
+
+.store-buttons .button.google-play {
+  position: relative;
+  width: 235px;
 }
 
 .button.store-button:hover,
@@ -2841,10 +2851,11 @@ h3 {
   }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 420px) {
   .store-buttons {
     align-items: center;
     flex-direction: column;
+    row-gap: 23px;
   }
 }
 
