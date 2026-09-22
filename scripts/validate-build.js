@@ -1020,7 +1020,7 @@ requireIncludes(homeHtml, 'href="https://play.google.com/store/apps/details?id=c
 requireIncludes(homeHtml, '<span class="store-buttons">', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="hero">', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="final_cta">', "dist/index.html");
-requireIncludes(homeHtml, '<img src="/assets/google-play-badge.png" width="646" height="250" alt="Get it on Google Play" />', "dist/index.html");
+requireIncludes(homeHtml, '<img src="/assets/google-play-badge.png" width="564" height="168" alt="Get it on Google Play" />', "dist/index.html");
 requireIncludes(homeHtml, 'href="https://apps.apple.com/app/rigai/id6811026165" target="_blank" rel="noopener noreferrer" aria-label="Download RigAI on the App Store"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="hero"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="final_cta"', "dist/index.html");

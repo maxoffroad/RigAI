@@ -20,7 +20,7 @@ const APP_STORE_URL = "https://apps.apple.com/app/rigai/id6811026165";
 function storeButtons(location) {
   return `<span class="store-buttons">
             <a class="button google-play store-button" href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Get RigAI on Google Play" data-analytics-event="google_play_click" data-analytics-location="${location}">
-              <img src="/assets/google-play-badge.png" width="646" height="250" alt="Get it on Google Play" />
+              <img src="/assets/google-play-badge.png" width="564" height="168" alt="Get it on Google Play" />
             </a>
             <a class="button app-store store-button" href="${APP_STORE_URL}" target="_blank" rel="noopener noreferrer" aria-label="Download RigAI on the App Store" data-analytics-event="app_store_click" data-analytics-location="${location}">
               <img src="/assets/app-store-badge.svg" width="144" height="48" alt="Download RigAI on the App Store" />
