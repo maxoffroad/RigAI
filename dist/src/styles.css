@@ -460,12 +460,11 @@ h3 {
   display: inline-flex;
   flex: 0 0 auto;
   width: auto;
-  height: 48px;
+  height: auto;
   min-width: 0;
-  min-height: 48px;
+  min-height: 0;
   max-width: none;
   align-items: center;
-  justify-content: center;
   border: 0;
   padding: 0;
   background: transparent;
@@ -480,16 +479,7 @@ h3 {
 }
 
 .button.google-play img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 70px;
-  transform: translate(-50%, -50%);
-}
-
-.store-buttons .button.google-play {
-  position: relative;
-  width: 235px;
+  height: 56px;
 }
 
 .button.store-button:hover,
@@ -2851,12 +2841,15 @@ h3 {
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 350px) {
   .store-buttons {
     align-items: center;
     flex-direction: column;
-    row-gap: 23px;
   }
+}
+
+.button.google-play {
+  width: 155px;
 }
 
 /* Phase 4A vehicle and article architecture */
