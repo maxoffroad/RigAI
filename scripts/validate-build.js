@@ -1014,7 +1014,6 @@ for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "© 2024
   }
 }
 
-requireIncludes(homeHtml, '<span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>', "dist/index.html");
 requireIncludes(homeHtml, 'href="https://play.google.com/store/apps/details?id=com.maxkz.rigai" target="_blank" rel="noopener noreferrer"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="store-buttons">', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="hero">', "dist/index.html");
@@ -1042,12 +1041,12 @@ if (homepageBuildLocations.has("hero")) {
 }
 
 if (
-  homepageBuildCtas.length !== 2 ||
-  !["header", "final_cta"].every((location) =>
+  homepageBuildCtas.length !== 1 ||
+  !["header"].every((location) =>
     homepageBuildLocations.has(location)
   )
 ) {
-  errors.push("Homepage must retain the header and final CTA Build My Setup controls.");
+  errors.push("Homepage must retain only the header Build My Setup control.");
 }
 requireIncludes(homeHtml, '<a href="#how-it-works">How It Works</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="/vehicles">Vehicles</a>', "dist/index.html");

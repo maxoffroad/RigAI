@@ -333,7 +333,6 @@ function finalCta() {
         <h2>Build the SUV<br><span>you actually need.</span></h2>
         <p>Start with your vehicle, terrain and budget. RigAI will help you choose the right upgrades in the right order.</p>
         <div class="hero-actions">
-          <span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>
           ${storeButtons("final_cta")}
         </div>
       </div>
