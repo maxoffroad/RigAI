@@ -637,7 +637,7 @@ for (const page of pages) {
   requireIncludes(html, '<header class="site-header', label);
   requireIncludes(html, '<footer class="footer">', label);
   requireIncludes(html, '<meta name="viewport" content="width=device-width, initial-scale=1.0" />', label);
-  requireIncludes(html, '<link rel="stylesheet" href="/src/styles.css?v=store-badges-2" />', label);
+  requireIncludes(html, '<link rel="stylesheet" href="/src/styles.css?v=hero-cta-1" />', label);
   requireIncludes(html, 'class="nav-toggle"', label);
   requireIncludes(html, 'aria-expanded="false"', label);
   requireIncludes(html, 'data-nav-toggle', label);
@@ -1014,7 +1014,6 @@ for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "© 2024
   }
 }
 
-requireIncludes(homeHtml, '<a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>', "dist/index.html");
 requireIncludes(homeHtml, '<span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>', "dist/index.html");
 requireIncludes(homeHtml, 'href="https://play.google.com/store/apps/details?id=com.maxkz.rigai" target="_blank" rel="noopener noreferrer"', "dist/index.html");
 requireIncludes(homeHtml, '<span class="store-buttons">', "dist/index.html");
@@ -1038,13 +1037,17 @@ const homepageBuildLocations = new Set(
   )
 );
 
+if (homepageBuildLocations.has("hero")) {
+  errors.push("Homepage hero must not expose a Build My Setup control.");
+}
+
 if (
-  homepageBuildCtas.length !== 3 ||
-  !["header", "hero", "final_cta"].every((location) =>
+  homepageBuildCtas.length !== 2 ||
+  !["header", "final_cta"].every((location) =>
     homepageBuildLocations.has(location)
   )
 ) {
-  errors.push("Homepage must expose exactly three uniquely located Build My Setup controls.");
+  errors.push("Homepage must retain the header and final CTA Build My Setup controls.");
 }
 requireIncludes(homeHtml, '<a href="#how-it-works">How It Works</a>', "dist/index.html");
 requireIncludes(homeHtml, '<a href="/vehicles">Vehicles</a>', "dist/index.html");

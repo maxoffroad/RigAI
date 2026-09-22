@@ -46,8 +46,7 @@ function hero() {
         <p class="hero-badge">Off-Road Build Planner</p>
         <h1>Your SUV.<br>Your terrain.<br><span>The right build.</span></h1>
         <p class="hero-copy">RigAI creates personalized off-road upgrade plans for SUVs based on the vehicle, driving goals, terrain and budget.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>
+        <div class="hero-actions hero-actions--downloads">
           <a class="button secondary" href="#example-build" data-analytics-event="example_build_click" data-analytics-location="hero">See an Example Build</a>
           ${storeButtons("hero")}
         </div>
