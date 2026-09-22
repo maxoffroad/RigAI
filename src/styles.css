@@ -2848,8 +2848,9 @@ h3 {
   }
 }
 
-.button.google-play {
-  width: 155px;
+.store-buttons .button.google-play {
+  position: relative;
+  width: 160px;
 }
 
 /* Phase 4A vehicle and article architecture */
