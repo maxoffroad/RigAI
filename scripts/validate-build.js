@@ -280,6 +280,7 @@ const requiredFiles = [
   "_redirects",
   "assets/rigai-og-image.png",
   "assets/app-store-badge.svg",
+  "assets/google-play-badge.png",
   join("design-system", "index.html"),
   join("privacy", "index.html"),
   join("terms", "index.html"),
@@ -1016,12 +1017,14 @@ for (const forbidden of ["/guides/", "href=\"#\"", "Google Play Store", "© 2024
 requireIncludes(homeHtml, '<a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>', "dist/index.html");
 requireIncludes(homeHtml, '<span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>', "dist/index.html");
 requireIncludes(homeHtml, 'href="https://play.google.com/store/apps/details?id=com.maxkz.rigai" target="_blank" rel="noopener noreferrer"', "dist/index.html");
-requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="hero">Get it on Google Play</a>', "dist/index.html");
-requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="final_cta">Get it on Google Play</a>', "dist/index.html");
+requireIncludes(homeHtml, '<span class="store-buttons">', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="hero">', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="final_cta">', "dist/index.html");
+requireIncludes(homeHtml, '<img src="/assets/google-play-badge.png" width="646" height="250" alt="Get it on Google Play" />', "dist/index.html");
 requireIncludes(homeHtml, 'href="https://apps.apple.com/app/rigai/id6811026165" target="_blank" rel="noopener noreferrer" aria-label="Download RigAI on the App Store"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="hero"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="final_cta"', "dist/index.html");
-requireIncludes(homeHtml, '<img src="/assets/app-store-badge.svg" width="168" height="48" alt="Download RigAI on the App Store" />', "dist/index.html");
+requireIncludes(homeHtml, '<img src="/assets/app-store-badge.svg" width="144" height="48" alt="Download RigAI on the App Store" />', "dist/index.html");
 
 const homepageBuildCtas = [
   ...homeHtml.matchAll(
