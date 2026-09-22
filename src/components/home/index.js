@@ -15,6 +15,14 @@ import {
 import { renderVehicleCard } from "../vehicles/card.js";
 
 const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.maxkz.rigai";
+const APP_STORE_URL = "https://apps.apple.com/app/rigai/id6811026165";
+
+function storeButtons(location) {
+  return `<a class="button google-play store-button" href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Get RigAI on Google Play" data-analytics-event="google_play_click" data-analytics-location="${location}">Get it on Google Play</a>
+          <a class="button app-store store-button" href="${APP_STORE_URL}" target="_blank" rel="noopener noreferrer" aria-label="Download RigAI on the App Store" data-analytics-event="app_store_click" data-analytics-location="${location}">
+            <img src="/assets/app-store-badge.svg" width="168" height="48" alt="Download RigAI on the App Store" />
+          </a>`;
+}
 
 function listItems(items, className = "clean-list") {
   return `<ul class="${className}">${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
@@ -37,7 +45,7 @@ function hero() {
         <div class="hero-actions">
           <a class="button primary" href="#download" data-analytics-event="build_setup_click" data-analytics-location="hero" data-destination-type="internal_section">Build My Setup</a>
           <a class="button secondary" href="#example-build" data-analytics-event="example_build_click" data-analytics-location="hero">See an Example Build</a>
-          <a class="button google-play" href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Get RigAI on Google Play" data-analytics-event="google_play_click" data-analytics-location="hero">Get it on Google Play</a>
+          ${storeButtons("hero")}
         </div>
       </div>
       <aside class="home-hero-visual" aria-label="Example RigAI plan preview">
@@ -323,7 +331,7 @@ function finalCta() {
         <p>Start with your vehicle, terrain and budget. RigAI will help you choose the right upgrades in the right order.</p>
         <div class="hero-actions">
           <span class="button primary is-static" aria-disabled="true" data-analytics-event="build_setup_click" data-analytics-location="final_cta">Build My Setup</span>
-          <a class="button google-play" href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" aria-label="Get RigAI on Google Play" data-analytics-event="google_play_click" data-analytics-location="final_cta">Get it on Google Play</a>
+          ${storeButtons("final_cta")}
         </div>
       </div>
       <aside class="final-plan-card">

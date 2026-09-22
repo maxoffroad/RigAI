@@ -13,6 +13,7 @@ const EVENT_PARAMETERS = Object.freeze({
   ],
   guide_click: ["guide_slug", "vehicle_slug", "link_location", "page_path"],
   google_play_click: ["placement", "language"],
+  app_store_click: ["placement", "language"],
   affiliate_click: [
     "merchant",
     "product_category",

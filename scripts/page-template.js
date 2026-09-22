@@ -2,6 +2,7 @@ import { site } from "./site-config.js";
 import { getVehicleImage } from "../src/content/vehicle-images.js";
 
 const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.maxkz.rigai";
+const APP_STORE_URL = "https://apps.apple.com/app/rigai/id6811026165";
 
 function escapeHtml(value) {
   return String(value)
@@ -155,6 +156,9 @@ function renderFooter(page, analytics) {
   const googlePlayLink = isLegalPage
     ? ""
     : `\n          <a href="${GOOGLE_PLAY_URL}" target="_blank" rel="noopener noreferrer" data-analytics-event="google_play_click" data-analytics-location="footer_product">Google Play</a>`;
+  const appStoreLink = isLegalPage
+    ? ""
+    : `\n          <a href="${APP_STORE_URL}" target="_blank" rel="noopener noreferrer" aria-label="Download RigAI on the App Store" data-analytics-event="app_store_click" data-analytics-location="footer_product">App Store</a>`;
   const analyticsSettings = analytics?.enabled
     ? '\n          <button class="analytics-settings" type="button" data-analytics-settings>Analytics settings</button>'
     : "";
@@ -172,7 +176,7 @@ function renderFooter(page, analytics) {
           <h2>Product</h2>
           <a href="/#how-it-works">How It Works</a>
           <a href="/vehicles">Vehicles</a>
-          <a href="/#guides">Guides</a>${googlePlayLink}
+          <a href="/#guides">Guides</a>${googlePlayLink}${appStoreLink}
           <a href="/about">About</a>
         </nav>
         <nav class="footer-column" aria-label="Support links">

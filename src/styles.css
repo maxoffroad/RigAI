@@ -458,6 +458,29 @@ h3 {
     0 14px 36px rgba(0, 0, 0, 0.24);
 }
 
+.button.store-button {
+  min-width: 168px;
+  min-height: 48px;
+}
+
+.button.app-store {
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  background: #050505;
+}
+
+.button.app-store img {
+  display: block;
+  width: 168px;
+  height: 48px;
+}
+
+.button.app-store:hover,
+.button.app-store:focus-visible {
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
+}
+
 .hero-points {
   display: flex;
   flex-wrap: wrap;

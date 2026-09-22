@@ -72,6 +72,18 @@ if (
   throw new Error("Google Play clicks must be blocked while consent is denied.");
 }
 
+const deniedAppStoreParams = eventParameters(
+  googlePlayHeroElement,
+  "app_store_click",
+  documentLike
+);
+if (
+  trackEvent("app_store_click", deniedAppStoreParams, windowLike) ||
+  calls.length !== 0
+) {
+  throw new Error("App Store clicks must be blocked while consent is denied.");
+}
+
 if (sendPageView(documentLike, windowLike)) {
   throw new Error("Page views must be blocked while consent is denied.");
 }
@@ -143,6 +155,51 @@ for (const placement of ["hero", "final_cta", "footer_product"]) {
     JSON.stringify(playCalls.at(-1)[2]) !== JSON.stringify(playParams)
   ) {
     throw new Error(`${placement} Google Play click must send exactly one event.`);
+  }
+}
+
+for (const placement of ["hero", "final_cta", "footer_product"]) {
+  const storeElement = {
+    dataset: {
+      analyticsLocation: placement
+    },
+    closest: () => null
+  };
+  const storeParams = eventParameters(
+    storeElement,
+    "app_store_click",
+    {
+      documentElement: { lang: "en" },
+      location: { pathname: "/" },
+      body: { dataset: { pageType: "home" } }
+    }
+  );
+  if (
+    JSON.stringify(storeParams) !==
+    JSON.stringify({
+      placement,
+      language: "en"
+    })
+  ) {
+    throw new Error(`${placement} App Store analytics payload is invalid.`);
+  }
+
+  const storeCallsBefore = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "app_store_click"
+  ).length;
+  if (!trackEvent("app_store_click", storeParams, windowLike)) {
+    throw new Error(`${placement} App Store event was not sent.`);
+  }
+  const storeCalls = calls.filter(
+    ([command, eventName]) =>
+      command === "event" && eventName === "app_store_click"
+  );
+  if (
+    storeCalls.length !== storeCallsBefore + 1 ||
+    JSON.stringify(storeCalls.at(-1)[2]) !== JSON.stringify(storeParams)
+  ) {
+    throw new Error(`${placement} App Store click must send exactly one event.`);
   }
 }
 
@@ -952,6 +1009,43 @@ if (
   })
 ) {
   throw new Error("Delegated Google Play event parameters are invalid.");
+}
+
+const delegatedStoreElement = {
+  dataset: {
+    analyticsEvent: "app_store_click",
+    analyticsLocation: "footer_product"
+  },
+  closest: () => null,
+  matches: () => false
+};
+delegatedClickListener?.({
+  target: {
+    closest: (selector) =>
+      selector === "[data-analytics-event]" ? delegatedStoreElement : null
+  },
+  preventDefault: () => {
+    throw new Error("App Store analytics must not prevent navigation.");
+  }
+});
+
+const delegatedStoreCalls = delegatedCalls.filter(
+  ([command, eventName]) =>
+    command === "event" && eventName === "app_store_click"
+);
+
+if (delegatedStoreCalls.length !== 1) {
+  throw new Error("One delegated App Store click must produce exactly one app_store_click.");
+}
+
+if (
+  JSON.stringify(delegatedStoreCalls[0][2]) !==
+  JSON.stringify({
+    placement: "footer_product",
+    language: "en"
+  })
+) {
+  throw new Error("Delegated App Store event parameters are invalid.");
 }
 
 console.log(

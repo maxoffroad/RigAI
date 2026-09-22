@@ -279,6 +279,7 @@ const requiredFiles = [
   "_headers",
   "_redirects",
   "assets/rigai-og-image.png",
+  "assets/app-store-badge.svg",
   join("design-system", "index.html"),
   join("privacy", "index.html"),
   join("terms", "index.html"),
@@ -1000,7 +1001,8 @@ for (const expected of [
   "FAQ",
   "Recommendations are informational.",
   "Always verify fitment before purchasing.",
-  "Get it on Google Play"
+  "Get it on Google Play",
+  "Download RigAI on the App Store"
 ]) {
   requireIncludes(homeHtml, expected, "dist/index.html");
 }
@@ -1016,6 +1018,10 @@ requireIncludes(homeHtml, '<span class="button primary is-static" aria-disabled=
 requireIncludes(homeHtml, 'href="https://play.google.com/store/apps/details?id=com.maxkz.rigai" target="_blank" rel="noopener noreferrer"', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="hero">Get it on Google Play</a>', "dist/index.html");
 requireIncludes(homeHtml, 'data-analytics-event="google_play_click" data-analytics-location="final_cta">Get it on Google Play</a>', "dist/index.html");
+requireIncludes(homeHtml, 'href="https://apps.apple.com/app/rigai/id6811026165" target="_blank" rel="noopener noreferrer" aria-label="Download RigAI on the App Store"', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="hero"', "dist/index.html");
+requireIncludes(homeHtml, 'data-analytics-event="app_store_click" data-analytics-location="final_cta"', "dist/index.html");
+requireIncludes(homeHtml, '<img src="/assets/app-store-badge.svg" width="168" height="48" alt="Download RigAI on the App Store" />', "dist/index.html");
 
 const homepageBuildCtas = [
   ...homeHtml.matchAll(
@@ -3839,12 +3845,17 @@ if (vehicleGuideParameterBlock.includes('"link_location"')) {
 
 const googlePlayParameterBlock =
   analyticsSource.match(/google_play_click:\s*\[([\s\S]*?)\]/)?.[1] || "";
+const appStoreParameterBlock =
+  analyticsSource.match(/app_store_click:\s*\[([\s\S]*?)\]/)?.[1] || "";
 for (const requiredParameter of [
   '"placement"',
   '"language"'
 ]) {
   if (!googlePlayParameterBlock.includes(requiredParameter)) {
     errors.push(`google_play_click is missing ${requiredParameter}.`);
+  }
+  if (!appStoreParameterBlock.includes(requiredParameter)) {
+    errors.push(`app_store_click is missing ${requiredParameter}.`);
   }
 }
 for (const staleParameter of [
@@ -3854,6 +3865,9 @@ for (const staleParameter of [
 ]) {
   if (googlePlayParameterBlock.includes(staleParameter)) {
     errors.push(`google_play_click contains stale parameter ${staleParameter}.`);
+  }
+  if (appStoreParameterBlock.includes(staleParameter)) {
+    errors.push(`app_store_click contains stale parameter ${staleParameter}.`);
   }
 }
 
@@ -3872,6 +3886,7 @@ const allowedAnalyticsEvents = new Set([
   "vehicle_guide_click",
   "guide_click",
   "google_play_click",
+  "app_store_click",
   "affiliate_click",
   "faq_open",
   "outbound_link_click"
@@ -3886,6 +3901,7 @@ const requiredEventAttributes = {
     "data-vehicle-slug"
   ],
   google_play_click: ["data-analytics-location"],
+  app_store_click: ["data-analytics-location"],
   affiliate_click: [
     "data-analytics-location",
     "data-merchant",
@@ -4108,6 +4124,10 @@ for (const page of pages) {
 
     if (/play\.google\.com/i.test(href) && !markup.includes('data-analytics-event="google_play_click"')) {
       errors.push(`${label} Google Play link is missing google_play_click analytics.`);
+    }
+
+    if (/apps\.apple\.com/i.test(href) && !markup.includes('data-analytics-event="app_store_click"')) {
+      errors.push(`${label} App Store link is missing app_store_click analytics.`);
     }
 
     if (/amazon\./i.test(href) && !markup.includes('data-analytics-event="affiliate_click"')) {
