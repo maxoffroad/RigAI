@@ -478,10 +478,6 @@ h3 {
   object-fit: contain;
 }
 
-.button.google-play img {
-  height: 56px;
-}
-
 .button.store-button:hover,
 .button.store-button:focus-visible {
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
