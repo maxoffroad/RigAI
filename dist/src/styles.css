@@ -442,7 +442,10 @@ h3 {
 }
 
 .store-buttons {
-  display: inline-flex;
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  width: auto;
   align-items: center;
   justify-content: center;
   gap: 12px;

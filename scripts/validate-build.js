@@ -637,7 +637,7 @@ for (const page of pages) {
   requireIncludes(html, '<header class="site-header', label);
   requireIncludes(html, '<footer class="footer">', label);
   requireIncludes(html, '<meta name="viewport" content="width=device-width, initial-scale=1.0" />', label);
-  requireIncludes(html, '<link rel="stylesheet" href="/src/styles.css?v=launch-1" />', label);
+  requireIncludes(html, '<link rel="stylesheet" href="/src/styles.css?v=store-badges-2" />', label);
   requireIncludes(html, 'class="nav-toggle"', label);
   requireIncludes(html, 'aria-expanded="false"', label);
   requireIncludes(html, 'data-nav-toggle', label);
